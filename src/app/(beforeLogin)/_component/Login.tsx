@@ -1,44 +1,19 @@
-"use client";
-
-import styled from "styled-components";
-import { ChangeEventHandler, useState, MouseEventHandler } from "react";
-import { useRouter, redirect } from "next/navigation";
-import { useFormState } from "react-dom";
-import { useSession } from "next-auth/react";
-
-import onSubmitLogin from "../_lib/login";
-import { FormResult } from "./Signup";
-import { ShowFormResultMessage } from "./Signup";
-
 import Image from "next/image";
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
+
+import LoginForm from "./LoginForm";
+import CloseButton from "./CloseButton";
+
+import { ModalBackground, Container, ModalHeader, HeaderLeft, HeaderMid, HeaderRight, ModalBody, GoogleLogin, BrandLogo, AppleLogin, BoundaryContainer, Span, Divider } from "./LoginStyled";
+
 import xcom from "../../../../public/xcom.png";
-import 닫기버튼 from "../../../../public/닫기버튼.png";
 import 애플 from "../../../../public/애플2.png";
 
-export default function Login() {
-  const router = useRouter();
-
-  const { data, status } = useSession();
-  if (status === "authenticated") redirect("/home");
+export default async function Login() {
+  const session = await auth();
+  if (session) redirect("/home");
   else console.log("plz login");
-
-  const [id, setId] = useState("");
-  const [password, setPassword] = useState("");
-  const [state, formAction] = useFormState(onSubmitLogin, null);
-
-  const onChangeId: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setId(e.target.value);
-  };
-
-  const onChangePassword: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setPassword(e.target.value);
-  };
-
-  // 닫기 버튼
-
-  const onClickCloseBtn: MouseEventHandler<HTMLDivElement> = (e) => {
-    router.back();
-  };
 
   // 다음 버튼 disabled
   // let isNextDisabled: boolean = id.length !== 0 && (phoneNumber.length !== 0 || email.length !== 0) && birthday !== 0 && birthMonth !== 0 && birthYear !== 0;
@@ -48,9 +23,7 @@ export default function Login() {
       <Container>
         <ModalHeader>
           <HeaderLeft>
-            <CloseBtn onClick={onClickCloseBtn}>
-              <Image src={닫기버튼} alt="close-btn" width={17} height={17}></Image>
-            </CloseBtn>
+            <CloseButton />
           </HeaderLeft>
           <HeaderMid>
             <Image src={xcom} alt="logo" width={53} height={53}></Image>
@@ -79,219 +52,13 @@ export default function Login() {
             <span>Apple로 로그인하기</span>
           </AppleLogin>
           <BoundaryContainer>
-            <Divider> </Divider>
+            <Divider />
             <Span>또는</Span>
             <Divider></Divider>
           </BoundaryContainer>
-          <form action={formAction}>
-            <InputWrapper>
-              {/* <label></label> */}
-              <Input id="id" name="id" type="text" onChange={onChangeId} placeholder="휴대폰 번호,이메일 주소 또는 사용자 아이디"></Input>
-            </InputWrapper>
-            <InputWrapper>
-              {/* <label></label> */}
-              <Input id="password" name="password" type="password" onChange={onChangePassword} placeholder="휴대폰 번호,이메일 주소 또는 사용자 아이디"></Input>
-            </InputWrapper>
-            <NextBtn>로그인하기</NextBtn>
-            <FormResult>{ShowFormResultMessage(state?.message)}</FormResult>
-            <Button type="submit">비밀번호를 잊으셨나요?</Button>
-            <Signup>
-              계정이 없으신가요? <span>가입하기</span>
-            </Signup>
-          </form>
+          <LoginForm />
         </ModalBody>
       </Container>
     </ModalBackground>
   );
 }
-
-export const ModalBackground = styled.div`
-  background-color: rgba(0, 0, 0, 0.4);
-  position: absolute;
-  width: 100dvw;
-  height: 100dvh;
-  left: 0;
-  top: 0;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const Container = styled.div`
-  background-color: rgb(255, 255, 255);
-  border-radius: 8px;
-
-  max-width: 80vw;
-  min-width: 600px;
-  height: 650px;
-  max-height: 90vh;
-  min-height: 400px;
-
-  display: flex;
-  flex-direction: column;
-  /* flex-grow: 1; */
-  /* flex-shrink: 1; */
-`;
-
-const ModalHeader = styled.div`
-  height: 53px;
-
-  display: flex;
-  justify-content: center;
-  padding: 0 16px;
-`;
-
-const HeaderLeft = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-
-  flex-shrink: 1;
-  flex-basis: 50%;
-  flex-grow: 1;
-`;
-
-const HeaderMid = styled.div`
-  flex-shrink: 1;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-`;
-
-const HeaderRight = styled.div`
-  flex-shrink: 1;
-  flex-basis: 50%;
-  align-self: stretch;
-  align-items: flex-end;
-  flex-grow: 1;
-`;
-
-const CloseBtn = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  &:hover {
-    background-color: rgba(207, 217, 222, 0.4);
-    border-radius: 50%;
-    cursor: pointer;
-  }
-`;
-
-const ModalBody = styled.div`
-  box-sizing: border-box;
-
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  /* justify-content: space-between; */
-  /* align-items:space-between */
-
-  margin: 0 118px;
-  padding: 0 32px 48px 32px;
-`;
-
-const Button = styled.button`
-  border: 1px solid rgb(207, 217, 222);
-  border-radius: 24px;
-  background-color: white;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  padding: 0 12px;
-  margin: 12px 0;
-
-  /* width: 300px; */
-  width: 100%;
-  max-width: 400px;
-
-  height: 36px;
-
-  cursor: pointer;
-
-  &:hover {
-    background-color: rgba(15, 20, 25, 0.1);
-  }
-`;
-
-const BrandLogo = styled.div`
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
-`;
-const GoogleLogin = styled(Button)`
-  font-size: 14px;
-
-  &:hover {
-    background-color: rgba(185, 202, 211, 0.5);
-  }
-`;
-
-const AppleLogin = styled(Button)`
-  font-size: 14px;
-  font-weight: 700;
-`;
-
-const BoundaryContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Span = styled.span`
-  white-space: nowrap;
-  flex-basis: auto;
-
-  margin: 0 4px;
-`;
-
-const Divider = styled.div`
-  /* display: flex; */
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: 50%;
-
-  height: 1px;
-
-  background-color: rgb(207, 217, 222);
-  margin: 8px 0;
-`;
-
-const InputWrapper = styled.div`
-  width: 100%;
-  padding: 12px 0;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  height: 56px;
-  margin: 0;
-  border: 1px solid rgb(207, 217, 222);
-  border-radius: 4px;
-  font-size: 15px;
-`;
-
-const NextBtn = styled(Button)`
-  color: white;
-  background-color: black;
-  cursor: pointer;
-  &:hover {
-    background-color: rgba(39, 44, 48, 1);
-  }
-  &:disabled {
-    opacity: 0.5;
-  }
-`;
-
-const Signup = styled.div`
-  color: rgb(83, 100, 113);
-  cursor: pointer;
-  margin-top: 40px;
-  & > span {
-    color: rgb(29, 155, 240);
-  }
-`;

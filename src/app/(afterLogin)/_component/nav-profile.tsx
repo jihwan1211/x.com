@@ -2,19 +2,27 @@
 
 import { MouseEventHandler } from "react";
 import styled from "styled-components";
+import { Session } from "@auth/core/types";
+import Image from "next/image";
 
 import logout from "../_lib/signout";
 
-export default function NavProfile() {
+type Props = {
+  me: Session | null;
+};
+export default function NavProfile({ me }: Props) {
+  // const { data: me } = useSession();
+  console.log("in nav-prodfile", me);
   const handleLogout: MouseEventHandler<HTMLDivElement> = async (e) => {
     await logout();
   };
-  return (
+
+  return me?.user ? (
     <Profile onClick={handleLogout}>
-      <div></div>
+      <Image src={me.user.image!} alt="profile image" width={40} height={40}></Image>
       <div>
-        <div>김지환</div>
-        <div>@surrrrfffing</div>
+        <div>{me?.user?.name}</div>
+        <div>{me?.user?.email}</div>
       </div>
       <div>
         <svg viewBox="0 0 24 24" aria-hidden="true" width="1.75rem" height="1.75rem">
@@ -24,7 +32,7 @@ export default function NavProfile() {
         </svg>
       </div>
     </Profile>
-  );
+  ) : null;
 }
 
 const Profile = styled.div`
@@ -44,10 +52,8 @@ const Profile = styled.div`
     height: 40px;
   }
 
-  & > div:nth-child(1) {
-    width: 40px;
+  & > img {
     border-radius: 50%;
-    background-color: red;
   }
 
   & > div:nth-child(2) {

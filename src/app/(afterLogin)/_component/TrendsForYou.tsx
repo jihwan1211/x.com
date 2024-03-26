@@ -1,28 +1,34 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import styled from "styled-components";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Session } from "@auth/core/types";
+
 import TrendComponent from "./Trend";
 
-export default function TrendsForYou() {
-  const pathname = usePathname();
-  if (pathname === "/explore") {
-    return null;
-  }
+type Props = {
+  me: Session | null;
+};
 
+export default function TrendsForYou({ me }: Props) {
+  // const { data: me, status } = useSession();
+  console.log("in trends for you", me?.user);
   return (
     <Container>
-      <h1>Trends for you</h1>
-      <TrendComponent></TrendComponent>
-      <TrendComponent></TrendComponent>
-      <TrendComponent></TrendComponent>
-      <TrendComponent></TrendComponent>
-      <TrendComponent></TrendComponent>
-      <TrendComponent></TrendComponent>
-      <TrendComponent></TrendComponent>
-      <TrendComponent></TrendComponent>
-      <ShowMore>show more</ShowMore>
+      <h1>{me?.user ? "Trends for you" : "트렌드를 볼 수 없습니다."}</h1>
+      {me?.user ? (
+        <>
+          <TrendComponent></TrendComponent>
+          <TrendComponent></TrendComponent>
+          <TrendComponent></TrendComponent>
+          <TrendComponent></TrendComponent>
+          <TrendComponent></TrendComponent>
+          <TrendComponent></TrendComponent>
+          <TrendComponent></TrendComponent>
+          <TrendComponent></TrendComponent>
+          <ShowMore>show more</ShowMore>
+        </>
+      ) : null}
     </Container>
   );
 }

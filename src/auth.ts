@@ -35,16 +35,22 @@ export const {
         }
 
         const user = await authResponse.json();
+        console.log(user);
 
-        return user;
+        return {
+          email: user.id,
+          name: user.nickname,
+          image: user.image,
+          ...user,
+        };
       },
     }),
   ],
-  callbacks: {
-    async redirect({ url, baseUrl }) {
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
-      else if (new URL(url).origin === baseUrl) return url;
-      return baseUrl;
-    },
-  },
+  // callbacks: {
+  //   async redirect({ url, baseUrl }) {
+  //     if (url.startsWith("/")) return `${baseUrl}${url}`;
+  //     else if (new URL(url).origin === baseUrl) return url;
+  //     return baseUrl;
+  //   },
+  // },
 });
