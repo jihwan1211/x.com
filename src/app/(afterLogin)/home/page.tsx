@@ -9,7 +9,7 @@ import PostForm from "./_component/PostForm";
 
 export default async function Home() {
   const user = await auth();
-  console.log("user : ", user);
+  // console.log("user : ", user);
   return (
     <Container>
       <HomeTabProvider>

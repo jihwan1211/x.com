@@ -7,11 +7,13 @@ import { auth } from "@/auth";
 export async function middleware(request: NextRequest) {
   const session = await auth();
   console.log("session : ", session);
-  console.log("request url : ", new URL("/i/flow/login", "http://localhost:3000"));
-
+  // console.log("request url : ", new URL("/i/flow/login", "http://localhost:3000"));
+  console.log("in middleware", request.nextUrl.pathname);
   if (!session) {
-    return NextResponse.redirect(new URL("/i/flow/login", "http://localhost:3000"));
+    return NextResponse.redirect("http://localhost:3000/i/flow/login");
   }
+
+  // if(session && request.nextUrl.pathname.startsWith('/'))
 
   /* next middleware 공식문서
   const isAuthenticated = authenticate(request);
