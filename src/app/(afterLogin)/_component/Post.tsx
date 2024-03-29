@@ -5,11 +5,11 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
+import { IPost } from "@/model/Post";
 import 이미지 from "../../../../public/구글2.png";
 import PostImages from "./PostImages";
 
 import styled from "styled-components";
-import { faker } from "@faker-js/faker";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
@@ -17,7 +17,7 @@ import "dayjs/locale/ko";
 dayjs.locale("ko");
 dayjs.extend(relativeTime);
 
-export default function Post() {
+export default function Post({ post }: { post: IPost }) {
   const [like, setLike] = useState(false);
   const [bookmark, setBookmark] = useState(false);
 
@@ -31,38 +31,7 @@ export default function Post() {
 
   const router = useRouter();
   const onClickArticle = () => {
-    router.push(`/${DummyData.writer}/status/${1234}`);
-  };
-
-  faker.seed(111123223);
-  const DummyData = {
-    userId: faker.number.int({ min: 10, max: 10000000000 }),
-    writer: "jihwan",
-    writerId: "surrrrrffffing",
-    content: "sanasfkandfkjnasdfkjnakjfnkjan",
-    profileImage: "",
-    contentImages: [
-      {
-        id: faker.number.int({ min: 10, max: 10000000000 }),
-        url: faker.image.urlLoremFlickr(),
-      },
-      {
-        id: faker.number.int({ min: 10, max: 10000000000 }),
-        url: faker.image.urlLoremFlickr(),
-      },
-      {
-        id: faker.number.int({ min: 10, max: 10000000000 }),
-        url: faker.image.urlLoremFlickr(),
-      },
-      {
-        id: faker.number.int({ min: 10, max: 10000000000 }),
-        url: faker.image.urlLoremFlickr(),
-      },
-    ],
-    comments: ["abc", "너무 좋아요~"],
-    retweet: "3.3만",
-    likes: "2.6만",
-    watched: "86만",
+    router.push(`/${post.user.nickname}/status/${1234}`);
   };
 
   return (
@@ -70,7 +39,7 @@ export default function Post() {
       <Article onClickCapture={onClickArticle}>
         <Profile>
           <div>
-            <Link href={`/${DummyData.writerId}`} style={{ textDecoration: "none" }}>
+            <Link href={`/${post.user.id}`} style={{ textDecoration: "none" }}>
               <Image src={이미지} alt="profile img"></Image>
               <div></div>
             </Link>
@@ -79,17 +48,16 @@ export default function Post() {
 
         <Main>
           <PostWriter>
-            <Link href={`/${DummyData.writerId}`}>
-              <div>{DummyData.writer}</div>
-              {/* <div>{DummyData.writerId}</div> */}
+            <Link href={`/${post.user.id}`}>
+              <div>{post.user.nickname}</div>
             </Link>
-            <div>@surrrrffffing</div>
+            <div>@${post.user.id}</div>
             <div>.</div>
             <div>{dayjs(new Date()).fromNow(true)}</div>
           </PostWriter>
           <PostContent>
-            <div>{DummyData.content}</div>
-            <PostImages post={DummyData}></PostImages>
+            <div>{post.content}</div>
+            <PostImages post={post}></PostImages>
           </PostContent>
 
           <PostOptions>
@@ -101,7 +69,7 @@ export default function Post() {
                   </g>
                 </svg>
               </div>
-              <div>{DummyData.comments.length}</div>
+              <div>{post.comments.length}</div>
             </CommentBtn>
             <RetweetBtn href="/">
               <div>
@@ -111,7 +79,7 @@ export default function Post() {
                   </g>
                 </svg>
               </div>
-              <div>{DummyData.retweet}</div>
+              <div>{post.retweet}</div>
             </RetweetBtn>
             <LikeBtn onClick={onClickLikeBtn}>
               <div>
@@ -129,7 +97,7 @@ export default function Post() {
                   </svg>
                 )}
               </div>
-              <div>{DummyData.likes}</div>
+              <div>{post.likes}</div>
             </LikeBtn>
             <HitsBtn href="/">
               <div>
@@ -139,7 +107,7 @@ export default function Post() {
                   </g>
                 </svg>
               </div>
-              <div>{DummyData.watched}</div>
+              <div>{post.watched}</div>
             </HitsBtn>
             <EtcBtn onClick={onClickBookmarkBtn}>
               <div>

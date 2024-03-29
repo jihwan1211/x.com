@@ -11,8 +11,6 @@ type Props = {
   me: Session | null;
 };
 export default function NavProfile({ me }: Props) {
-  // const { data: me } = useSession();
-  console.log("in nav-prodfile", me);
   const handleLogout: MouseEventHandler<HTMLDivElement> = async (e) => {
     await logout();
   };

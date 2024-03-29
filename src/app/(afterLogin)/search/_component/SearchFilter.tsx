@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 export default function SearchFilter() {
   const pathname = usePathname();
-  console.log(pathname);
+
   if (pathname !== "/search") return null;
   return (
     <Container>

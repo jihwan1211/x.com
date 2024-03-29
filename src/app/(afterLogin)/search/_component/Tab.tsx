@@ -90,7 +90,7 @@ export default function SearchTab() {
 
 const TabContainer = styled.div`
   box-sizing: border-box;
-  background-color: #ffffff;
+
   height: 53px;
   flex-grow: 1;
 
@@ -103,9 +103,6 @@ const TabContainerInner = styled.div`
 
   display: flex;
   height: inherit;
-
-  background-color: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
 
   box-sizing: border-box;
   /* border: 1px solid rgb(239, 243, 244); */

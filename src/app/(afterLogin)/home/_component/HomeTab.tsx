@@ -1,22 +1,24 @@
 "use client";
 
+import { useContext } from "react";
+import { TabContext } from "./HomeTabProvider";
+
 import styled from "styled-components";
-import { useState } from "react";
 
 export default function HomeTab() {
-  const [selectedMenu, setSelectedMenu] = useState("recommend");
+  const { selectedMenu, setSelectedMenu } = useContext(TabContext);
 
-  const handleRecommendClicked = () => {
+  const onClickRecommendClicked = () => {
     setSelectedMenu("recommend");
   };
-  const handleFollowingClicked = () => {
+  const onClickFollowingClicked = () => {
     setSelectedMenu("following");
   };
 
   return (
     <TabContainer>
       <TabContainerInner>
-        <TabMenu onClick={handleRecommendClicked}>
+        <TabMenu onClick={onClickRecommendClicked}>
           {selectedMenu === "recommend" ? (
             <>
               <BlackSpan>추천</BlackSpan>
@@ -26,7 +28,7 @@ export default function HomeTab() {
             <GreySpan>추천</GreySpan>
           )}
         </TabMenu>
-        <TabMenu onClick={handleFollowingClicked}>
+        <TabMenu onClick={onClickFollowingClicked}>
           {selectedMenu === "following" ? (
             <>
               <BlackSpan>팔로잉</BlackSpan>
