@@ -1,34 +1,24 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { Session } from "@auth/core/types";
 
 import styled from "styled-components";
 
-import getTrends from "../_lib/getTrends";
+import getTrends from "../../_lib/getTrends";
 
 import { trend as ITrend } from "@/model/Trend";
 
 import Trend from "./Trend";
 
-type Props = {
-  me: Session | null;
-};
-
-export default function TrendsForYou({ me }: Props) {
-  const { data } = useQuery({ queryKey: ["trends"], queryFn: getTrends, enabled: !!me?.user });
+export default function TrendsForYou() {
+  const { data } = useQuery({ queryKey: ["trends"], queryFn: getTrends });
 
   return (
     <Container>
-      <h1>{me?.user ? "Trends for you" : "트렌드를 볼 수 없습니다."}</h1>
-      {me?.user ? (
-        <>
-          {data?.map((ele: ITrend) => (
-            <Trend key={ele.tagId} trend={ele}></Trend>
-          ))}
-          <ShowMore>show more</ShowMore>
-        </>
-      ) : null}
+      {data?.map((ele: ITrend) => (
+        <Trend key={ele.tagId} trend={ele}></Trend>
+      ))}
+      <ShowMore>show more</ShowMore>
     </Container>
   );
 }
@@ -36,9 +26,6 @@ export default function TrendsForYou({ me }: Props) {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-
-  background-color: rgb(247, 249, 249);
-  border-radius: 21px;
 
   margin-bottom: 16px;
 

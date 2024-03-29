@@ -16,11 +16,11 @@ import SearchPostDisplay from "./_component/SearchPostDisplay";
 
 type Props = { searchParams: { q: string; f?: string; pf?: string } };
 
-export default function Search() {
-  const searchParams = useSearchParams();
-
-  const q = searchParams.get("q");
-  console.log("qqqqqq", q);
+// 이거 왜 매개변수 이름이 searchParams?
+export default function Search({ searchParams }: Props) {
+  console.log("searchParams", searchParams);
+  // const q = searchParams.get("q");
+  // console.log("qqqqqq", q);
 
   return (
     <Container>
@@ -36,7 +36,7 @@ export default function Search() {
         </TabFixedContainer>
       </TabContainer>
 
-      <SearchPostDisplay searchParams={{ q: q }} />
+      <SearchPostDisplay searchParams={searchParams} />
     </Container>
   );
 }

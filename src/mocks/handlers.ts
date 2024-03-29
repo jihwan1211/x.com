@@ -438,15 +438,15 @@ export const handlers = [
   }),
   http.get("/api/trends", ({ request }) => {
     return HttpResponse.json([
-      { tagId: 1, title: "제로초", count: 1264 },
-      { tagId: 2, title: "원초", count: 1264 },
-      { tagId: 3, title: "투초", count: 1264 },
-      { tagId: 4, title: "쓰리초", count: 1264 },
-      { tagId: 5, title: "포초", count: 1264 },
-      { tagId: 6, title: "파이브초", count: 1264 },
-      { tagId: 7, title: "식스초", count: 1264 },
-      { tagId: 8, title: "세븐초", count: 1264 },
-      { tagId: 9, title: "나인초", count: 1264 },
+      { tagId: 1, title: "김광현", count: 121164 },
+      { tagId: 2, title: "최정", count: 14 },
+      { tagId: 3, title: "문승원", count: 1264 },
+      { tagId: 4, title: "최지훈", count: 126123134 },
+      { tagId: 5, title: "박성한", count: 1261314 },
+      { tagId: 6, title: "전의산", count: 34534512314 },
+      { tagId: 7, title: "서진용", count: 12364 },
+      { tagId: 8, title: "조병현", count: 1264123234 },
+      { tagId: 9, title: "하재훈", count: 12653245344 },
     ]);
   }),
 ];

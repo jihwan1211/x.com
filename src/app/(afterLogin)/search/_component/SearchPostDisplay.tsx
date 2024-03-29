@@ -8,13 +8,24 @@ import { IPost } from "@/model/Post";
 import getSearchResults from "../_lib/getSearchResults";
 
 type Props = {
-  searchParams: { q: string | null; f?: string; pf?: string };
+  searchParams: { q: string; f?: string; pf?: string };
 };
 
 export default function SearchPostDisplay({ searchParams }: Props) {
   //   console.log(searchParams);
-  const { data } = useQuery<IPost[], Object, IPost[], [_1: string, _2: string, Props["searchParams"]]>({ queryKey: ["posts", "search", searchParams], queryFn: getSearchResults });
+
+  const { data } = useQuery<IPost[], Object, IPost[], [_1: string, _2: string, searchParams: { q: string; pf?: string; f?: string }]>({
+    queryKey: ["posts", "search", searchParams],
+    queryFn: getSearchResults,
+  });
   console.log("in searchbar", data);
   //   return null;
-  return data?.map((ele: IPost, idx: number) => <Post key={idx} post={ele}></Post>);
+
+  return (
+    <>
+      {data?.map((ele: IPost, idx: number) => (
+        <Post key={idx} post={ele}></Post>
+      ))}
+    </>
+  );
 }
