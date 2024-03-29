@@ -31,7 +31,7 @@ export default function LayoutRightSection({ children, me }: Props) {
                 <FixedSearchBar></FixedSearchBar>
               </SearchConatiner>
             )}
-            <SearchFilter></SearchFilter>
+            <SearchFilter />
             {pathname === "/explore" ? null : <TrendsForYou me={me}></TrendsForYou>}
             <WhoToFollow></WhoToFollow>
           </Right>

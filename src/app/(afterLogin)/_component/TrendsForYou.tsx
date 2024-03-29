@@ -1,6 +1,5 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import styled from "styled-components";
 import { Session } from "@auth/core/types";
 
@@ -11,8 +10,6 @@ type Props = {
 };
 
 export default function TrendsForYou({ me }: Props) {
-  // const { data: me, status } = useSession();
-  console.log("in trends for you", me?.user);
   return (
     <Container>
       <h1>{me?.user ? "Trends for you" : "트렌드를 볼 수 없습니다."}</h1>

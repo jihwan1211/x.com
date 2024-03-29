@@ -7,11 +7,6 @@ import { FormEventHandler, useState, ChangeEventHandler } from "react";
 type Props = { query: { q: string; f?: string; pf?: string } };
 // export default function SearchBar({ query }: Props)
 export default function SearchBar() {
-  const pathname = usePathname();
-  console.log(pathname);
-  // if (pathname === "/search" || pathname === "/explore") {
-  //   return null;
-  // }
   const [input, setInput] = useState("");
 
   const onChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -21,7 +16,7 @@ export default function SearchBar() {
   const router = useRouter();
   const onSubmitForm: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    router.replace(`/search?q=${input}&src=typed_query`);
+    router.push(`/search?q=${input}&src=typed_query`);
   };
 
   return (

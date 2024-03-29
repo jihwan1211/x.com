@@ -1,13 +1,27 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
+
 import styled from "styled-components";
+
+import getSearchResults from "../search/_lib/getSearchResults";
+
+import { useSearchParams } from "next/navigation";
+
 import SearchBar from "../_component/SearchBar";
 import BackBtn from "../_component/BackBtn";
 import Tab from "./_component/Tab";
+import SearchPostDisplay from "./_component/SearchPostDisplay";
 
 type Props = { searchParams: { q: string; f?: string; pf?: string } };
 
-export default function Search({ searchParams }: Props) {
+export default function Search() {
+  const searchParams = useSearchParams();
+
+  const q = searchParams.get("q");
+  console.log("qqqqqq", q);
+
   return (
     <Container>
       <TabContainer>
@@ -15,23 +29,25 @@ export default function Search({ searchParams }: Props) {
           <SearchContainer>
             <BackBtn></BackBtn>
             <SearchWrapper>
-              <SearchBar query={searchParams}></SearchBar>
+              <SearchBar></SearchBar>
             </SearchWrapper>
           </SearchContainer>
-          <Tab></Tab>
+          <Tab />
         </TabFixedContainer>
       </TabContainer>
+
+      <SearchPostDisplay searchParams={{ q: q }} />
     </Container>
   );
 }
 
 const Container = styled.main`
   box-sizing: border-box;
-  padding-top: 12px;
+
   display: flex;
   flex-direction: column;
 
-  height: 100dvh;
+  height: 1000dvh;
   width: inherit;
 `;
 
@@ -39,8 +55,10 @@ const TabContainer = styled.div`
   box-sizing: border-box;
   border-top: 0px;
   width: 598px;
+  height: 115px;
+  /* height: auto; */
 
-  display: flex;
+  /* display: flex; */
 `;
 
 const TabFixedContainer = styled.div`
@@ -49,7 +67,11 @@ const TabFixedContainer = styled.div`
 
   position: fixed;
 
-  width: 598px;
+  width: inherit;
+  height: inherit;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
 `;
 
 const SearchContainer = styled.div`
@@ -65,5 +87,6 @@ const SearchWrapper = styled.div`
   flex-grow: 1;
   max-width: 510px;
   width: 510px;
+  height: 53px;
   display: flex;
 `;
