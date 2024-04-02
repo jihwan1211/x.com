@@ -10,5 +10,5 @@ import { IPost } from "@/model/Post";
 export default function RecommendPosts() {
   const { data } = useQuery({ queryKey: ["posts", "recommends"], queryFn: getRecommendPosts });
 
-  return data?.map((ele: IPost, idx: number) => <Post key={idx} post={ele}></Post>);
+  return data?.map((ele: IPost) => <Post key={ele.postId} post={ele}></Post>);
 }

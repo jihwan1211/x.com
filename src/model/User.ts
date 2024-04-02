@@ -4,4 +4,5 @@ export interface User {
   nickname: string;
   image: string;
   UId: number;
+  createdAt: Date;
 }

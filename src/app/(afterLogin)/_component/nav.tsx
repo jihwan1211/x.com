@@ -11,6 +11,7 @@ type Props = {
 };
 export default function Nav({ me }: Props) {
   const segment = useSelectedLayoutSegment();
+  console.log("me in nav", me);
 
   return (
     <Menus>
@@ -171,7 +172,7 @@ export default function Nav({ me }: Props) {
               {segment === "premium" ? <MenuContentSelected>Premiu,</MenuContentSelected> : <MenuContent>Premium</MenuContent>}
             </Menu>
           </MenuLink>
-          <MenuLink href="/profile">
+          <MenuLink href={`${me?.user.email}`}>
             <Menu>
               {segment === "profile" ? (
                 <svg viewBox="0 0 24 24" aria-hidden="true" width="1.75rem" height="1.75rem">
