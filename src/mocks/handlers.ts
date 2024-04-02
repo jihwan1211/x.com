@@ -1,6 +1,6 @@
 import { http, HttpResponse, StrictResponse } from "msw";
 import { faker } from "@faker-js/faker";
-
+// import { User } from "@/model/User";
 function generateDate() {
   const lastWeek = new Date(Date.now());
   lastWeek.setDate(lastWeek.getDate() - 7);
@@ -10,11 +10,11 @@ function generateDate() {
   });
 }
 const User = [
-  { id: "elonmusk", nickname: "Elon Musk", image: faker.image.avatar(), UId: faker.number.int({ min: 10, max: 10000000000 }) },
-  { id: "surrrrfing", nickname: "김지환", image: faker.image.avatar(), UId: faker.number.int({ min: 10, max: 10000000000 }) },
-  { id: "zerohch0", nickname: "제로초", image: faker.image.avatar(), UId: faker.number.int({ min: 10, max: 10000000000 }) },
-  { id: "leoturtle", nickname: "레오", image: faker.image.avatar(), UId: faker.number.int({ min: 10, max: 10000000000 }) },
-  { id: "noImage", nickname: "사진을 싫어합니다.", image: faker.image.avatar(), UId: faker.number.int({ min: 10, max: 10000000000 }) },
+  { id: "elonmusk", nickname: "Elon Musk", image: faker.image.avatar(), UId: faker.number.int({ min: 10, max: 10000000000 }), createdAt: faker.date.anytime() },
+  { id: "surrrrfing", nickname: "김지환", image: faker.image.avatar(), UId: 1, createdAt: faker.date.anytime() },
+  { id: "zerohch0", nickname: "제로초", image: faker.image.avatar(), UId: faker.number.int({ min: 10, max: 10000000000 }), createdAt: faker.date.anytime() },
+  { id: "leoturtle", nickname: "레오", image: faker.image.avatar(), UId: faker.number.int({ min: 10, max: 10000000000 }), createdAt: faker.date.anytime() },
+  { id: "noImage", nickname: "사진을 싫어합니다.", image: faker.image.avatar(), UId: faker.number.int({ min: 10, max: 10000000000 }), createdAt: faker.date.anytime() },
 ];
 const Posts = [];
 
@@ -318,45 +318,104 @@ export const handlers = [
       },
     ]);
   }),
-  http.get("/api/users/:userId/posts", ({ request, params }) => {
+  http.get("/api/users/:userId/posts", ({ request, params }): StrictResponse<any> => {
     const { userId } = params;
-    return HttpResponse.json([
-      {
-        postId: 1,
-        User: User[0],
-        content: `${1} ${userId}의 게시글`,
-        Images: [{ imageId: 1, link: faker.image.urlLoremFlickr() }],
-        createdAt: generateDate(),
-      },
-      {
-        postId: 2,
-        User: User[0],
-        content: `${2} ${userId}의 게시글`,
-        Images: [{ imageId: 1, link: faker.image.urlLoremFlickr() }],
-        createdAt: generateDate(),
-      },
-      {
-        postId: 3,
-        User: User[0],
-        content: `${3} ${userId}의 게시글`,
-        Images: [{ imageId: 1, link: faker.image.urlLoremFlickr() }],
-        createdAt: generateDate(),
-      },
-      {
-        postId: 4,
-        User: User[0],
-        content: `${4} ${userId}의 게시글`,
-        Images: [{ imageId: 1, link: faker.image.urlLoremFlickr() }],
-        createdAt: generateDate(),
-      },
-      {
-        postId: 5,
-        User: User[0],
-        content: `${5} ${userId}의 게시글`,
-        Images: [{ imageId: 1, link: faker.image.urlLoremFlickr() }],
-        createdAt: generateDate(),
-      },
-    ]);
+    const found = User.find((v) => v.id === userId);
+    if (found) {
+      return HttpResponse.json([
+        {
+          postId: 1,
+          user: User[1],
+          content: `${1} ${userId}의 게시글`,
+          images: [
+            { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
+            {
+              imageId: faker.number.int({ min: 10, max: 10000000000 }),
+              url: faker.image.urlLoremFlickr(),
+            },
+          ],
+          createdAt: "",
+          comments: [],
+          retweet: 1,
+          likes: 78,
+          watched: 180,
+        },
+        {
+          postId: 2,
+          user: User[1],
+          content: `${2} ${userId}의 게시글`,
+          images: [
+            { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
+            {
+              imageId: faker.number.int({ min: 10, max: 10000000000 }),
+              url: faker.image.urlLoremFlickr(),
+            },
+            { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
+          ],
+          createdAt: "",
+          comments: [],
+          retweet: 1,
+          likes: 78,
+          watched: 180,
+        },
+        {
+          postId: 3,
+          user: User[1],
+          content: `${3} ${userId}의 게시글`,
+          images: [{ imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() }],
+          createdAt: "",
+          comments: [],
+          retweet: 1,
+          likes: 78,
+          watched: 180,
+        },
+        {
+          postId: 4,
+          user: User[1],
+          content: `${4} ${userId}의 게시글`,
+          images: [],
+          createdAt: "",
+          comments: [],
+          retweet: 1,
+          likes: 78,
+          watched: 180,
+        },
+        {
+          postId: 5,
+          user: User[1],
+          content: `${5} ${userId}의 게시글`,
+          images: [
+            { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
+            { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
+            { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
+            { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
+          ],
+          createdAt: "",
+          comments: [],
+          retweet: 1,
+          likes: 78,
+          watched: 180,
+        },
+        {
+          postId: 6,
+          user: User[1],
+          content: `${6} ${userId}의 게시글`,
+          images: [],
+          createdAt: "",
+          comments: [],
+          retweet: 1,
+          likes: 78,
+          watched: 180,
+        },
+      ]);
+    } else {
+      return HttpResponse.json(
+        { message: "no_such_user" },
+        {
+          status: 404,
+        }
+      );
+    }
   }),
   http.get("/api/users/:userId", ({ request, params }): StrictResponse<any> => {
     const { userId } = params;
