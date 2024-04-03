@@ -11,7 +11,7 @@ import UserPosts from "./_component/UserPosts";
 import { Container, Userzone, Profile, HeaderPhotoZone } from "./page-style";
 
 type Props = {
-  params: any;
+  params: { username: string };
 };
 
 export default async function Username({ params }: Props) {

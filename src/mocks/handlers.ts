@@ -86,7 +86,7 @@ export const handlers = [
         watched: 12,
       },
       {
-        postId: 3,
+        postId: 30,
         user: User[2],
         content: "나는 세번째 추천 포스트입니다.",
         images: [
@@ -431,6 +431,7 @@ export const handlers = [
     );
   }),
   http.get("/api/posts/:postId", ({ request, params }): StrictResponse<any> => {
+    console.log("abc!");
     const { postId } = params;
     if (parseInt(postId as string) > 10) {
       return HttpResponse.json(
@@ -441,54 +442,89 @@ export const handlers = [
       );
     }
     return HttpResponse.json({
-      postId,
-      User: User[0],
-      content: `${1} 게시글 아이디 ${postId}의 내용`,
-      Images: [
-        { imageId: 1, link: faker.image.urlLoremFlickr() },
-        { imageId: 2, link: faker.image.urlLoremFlickr() },
-        { imageId: 3, link: faker.image.urlLoremFlickr() },
+      postId: 2,
+      user: User[1],
+      content: "나는 두번째 추천 포스트입니다.",
+      images: [
+        { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
+        {
+          imageId: faker.number.int({ min: 10, max: 10000000000 }),
+          url: faker.image.urlLoremFlickr(),
+        },
+        {
+          imageId: faker.number.int({ min: 10, max: 10000000000 }),
+          url: faker.image.urlLoremFlickr(),
+        },
+        {
+          imageId: faker.number.int({ min: 10, max: 10000000000 }),
+          url: faker.image.urlLoremFlickr(),
+        },
       ],
-      createdAt: generateDate(),
+      createdAt: "",
+      comments: [],
+      retweet: 13,
+      likes: 2,
+      watched: 12,
     });
   }),
-  http.get("/api/posts/:postId/comments", ({ request, params }) => {
+  http.get("/api/posts/:postId/comments", ({ request, params }): StrictResponse<any> => {
     const { postId } = params;
+    // return HttpResponse.json({ message: "no_comments" });
     return HttpResponse.json([
       {
         postId: 1,
-        User: User[0],
+        user: User[0],
         content: `${1} 게시글 ${postId}의 답글`,
-        Images: [{ imageId: 1, link: faker.image.urlLoremFlickr() }],
-        createdAt: generateDate(),
+        images: [{ imageId: 1, url: faker.image.urlLoremFlickr() }],
+        createdAt: faker.date.anytime(),
+        comments: [],
+        retweet: 14,
+        likes: 113,
+        watched: 123,
       },
       {
         postId: 2,
-        User: User[0],
+        user: User[0],
         content: `${2} 게시글 ${postId}의 답글`,
-        Images: [{ imageId: 1, link: faker.image.urlLoremFlickr() }],
-        createdAt: generateDate(),
+        images: [{ imageId: 1, url: faker.image.urlLoremFlickr() }],
+        createdAt: faker.date.anytime(),
+        comments: [],
+        retweet: 14,
+        likes: 113,
+        watched: 123,
       },
       {
         postId: 3,
-        User: User[0],
+        user: User[1],
         content: `${3} 게시글 ${postId}의 답글`,
-        Images: [{ imageId: 1, link: faker.image.urlLoremFlickr() }],
-        createdAt: generateDate(),
+        images: [{ imageId: 1, url: faker.image.urlLoremFlickr() }],
+        createdAt: faker.date.anytime(),
+        comments: [],
+        retweet: 14,
+        likes: 113,
+        watched: 123,
       },
       {
         postId: 4,
-        User: User[0],
+        user: User[2],
         content: `${4} 게시글 ${postId}의 답글`,
-        Images: [{ imageId: 1, link: faker.image.urlLoremFlickr() }],
-        createdAt: generateDate(),
+        images: [{ imageId: 1, url: faker.image.urlLoremFlickr() }],
+        createdAt: faker.date.anytime(),
+        comments: [],
+        retweet: 14,
+        likes: 113,
+        watched: 123,
       },
       {
         postId: 5,
-        User: User[0],
+        user: User[3],
         content: `${5} 게시글 ${postId}의 답글`,
-        Images: [{ imageId: 1, link: faker.image.urlLoremFlickr() }],
-        createdAt: generateDate(),
+        images: [{ imageId: 1, url: faker.image.urlLoremFlickr() }],
+        createdAt: faker.date.anytime(),
+        comments: [],
+        retweet: 14,
+        likes: 113,
+        watched: 123,
       },
     ]);
   }),

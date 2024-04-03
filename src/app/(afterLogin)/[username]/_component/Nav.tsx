@@ -16,7 +16,6 @@ type Prop = {
 export default function Nav({ username }: Prop) {
   const { data } = useQuery<User, Object, User, [_1: string, _2: string]>({ queryKey: ["users", username], queryFn: getUserInfo });
 
-  console.log("data :", data);
   return (
     <Navigation>
       <BackBtn></BackBtn>
