@@ -1,30 +1,24 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
 import { IPost } from "@/model/Post";
-import PostImages from "./PostImages";
+import PostImages from "@/app/(afterLogin)/_component/PostImages";
 
 import styled from "styled-components";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
-import PostOptions from "./PostOptions";
+import PostOptions from "@/app/(afterLogin)/_component/PostOptions";
 
 dayjs.locale("ko");
 dayjs.extend(relativeTime);
 
 export default function Post({ post }: { post: IPost }) {
-  const router = useRouter();
-  const onClickArticle = () => {
-    router.push(`/${post.user.id}/status/${post.postId}`);
-  };
-
   return (
     <Container>
-      <Article onClickCapture={onClickArticle}>
+      <Article>
         <Profile>
           <div>
             <Link href={`/${post.user.id}`} style={{ textDecoration: "none" }}>
@@ -62,13 +56,6 @@ const Container = styled.div`
   padding: 0 16px;
 
   border-top: 1px solid rgb(239, 243, 244);
-
-  cursor: pointer;
-
-  &:hover {
-    transition: 0.2s;
-    background-color: rgba(0, 0, 0, 0.03);
-  }
 `;
 
 const Article = styled.article`

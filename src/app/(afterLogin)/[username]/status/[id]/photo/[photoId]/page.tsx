@@ -1,5 +1,9 @@
 import Home from "@/app/(afterLogin)/home/page";
 
 export default function PhotoDetail() {
-  return <Home></Home>;
+  return;
+  <>
+    {/* @ts-expect-error Server Component */}
+    <Home></Home>;
+  </>;
 }

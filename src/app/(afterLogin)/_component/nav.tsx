@@ -11,7 +11,6 @@ type Props = {
 };
 export default function Nav({ me }: Props) {
   const segment = useSelectedLayoutSegment();
-  console.log("me in nav", me);
 
   return (
     <Menus>

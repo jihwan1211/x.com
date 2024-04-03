@@ -14,7 +14,6 @@ type Prop = {
 export default function ProfileUserData({ username }: Prop) {
   const queryClient = useQueryClient();
   const data = queryClient.getQueryData<User>(["user", username]);
-  console.log("data : ", data);
 
   const createdDate = new Date(data?.createdAt!);
 
