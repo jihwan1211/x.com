@@ -10,13 +10,81 @@ function generateDate() {
   });
 }
 const User = [
-  { id: "elonmusk", nickname: "Elon Musk", image: faker.image.avatar(), UId: faker.number.int({ min: 10, max: 10000000000 }), createdAt: faker.date.anytime() },
-  { id: "surrrrfing", nickname: "김지환", image: faker.image.avatar(), UId: 1, createdAt: faker.date.anytime() },
-  { id: "zerohch0", nickname: "제로초", image: faker.image.avatar(), UId: faker.number.int({ min: 10, max: 10000000000 }), createdAt: faker.date.anytime() },
-  { id: "leoturtle", nickname: "레오", image: faker.image.avatar(), UId: faker.number.int({ min: 10, max: 10000000000 }), createdAt: faker.date.anytime() },
-  { id: "noImage", nickname: "사진을 싫어합니다.", image: faker.image.avatar(), UId: faker.number.int({ min: 10, max: 10000000000 }), createdAt: faker.date.anytime() },
+  { id: "elonmusk", nickname: "Elon Musk", image: faker.image.avatar(), UId: 1, createdAt: faker.date.anytime() },
+  { id: "surrrrfing", nickname: "김지환", image: faker.image.avatar(), UId: 2, createdAt: faker.date.anytime() },
+  { id: "zerohch0", nickname: "제로초", image: faker.image.avatar(), UId: 3, createdAt: faker.date.anytime() },
+  { id: "leoturtle", nickname: "레오", image: faker.image.avatar(), UId: 4, createdAt: faker.date.anytime() },
+  { id: "noImage", nickname: "사진을 싫어합니다.", image: faker.image.avatar(), UId: 5, createdAt: faker.date.anytime() },
 ];
-const Posts = [];
+const Posts = [
+  {
+    postId: 1,
+    user: User[0],
+    content: "나는 첫번째 추천 포스트입니다.",
+    images: [{ imageId: 1, url: faker.image.urlLoremFlickr() }],
+    createdAt: "",
+    comments: [],
+    retweet: 14,
+    likes: 113,
+    watched: 123,
+  },
+  {
+    postId: 2,
+    user: User[1],
+    content: "나는 두번째 추천 포스트입니다.",
+    images: [
+      { imageId: 1, url: faker.image.urlLoremFlickr() },
+      { imageId: 2, url: faker.image.urlLoremFlickr() },
+      { imageId: 3, url: faker.image.urlLoremFlickr() },
+      { imageId: 4, url: faker.image.urlLoremFlickr() },
+    ],
+    createdAt: "",
+    comments: [],
+    retweet: 13,
+    likes: 2,
+    watched: 12,
+  },
+  {
+    postId: 30,
+    user: User[2],
+    content: "나는 세번째 추천 포스트입니다.",
+    images: [
+      { imageId: 1, url: faker.image.urlLoremFlickr() },
+      { imageId: 2, url: faker.image.urlLoremFlickr() },
+      { imageId: 3, url: faker.image.urlLoremFlickr() },
+    ],
+    createdAt: "",
+    comments: [],
+    retweet: 1300,
+    likes: 15000,
+    watched: 100034,
+  },
+  {
+    postId: 4,
+    user: User[3],
+    content: "나는 네번째 추천 포스트입니다.",
+    images: [
+      { imageId: 1, url: faker.image.urlLoremFlickr() },
+      { imageId: 2, url: faker.image.urlLoremFlickr() },
+    ],
+    createdAt: "",
+    comments: [],
+    retweet: 1,
+    likes: 78,
+    watched: 180,
+  },
+  {
+    postId: 5,
+    user: User[4],
+    content: "나는 사진을 올리지 않았지요.",
+    images: [],
+    createdAt: "",
+    comments: [],
+    retweet: 77,
+    likes: 88,
+    watched: 188,
+  },
+];
 
 export const handlers = [
   http.post("/api/login", () => {
@@ -65,19 +133,10 @@ export const handlers = [
         user: User[1],
         content: "나는 두번째 추천 포스트입니다.",
         images: [
-          { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
-          {
-            imageId: faker.number.int({ min: 10, max: 10000000000 }),
-            url: faker.image.urlLoremFlickr(),
-          },
-          {
-            imageId: faker.number.int({ min: 10, max: 10000000000 }),
-            url: faker.image.urlLoremFlickr(),
-          },
-          {
-            imageId: faker.number.int({ min: 10, max: 10000000000 }),
-            url: faker.image.urlLoremFlickr(),
-          },
+          { imageId: 1, url: faker.image.urlLoremFlickr() },
+          { imageId: 2, url: faker.image.urlLoremFlickr() },
+          { imageId: 3, url: faker.image.urlLoremFlickr() },
+          { imageId: 4, url: faker.image.urlLoremFlickr() },
         ],
         createdAt: "",
         comments: [],
@@ -90,15 +149,9 @@ export const handlers = [
         user: User[2],
         content: "나는 세번째 추천 포스트입니다.",
         images: [
-          { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
-          {
-            imageId: faker.number.int({ min: 10, max: 10000000000 }),
-            url: faker.image.urlLoremFlickr(),
-          },
-          {
-            imageId: faker.number.int({ min: 10, max: 10000000000 }),
-            url: faker.image.urlLoremFlickr(),
-          },
+          { imageId: 1, url: faker.image.urlLoremFlickr() },
+          { imageId: 2, url: faker.image.urlLoremFlickr() },
+          { imageId: 3, url: faker.image.urlLoremFlickr() },
         ],
         createdAt: "",
         comments: [],
@@ -111,11 +164,8 @@ export const handlers = [
         user: User[3],
         content: "나는 네번째 추천 포스트입니다.",
         images: [
-          { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
-          {
-            imageId: faker.number.int({ min: 10, max: 10000000000 }),
-            url: faker.image.urlLoremFlickr(),
-          },
+          { imageId: 1, url: faker.image.urlLoremFlickr() },
+          { imageId: 2, url: faker.image.urlLoremFlickr() },
         ],
         createdAt: "",
         comments: [],
@@ -155,19 +205,10 @@ export const handlers = [
         user: User[1],
         content: "이건 팔로잉 대상 포스트입니다2",
         images: [
-          { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
-          {
-            imageId: faker.number.int({ min: 10, max: 10000000000 }),
-            url: faker.image.urlLoremFlickr(),
-          },
-          {
-            imageId: faker.number.int({ min: 10, max: 10000000000 }),
-            url: faker.image.urlLoremFlickr(),
-          },
-          {
-            imageId: faker.number.int({ min: 10, max: 10000000000 }),
-            url: faker.image.urlLoremFlickr(),
-          },
+          { imageId: 1, url: faker.image.urlLoremFlickr() },
+          { imageId: 2, url: faker.image.urlLoremFlickr() },
+          { imageId: 3, url: faker.image.urlLoremFlickr() },
+          { imageId: 4, url: faker.image.urlLoremFlickr() },
         ],
         createdAt: "",
         comments: [],
@@ -180,15 +221,9 @@ export const handlers = [
         user: User[2],
         content: "이건 팔로잉 대상 포스트입니다3",
         images: [
-          { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
-          {
-            imageId: faker.number.int({ min: 10, max: 10000000000 }),
-            url: faker.image.urlLoremFlickr(),
-          },
-          {
-            imageId: faker.number.int({ min: 10, max: 10000000000 }),
-            url: faker.image.urlLoremFlickr(),
-          },
+          { imageId: 1, url: faker.image.urlLoremFlickr() },
+          { imageId: 2, url: faker.image.urlLoremFlickr() },
+          { imageId: 3, url: faker.image.urlLoremFlickr() },
         ],
         createdAt: "",
         comments: [],
@@ -201,11 +236,8 @@ export const handlers = [
         user: User[3],
         content: "이건 팔로잉 대상 포스트입니다4",
         images: [
-          { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
-          {
-            imageId: faker.number.int({ min: 10, max: 10000000000 }),
-            url: faker.image.urlLoremFlickr(),
-          },
+          { imageId: 1, url: faker.image.urlLoremFlickr() },
+          { imageId: 2, url: faker.image.urlLoremFlickr() },
         ],
         createdAt: "",
         comments: [],
@@ -247,19 +279,10 @@ export const handlers = [
         user: User[1],
         content: `검색 결과1 ${tag}`,
         images: [
-          { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
-          {
-            imageId: faker.number.int({ min: 10, max: 10000000000 }),
-            url: faker.image.urlLoremFlickr(),
-          },
-          {
-            imageId: faker.number.int({ min: 10, max: 10000000000 }),
-            url: faker.image.urlLoremFlickr(),
-          },
-          {
-            imageId: faker.number.int({ min: 10, max: 10000000000 }),
-            url: faker.image.urlLoremFlickr(),
-          },
+          { imageId: 1, url: faker.image.urlLoremFlickr() },
+          { imageId: 2, url: faker.image.urlLoremFlickr() },
+          { imageId: 3, url: faker.image.urlLoremFlickr() },
+          { imageId: 4, url: faker.image.urlLoremFlickr() },
         ],
         createdAt: "",
         comments: [],
@@ -272,15 +295,9 @@ export const handlers = [
         user: User[2],
         content: `검색 결과1 ${tag}`,
         images: [
-          { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
-          {
-            imageId: faker.number.int({ min: 10, max: 10000000000 }),
-            url: faker.image.urlLoremFlickr(),
-          },
-          {
-            imageId: faker.number.int({ min: 10, max: 10000000000 }),
-            url: faker.image.urlLoremFlickr(),
-          },
+          { imageId: 1, url: faker.image.urlLoremFlickr() },
+          { imageId: 2, url: faker.image.urlLoremFlickr() },
+          { imageId: 3, url: faker.image.urlLoremFlickr() },
         ],
         createdAt: "",
         comments: [],
@@ -293,11 +310,8 @@ export const handlers = [
         user: User[3],
         content: `검색 결과1 ${tag}`,
         images: [
-          { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
-          {
-            imageId: faker.number.int({ min: 10, max: 10000000000 }),
-            url: faker.image.urlLoremFlickr(),
-          },
+          { imageId: 1, url: faker.image.urlLoremFlickr() },
+          { imageId: 2, url: faker.image.urlLoremFlickr() },
         ],
         createdAt: "",
         comments: [],
@@ -328,11 +342,8 @@ export const handlers = [
           user: User[1],
           content: `${1} ${userId}의 게시글`,
           images: [
-            { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
-            {
-              imageId: faker.number.int({ min: 10, max: 10000000000 }),
-              url: faker.image.urlLoremFlickr(),
-            },
+            { imageId: 1, url: faker.image.urlLoremFlickr() },
+            { imageId: 2, url: faker.image.urlLoremFlickr() },
           ],
           createdAt: "",
           comments: [],
@@ -345,12 +356,9 @@ export const handlers = [
           user: User[1],
           content: `${2} ${userId}의 게시글`,
           images: [
-            { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
-            {
-              imageId: faker.number.int({ min: 10, max: 10000000000 }),
-              url: faker.image.urlLoremFlickr(),
-            },
-            { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
+            { imageId: 1, url: faker.image.urlLoremFlickr() },
+            { imageId: 2, url: faker.image.urlLoremFlickr() },
+            { imageId: 3, url: faker.image.urlLoremFlickr() },
           ],
           createdAt: "",
           comments: [],
@@ -362,7 +370,7 @@ export const handlers = [
           postId: 3,
           user: User[1],
           content: `${3} ${userId}의 게시글`,
-          images: [{ imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() }],
+          images: [{ imageId: 1, url: faker.image.urlLoremFlickr() }],
           createdAt: "",
           comments: [],
           retweet: 1,
@@ -385,10 +393,10 @@ export const handlers = [
           user: User[1],
           content: `${5} ${userId}의 게시글`,
           images: [
-            { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
-            { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
-            { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
-            { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
+            { imageId: 1, url: faker.image.urlLoremFlickr() },
+            { imageId: 2, url: faker.image.urlLoremFlickr() },
+            { imageId: 3, url: faker.image.urlLoremFlickr() },
+            { imageId: 4, url: faker.image.urlLoremFlickr() },
           ],
           createdAt: "",
           comments: [],
@@ -430,10 +438,14 @@ export const handlers = [
       }
     );
   }),
-  http.get("/api/posts/:postId", ({ request, params }): StrictResponse<any> => {
+  http.get("/api/post/:username/:postId", ({ request, params }): StrictResponse<any> => {
     console.log("abc!");
-    const { postId } = params;
-    if (parseInt(postId as string) > 10) {
+    const { username, postId } = params;
+    const user = User.find((ele) => ele.id === username);
+    const post = Posts.find((ele) => ele.postId === Number(postId));
+    if (user && post) {
+      return HttpResponse.json(post);
+    } else {
       return HttpResponse.json(
         { message: "no_such_post" },
         {
@@ -441,33 +453,9 @@ export const handlers = [
         }
       );
     }
-    return HttpResponse.json({
-      postId: 2,
-      user: User[1],
-      content: "나는 두번째 추천 포스트입니다.",
-      images: [
-        { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
-        {
-          imageId: faker.number.int({ min: 10, max: 10000000000 }),
-          url: faker.image.urlLoremFlickr(),
-        },
-        {
-          imageId: faker.number.int({ min: 10, max: 10000000000 }),
-          url: faker.image.urlLoremFlickr(),
-        },
-        {
-          imageId: faker.number.int({ min: 10, max: 10000000000 }),
-          url: faker.image.urlLoremFlickr(),
-        },
-      ],
-      createdAt: "",
-      comments: [],
-      retweet: 13,
-      likes: 2,
-      watched: 12,
-    });
   }),
-  http.get("/api/posts/:postId/comments", ({ request, params }): StrictResponse<any> => {
+  http.get("/api/posts/comments/:postId", ({ request, params }): StrictResponse<any> => {
+    console.log("hah");
     const { postId } = params;
     // return HttpResponse.json({ message: "no_comments" });
     return HttpResponse.json([
