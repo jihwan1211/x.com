@@ -1,58 +1,39 @@
-import Image from "next/image";
-import CommentForm from "../../../../_component/CommentForm";
+import { QueryClient, HydrationBoundary, dehydrate } from "@tanstack/react-query";
+
 import BackBtn from "../../../../_component/BackBtn";
 
-import PostOptions from "@/app/(afterLogin)/_component/PostOptions";
-
-import { Container, PhotoContainer, CommentsContainer, PhotoInnerContainer, OptionsWrapper } from "./style";
+import { Container } from "./style";
 import { faker } from "@faker-js/faker";
+import getUserPost from "@/app/(afterLogin)/[username]/status/[id]/_lib/getUserPost";
+import getPostComments from "@/app/(afterLogin)/[username]/status/[id]/_lib/getPostComments";
+import PhotoComments from "./_component/PhotoComments";
+import PhotoDisplay from "./_component/PhotoDisplay";
 
-export default function PhotoModal() {
-  const post = {
-    postId: 2,
-    user: { id: "surrrrfing", nickname: "김지환", image: faker.image.avatar(), UId: 1, createdAt: faker.date.anytime() },
-    content: "나는 두번째 추천 포스트입니다.",
-    images: [
-      { imageId: faker.number.int({ min: 10, max: 10000000000 }), url: faker.image.urlLoremFlickr() },
-      {
-        imageId: faker.number.int({ min: 10, max: 10000000000 }),
-        url: faker.image.urlLoremFlickr(),
-      },
-      {
-        imageId: faker.number.int({ min: 10, max: 10000000000 }),
-        url: faker.image.urlLoremFlickr(),
-      },
-      {
-        imageId: faker.number.int({ min: 10, max: 10000000000 }),
-        url: faker.image.urlLoremFlickr(),
-      },
-    ],
-    createdAt: "",
-    comments: [],
-    retweet: 13,
-    likes: 2,
-    watched: 12,
-  };
+type Props = {
+  params: { username: string; id: string; photoId: string };
+};
+
+export default async function PhotoModal({ params }: Props) {
+  // id는 postId
+  const { username, id, photoId } = params;
+  console.log("modal params:", params);
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ["post", username, id],
+    queryFn: getUserPost,
+  });
+  await queryClient.prefetchQuery({
+    queryKey: ["posts", "comments", id],
+    queryFn: getPostComments,
+  });
+
   return (
     <Container>
-      <BackBtn></BackBtn>
-      <PhotoContainer>
-        <PhotoInnerContainer>
-          <Image src={post.images[0].url} alt="img" width={100} height={100}></Image>
-        </PhotoInnerContainer>
-        <OptionsWrapper>
-          <PostOptions post={post} />
-        </OptionsWrapper>
-      </PhotoContainer>
-      <CommentsContainer>
-        {/* <Post></Post> */}
-        <CommentForm></CommentForm>
-        {/* <Post></Post>
-        <Post></Post>
-        <Post></Post>
-        <Post></Post>
-        <Post></Post> */}
-      </CommentsContainer>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <BackBtn></BackBtn>
+        <PhotoDisplay params={params}></PhotoDisplay>
+        <PhotoComments params={params} />
+      </HydrationBoundary>
     </Container>
   );
 }

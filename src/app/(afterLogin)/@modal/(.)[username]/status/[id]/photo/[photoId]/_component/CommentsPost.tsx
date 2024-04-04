@@ -1,24 +1,30 @@
 "use client";
-// hover 하면 색상 안 변하고 클릭시 post 상세 페이지로 가는 useRouter 빠진 버전
+
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
 import { IPost } from "@/model/Post";
-import PostImages from "@/app/(afterLogin)/_component/PostImages";
+import PostImages from "./PostImages";
 
 import styled from "styled-components";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
-import PostOptions from "@/app/(afterLogin)/_component/PostOptions";
+import PostOptions from "./PostOptions";
 
 dayjs.locale("ko");
 dayjs.extend(relativeTime);
 
-export default function Post({ post }: { post: IPost }) {
+export default function CommentsPost({ post }: { post: IPost }) {
+  const router = useRouter();
+  const onClickArticle = () => {
+    router.push(`/${post.user.id}/status/${post.postId}`);
+  };
+
   return (
     <Container>
-      <Article>
+      <Article onClickCapture={onClickArticle}>
         <Profile>
           <div>
             <Link href={`/${post.user.id}`} style={{ textDecoration: "none" }}>
@@ -56,6 +62,13 @@ const Container = styled.div`
   padding: 0 16px;
 
   border-top: 1px solid rgb(239, 243, 244);
+
+  cursor: pointer;
+
+  &:hover {
+    transition: 0.2s;
+    background-color: rgba(0, 0, 0, 0.03);
+  }
 `;
 
 const Article = styled.article`

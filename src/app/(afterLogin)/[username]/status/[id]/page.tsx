@@ -10,15 +10,15 @@ import getUserPost from "./_lib/getUserPost";
 import getPostComments from "./_lib/getPostComments";
 
 type Prop = {
-  params: { id: string };
+  params: { id: string; username: string };
 };
 
 export default async function StatusPage({ params }: Prop) {
-  const { id } = params;
+  const { id, username } = params;
 
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
-    queryKey: ["post", id],
+    queryKey: ["post", username, id],
     queryFn: getUserPost,
   });
   await queryClient.prefetchQuery({
@@ -36,10 +36,10 @@ export default async function StatusPage({ params }: Prop) {
         </div>
         <Main>
           <div>
-            <UserPost id={id} />
+            <UserPost params={params} />
           </div>
           <div>
-            <PostComments id={id} />
+            <PostComments params={params} />
           </div>
         </Main>
       </HydrationBoundary>

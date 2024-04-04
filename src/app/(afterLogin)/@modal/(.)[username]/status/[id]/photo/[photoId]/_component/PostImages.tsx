@@ -18,7 +18,7 @@ export default function PostImages({ post }: { post: IPost }) {
       <ImageContainer>
         <OneImageLink href={`/${post.user.id}/status/${post.postId}/photo/${post.images[0].imageId}`}>
           <BackgroundImage $url={post.images[0].url}></BackgroundImage>
-          <Image src={post.images[0].url} alt="게시글 이미지" width={516} height={516}></Image>
+          <Image src={post.images[0].url} alt="게시글 이미지" width={252} height={135}></Image>
         </OneImageLink>
       </ImageContainer>
     );
@@ -84,8 +84,8 @@ export default function PostImages({ post }: { post: IPost }) {
 
 const ImageContainer = styled.div`
   box-sizing: border-box;
-  width: 516px;
-  height: 516px;
+  width: 252px;
+  height: 135px;
   position: relative;
   margin-top: 12px;
 `;
