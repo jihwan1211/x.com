@@ -27,11 +27,11 @@ export default function PostImages({ post }: { post: IPost }) {
       <TwoImageContainer>
         <TwoImageLinkFirst href={`/${post.user.id}/status/${post.user.UId}/photo/${post.images[0].imageId}`}>
           <BackgroundImage $url={post.images[0].url} />
-          <TwoImageFirst src={post.images[0].url} alt="게시글 이미지" width={200} height={200} />
+          <TwoImageFirst src={post.images[0].url} alt="게시글 이미지" width={125} height={141.75} />
         </TwoImageLinkFirst>
         <TwoImageLinkSecond href={`/${post.user.id}/status/${post.user.UId}/photo/${post.images[1].imageId}`}>
           <BackgroundImage $url={post.images[1].url} />
-          <TwoImageSecond src={post.images[1].url} alt="게시글 이미지" width={200} height={200} />
+          <TwoImageSecond src={post.images[1].url} alt="게시글 이미지" width={125} height={141.75} />
         </TwoImageLinkSecond>
       </TwoImageContainer>
     );
@@ -40,16 +40,16 @@ export default function PostImages({ post }: { post: IPost }) {
       <ThreeImageContainer>
         <ThreeImageLeftLink href={`/${post.user.id}/status/${post.user.UId}/photo/${post.images[0].imageId}`}>
           <BackgroundImage $url={post.images[0].url} />
-          <ThreeImageFirst src={post.images[0].url} alt="게시글 이미지" width={200} height={200} />
+          <ThreeImageFirst src={post.images[0].url} alt="게시글 이미지" width={125} height={141.75} />
         </ThreeImageLeftLink>
         <ThreeImageRightWrapper>
           <ThreeImageRightTopLink href={`/${post.user.id}/status/${post.user.UId}/photo/${post.images[1].imageId}`}>
             <BackgroundImage $url={post.images[1].url} />
-            <ThreeImageSecond src={post.images[1].url} alt="게시글 이미지" width={200} height={200} />
+            <ThreeImageSecond src={post.images[1].url} alt="게시글 이미지" width={125} height={70} />
           </ThreeImageRightTopLink>
           <ThreeImageRightBottomLink href={`/${post.user.id}/status/${post.user.UId}/photo/${post.images[2].imageId}`}>
             <BackgroundImage $url={post.images[2].url} />
-            <ThreeImageThird src={post.images[2].url} alt="게시글 이미지" width={200} height={200} />
+            <ThreeImageThird src={post.images[2].url} alt="게시글 이미지" width={125} height={70} />
           </ThreeImageRightBottomLink>
         </ThreeImageRightWrapper>
       </ThreeImageContainer>
@@ -60,21 +60,21 @@ export default function PostImages({ post }: { post: IPost }) {
         <FourImageLeftWrapper>
           <FourImageLeftTopLink href={`/${post.user.id}/status/${post.user.UId}/photo/${post.images[0].imageId}`}>
             <BackgroundImage $url={post.images[0].url} />
-            <FourImageFirst src={post.images[0].url} alt="게시글 이미지" width={200} height={200} />
+            <FourImageFirst src={post.images[0].url} alt="게시글 이미지" width={125} height={70} />
           </FourImageLeftTopLink>
           <FourImageLeftBottomLink href={`/${post.user.id}/status/${post.user.UId}/photo/${post.images[1].imageId}`}>
             <BackgroundImage $url={post.images[1].url} />
-            <FourImageSecond src={post.images[1].url} alt="게시글 이미지" width={200} height={200} />
+            <FourImageSecond src={post.images[1].url} alt="게시글 이미지" width={125} height={70} />
           </FourImageLeftBottomLink>
         </FourImageLeftWrapper>
         <ThreeImageRightWrapper>
           <ThreeImageRightTopLink href={`/${post.user.id}/status/${post.user.UId}/photo/${post.images[2].imageId}`}>
             <BackgroundImage $url={post.images[2].url} />
-            <ThreeImageSecond src={post.images[2].url} alt="게시글 이미지" width={200} height={200} />
+            <ThreeImageSecond src={post.images[2].url} alt="게시글 이미지" width={125} height={70} />
           </ThreeImageRightTopLink>
           <ThreeImageRightBottomLink href={`/${post.user.id}/status/${post.user.UId}/photo/${post.images[3].imageId}`}>
             <BackgroundImage $url={post.images[3].url} />
-            <ThreeImageThird src={post.images[3].url} alt="게시글 이미지" width={200} height={200} />
+            <ThreeImageThird src={post.images[3].url} alt="게시글 이미지" width={125} height={70} />
           </ThreeImageRightBottomLink>
         </ThreeImageRightWrapper>
       </FourImageContainer>
@@ -128,15 +128,15 @@ const BackgroundImage = styled.div<BackgroundImage>`
 
 const TwoImageContainer = styled.div`
   box-sizing: border-box;
-  width: 516px;
-  height: 290px;
+  width: 250px;
+  height: 141.75px;
   position: relative;
   margin-top: 12px;
 
   border: 1px solid rgb(239, 243, 244);
   border-radius: 24px;
   display: flex;
-  gap: 3px;
+  gap: 1.5px;
 `;
 
 const TwoImageLink = styled(Link)`
@@ -188,15 +188,15 @@ const TwoImageLinkSecond = styled(TwoImageLink)`
 
 const ThreeImageContainer = styled.div`
   box-sizing: border-box;
-  width: 516px;
-  height: 516px;
+  width: 250px;
+  height: 141.75px;
   position: relative;
   margin-top: 12px;
 
   border: 1px solid rgb(239, 243, 244);
   border-radius: 24px;
   display: flex;
-  gap: 3px;
+  gap: 1.5px;
 `;
 
 const ThreeImageLeftLink = styled(Link)`
@@ -223,7 +223,7 @@ const ThreeImageRightWrapper = styled.div`
 
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 1.5px;
 
   width: 100%;
 
@@ -283,15 +283,15 @@ const ThreeImageThird = styled(Image)`
 
 const FourImageContainer = styled.div`
   box-sizing: border-box;
-  width: 516px;
-  height: 516px;
+  width: 250px;
+  height: 141.75px;
   position: relative;
   margin-top: 12px;
 
   border: 1px solid rgb(239, 243, 244);
   border-radius: 24px;
   display: flex;
-  gap: 3px;
+  gap: 1.5px;
 `;
 
 const FourImageLeftWrapper = styled.div`
@@ -301,7 +301,7 @@ const FourImageLeftWrapper = styled.div`
 
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 1.5px;
 
   width: 100%;
 
@@ -316,7 +316,7 @@ const FourImageRightWrapper = styled.div`
 
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 1.5px;
 
   width: 100%;
 

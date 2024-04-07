@@ -34,9 +34,11 @@ export const Nav = styled.div`
   width: inherit;
   position: fixed;
 
+  background-color: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
+  z-index: 1;
   & > div:nth-child(2) {
     box-sizing: border-box;
     margin-left: 15px;

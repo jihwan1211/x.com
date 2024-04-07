@@ -8,8 +8,14 @@ import styled from "styled-components";
 import { IPost } from "@/model/Post";
 
 import PostOptions from "./PostOptions";
+import { createActionURL } from "@auth/core";
 
 export default function PhotoPost({ post }: { post: IPost }) {
+  const createdAt = new Date(post.createdAt);
+  const hour = createdAt.getHours();
+  const minute = createdAt.getMinutes();
+  console.log("hour : ", hour);
+  console.log("createdAt : ", createdAt);
   const router = useRouter();
   const onClickArticle = () => {
     router.push(`/${post.user.id}/status/${post.postId}`);
@@ -35,6 +41,10 @@ export default function PhotoPost({ post }: { post: IPost }) {
 
         <Main>
           <PostContent>{post.content}</PostContent>
+          <PostTime>
+            {hour >= 12 ? "오후 " : "오전 "}
+            {hour}:{minute} . {createdAt.getFullYear()}년 {createdAt.getMonth()}월 {createdAt.getDay()}일 . 조회수 {post.watched}
+          </PostTime>
           <PostOptions post={post} />
         </Main>
       </Article>
@@ -45,8 +55,8 @@ export default function PhotoPost({ post }: { post: IPost }) {
 const Container = styled.div`
   background-color: white;
   box-sizing: border-box;
-  /* height: 100dvh; */
-  width: inherit;
+  height: 100dvh;
+  width: 400px;
   padding: 0 8px;
 
   border-top: 1px solid rgb(239, 243, 244);
@@ -151,4 +161,10 @@ const PostContent = styled.div`
   min-width: 0px;
   font-size: 15px;
   font-weight: 400;
+`;
+
+const PostTime = styled.div`
+  margin: 16px 0;
+  font-size: 14px;
+  color: rgb(83, 100, 113);
 `;

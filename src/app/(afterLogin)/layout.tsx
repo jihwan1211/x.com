@@ -17,8 +17,7 @@ const AfterLoginLayout = async ({
   modal: React.ReactNode;
 }>) => {
   const session = await auth();
-  console.log("ajskndkjand", session);
-  const path = {};
+
   return (
     <Container>
       <RQProvider>

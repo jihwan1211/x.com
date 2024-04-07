@@ -55,15 +55,17 @@ const TabContainer = styled.div`
   height: 53px;
   width: 596px;
   box-sizing: border-box;
+
   /* border: 1px solid rgb(247, 249, 249); */
 `;
 
+// 홈탭 z-index:1
 const TabContainerInner = styled.div`
   position: fixed;
   display: flex;
   width: inherit;
   height: inherit;
-
+  z-index: 1;
   background-color: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
 

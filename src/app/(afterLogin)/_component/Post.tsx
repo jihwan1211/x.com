@@ -73,6 +73,7 @@ const Container = styled.div`
 
 const Article = styled.article`
   display: flex;
+  box-sizing: border-box;
 `;
 
 const Profile = styled.div`
@@ -82,7 +83,6 @@ const Profile = styled.div`
 
   width: 40px;
   padding-top: 12px;
-  margin-right: 8px;
 
   & > div {
     position: relative;
@@ -117,10 +117,10 @@ const Profile = styled.div`
 
 const Main = styled.div`
   flex-grow: 1;
-
+  box-sizing: border-box;
+  /* width: 528px; */
   background-color: transparent;
 
-  box-sizing: border-box;
   margin: 12px;
 
   display: flex;
@@ -159,6 +159,7 @@ export const PostWriter = styled.div`
 `;
 
 const PostContent = styled.div`
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
 

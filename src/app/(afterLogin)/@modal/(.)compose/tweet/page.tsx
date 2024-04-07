@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import { ChangeEventHandler, FormEventHandler, MouseEventHandler, useRef, useState } from "react";
@@ -15,6 +16,11 @@ export default function ComposeTweetModal() {
   const [input, setInput] = useState("");
   const imageRef = useRef<HTMLInputElement>(null);
 
+  // 뒷배경 스크롤 막기
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+  }, []);
+
   const onClickImgBtn = () => {
     imageRef.current?.click();
   };
@@ -25,11 +31,18 @@ export default function ComposeTweetModal() {
 
   const router = useRouter();
   const onClickCloseBtn: MouseEventHandler<HTMLButtonElement> = () => {
+    // 뒷배경 스크롤 원상복구
+    document.body.style.overflow = "auto";
+    // router.push("/explore");
+
     router.back();
+    // router.refresh();
   };
 
   const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
+    // 뒷배경 스크롤 원상복구
+    document.body.style.overflow = "auto";
     console.log("fomr!");
   };
   return (
@@ -81,7 +94,7 @@ const ModalBackground = styled.div`
   height: 100dvh;
   left: 0;
   top: 0;
-  z-index: 1;
+  z-index: 2;
 
   display: flex;
   justify-content: center;

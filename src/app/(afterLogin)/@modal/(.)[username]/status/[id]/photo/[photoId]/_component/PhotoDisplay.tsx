@@ -17,7 +17,7 @@ export default function PhotoDisplay({ params }: Props) {
   return (
     <PhotoContainer>
       <PhotoInnerContainer>
-        <Image src={data.images[0].url} width={100} height={100} alt="post image"></Image>
+        <Image src={data.images[0].url} width={900} height={900} alt="post image"></Image>
       </PhotoInnerContainer>
       <OptionsWrapper>
         <PostOptions post={data} />
@@ -48,13 +48,6 @@ export const PhotoInnerContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 1000px;
-  height: 1000px;
-
-  /* & > img {
-    width: 100%;
-    height: 100%;
-  } */
 `;
 
 export const OptionsWrapper = styled.div`

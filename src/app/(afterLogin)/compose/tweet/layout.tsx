@@ -3,11 +3,13 @@ import ComposeTweetModal from "../../@modal/(.)compose/tweet/page";
 
 type Props = {
   children: ReactNode;
+  modal: ReactNode;
 };
-const ComposeTweetLayout = ({ children }: Props) => {
+const ComposeTweetLayout = ({ children, modal }: Props) => {
   return (
     <>
-      {children}
+      <div>compose/tweet/layout</div>
+      {/* {children} */}
       <ComposeTweetModal></ComposeTweetModal>
     </>
   );
