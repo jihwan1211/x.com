@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 export default function BackBtn() {
   const router = useRouter();
   const onClickBackBtn = () => {
+    document.body.style.overflow = "auto";
     router.back();
   };
   return (

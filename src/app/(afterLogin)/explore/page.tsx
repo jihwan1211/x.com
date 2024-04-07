@@ -1,5 +1,5 @@
 import SearchBar from "../_component/SearchBar";
-import TrendsForYou from "./component/TrendsForYou";
+import TrendsForYou from "./_component/TrendsForYou";
 import { Container, SearchContainer, ShowMore } from "./page-style";
 
 export default function Explore() {

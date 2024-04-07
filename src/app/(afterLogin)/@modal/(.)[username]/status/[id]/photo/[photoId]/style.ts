@@ -10,11 +10,8 @@ export const Container = styled.main`
   background-color: rgba(0, 0, 0, 0.9);
   width: 100%;
   height: 100%;
-`;
+  z-index: 2;
 
-export const CommentsContainer = styled.div`
-  width: 550px;
-  background-color: white;
-
-  overflow: auto;
+  /* position: fixed;
+  overflow: hidden; */
 `;

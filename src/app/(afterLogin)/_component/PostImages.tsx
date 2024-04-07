@@ -18,7 +18,7 @@ export default function PostImages({ post }: { post: IPost }) {
       <ImageContainer>
         <OneImageLink href={`/${post.user.id}/status/${post.postId}/photo/${post.images[0].imageId}`}>
           <BackgroundImage $url={post.images[0].url}></BackgroundImage>
-          <Image src={post.images[0].url} alt="게시글 이미지" width={516} height={516}></Image>
+          <Image src={post.images[0].url} alt="게시글 이미지" width={502} height={502}></Image>
         </OneImageLink>
       </ImageContainer>
     );
@@ -84,8 +84,8 @@ export default function PostImages({ post }: { post: IPost }) {
 
 const ImageContainer = styled.div`
   box-sizing: border-box;
-  width: 516px;
-  height: 516px;
+  width: 500px;
+  height: 502px;
   position: relative;
   margin-top: 12px;
 `;
@@ -128,7 +128,7 @@ const BackgroundImage = styled.div<BackgroundImage>`
 
 const TwoImageContainer = styled.div`
   box-sizing: border-box;
-  width: 516px;
+  width: 502px;
   height: 290px;
   position: relative;
   margin-top: 12px;
@@ -188,8 +188,8 @@ const TwoImageLinkSecond = styled(TwoImageLink)`
 
 const ThreeImageContainer = styled.div`
   box-sizing: border-box;
-  width: 516px;
-  height: 516px;
+  width: 502px;
+  height: 502px;
   position: relative;
   margin-top: 12px;
 
@@ -283,8 +283,8 @@ const ThreeImageThird = styled(Image)`
 
 const FourImageContainer = styled.div`
   box-sizing: border-box;
-  width: 516px;
-  height: 516px;
+  width: 502px;
+  height: 502px;
   position: relative;
   margin-top: 12px;
 
