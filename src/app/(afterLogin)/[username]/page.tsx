@@ -16,7 +16,7 @@ type Props = {
 
 export default async function Username({ params }: Props) {
   const { username } = params;
-  console.log("params", params);
+
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
     queryKey: ["user", username],

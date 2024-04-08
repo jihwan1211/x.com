@@ -6,7 +6,7 @@ import { trend as ITrend } from "@/model/Trend";
 
 export default function Trend({ trend }: { trend: ITrend }) {
   return (
-    <TrendContainer href={`/search?q=${trend.title}`}>
+    <TrendContainer href={`/search?q=${trend.title}&src=trend_click&vertical=trends`}>
       <div>
         only for X
         <div>

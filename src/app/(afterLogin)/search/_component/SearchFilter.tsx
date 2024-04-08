@@ -1,12 +1,36 @@
 "use client";
 
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { ChangeEventHandler } from "react";
+
 import styled from "styled-components";
-import { usePathname } from "next/navigation";
 
 export default function SearchFilter() {
   const pathname = usePathname();
-
+  const searchParams = useSearchParams();
   if (pathname !== "/search") return null;
+
+  const router = useRouter();
+  const onChangeFollowers: ChangeEventHandler<HTMLInputElement> = (e) => {
+    router.replace(`/search?${searchParams.toString()}&pf=${e.target.value}`);
+  };
+
+  const onChangeEveryone: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const params = new URLSearchParams(searchParams);
+    if (searchParams.has("pf")) params.delete("pf");
+    router.replace(`/search?${params.toString()}`);
+  };
+
+  const onChangeAnywhere: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const params = new URLSearchParams(searchParams);
+    if (searchParams.has("lf")) params.delete("lf");
+    router.replace(`search?${params.toString()}`);
+  };
+
+  const onChangeNearby: ChangeEventHandler<HTMLInputElement> = (e) => {
+    router.replace(`search?${searchParams.toString()}&lf=${e.target.value}`);
+  };
+
   return (
     <Container>
       <div>
@@ -18,13 +42,13 @@ export default function SearchFilter() {
           <label htmlFor="everyone">
             <InputWrapper>
               <div>모든 사용자</div>
-              <input type="radio" id="everyone" name="user" value="1" defaultChecked></input>
+              <input type="radio" id="everyone" name="user" value="1" onChange={onChangeEveryone} defaultChecked></input>
             </InputWrapper>
           </label>
           <label htmlFor="followers">
             <InputWrapper>
               <div>내가 팔로우하는 사람들</div>
-              <input type="radio" id="followers" name="user" value="on"></input>
+              <input type="radio" id="followers" name="user" value="on" onChange={onChangeFollowers}></input>
             </InputWrapper>
           </label>
         </fieldset>
@@ -33,13 +57,13 @@ export default function SearchFilter() {
           <label htmlFor="anywhere">
             <InputWrapper>
               <div>어디에서나</div>
-              <input type="radio" id="anywhere" name="location" value="2" defaultChecked></input>
+              <input type="radio" id="anywhere" name="location" value="2" onChange={onChangeAnywhere} defaultChecked></input>
             </InputWrapper>
           </label>
           <label htmlFor="curLocal">
             <InputWrapper>
               <div>현 위치 주변</div>
-              <input type="radio" id="curLocal" name="location" value="3"></input>
+              <input type="radio" id="curLocal" name="location" value="on" onChange={onChangeNearby}></input>
             </InputWrapper>
           </label>
         </fieldset>

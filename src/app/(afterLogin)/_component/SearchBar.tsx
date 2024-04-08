@@ -16,6 +16,7 @@ export default function SearchBar() {
   const router = useRouter();
   const onSubmitForm: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
+    localStorage.setItem("searchTabMenu", "hot");
     router.push(`/search?q=${input}&src=typed_query`);
   };
 
@@ -32,16 +33,6 @@ export default function SearchBar() {
     </InnerContainer>
   );
 }
-
-const Container = styled.div`
-  display: flex;
-
-  justify-content: start;
-  width: 350px;
-  height: 53px;
-  box-sizing: border-box;
-  margin-bottom: 20px;
-`;
 
 const InnerContainer = styled.div`
   display: flex;

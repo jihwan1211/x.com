@@ -14,8 +14,7 @@ export default function PhotoPost({ post }: { post: IPost }) {
   const createdAt = new Date(post.createdAt);
   const hour = createdAt.getHours();
   const minute = createdAt.getMinutes();
-  console.log("hour : ", hour);
-  console.log("createdAt : ", createdAt);
+
   const router = useRouter();
   const onClickArticle = () => {
     router.push(`/${post.user.id}/status/${post.postId}`);

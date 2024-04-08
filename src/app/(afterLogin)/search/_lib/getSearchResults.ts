@@ -4,7 +4,7 @@ import { QueryFunction } from "@tanstack/query-core";
 import { IPost } from "@/model/Post";
 
 type Props = {
-  searchParams: string;
+  searchParams: { q: string; f?: string; pf?: string };
 };
 
 // queryKey type?
@@ -12,8 +12,10 @@ const getSearchResult: QueryFunction<IPost[], [_1: string, _2: string, searchPar
   //   console.log("queryKey", queryKey);
   const [_1, _2, searchParams] = queryKey;
   //   console.log("q?", searchParams.q);
-  const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/search/q=${searchParams.q}`);
-  console.log(response);
+
+  const params = new URLSearchParams(searchParams);
+  const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/search?${params.toString()}`);
+
   if (response.statusText === "OK") return response.data;
 };
 

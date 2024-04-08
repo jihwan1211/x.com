@@ -1,33 +1,51 @@
 "use client";
 
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
 export default function SearchTab() {
   const [selectedMenu, setSelectedMenu] = useState("hot");
 
   const searchParams = useSearchParams();
+
   const router = useRouter();
+
+  const checkSearchParams = () => {
+    let params = new URLSearchParams(searchParams);
+    params.delete("f");
+    if (selectedMenu === "hot") router.replace(`/search?${params.toString()}`);
+    else router.replace(`/search?${params.toString()}&f=${selectedMenu}`);
+  };
+
+  useEffect(() => {
+    const tabMenu = localStorage.getItem("searchTabMenu");
+    setSelectedMenu(tabMenu!);
+  }, [searchParams.values()]);
+
+  useEffect(() => {
+    checkSearchParams();
+  }, [selectedMenu]);
+
   const handleHotClicked = () => {
     setSelectedMenu("hot");
-    router.replace(`/search?q=${searchParams.get("q")}&src=typed_query`);
+    localStorage.setItem("searchTabMenu", "hot");
   };
   const handleNewClicked = () => {
     setSelectedMenu("new");
-    router.replace(`/search?q=${searchParams.get("q")}&src=typed_query&f=live`);
+    localStorage.setItem("searchTabMenu", "new");
   };
   const handleUserClicked = () => {
     setSelectedMenu("user");
-    router.replace(`/search?q=${searchParams.get("q")}&src=typed_query&f=user`);
+    localStorage.setItem("searchTabMenu", "user");
   };
   const handleMediaClicked = () => {
     setSelectedMenu("media");
-    router.replace(`/search?q=${searchParams.get("q")}&src=typed_query&f=media`);
+    localStorage.setItem("searchTabMenu", "media");
   };
   const handleListClicked = () => {
     setSelectedMenu("list");
-    router.replace(`/search?q=${searchParams.get("q")}&src=typed_query&f=list`);
+    localStorage.setItem("searchTabMenu", "list");
   };
 
   return (
