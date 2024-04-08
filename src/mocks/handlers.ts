@@ -258,79 +258,386 @@ export const handlers = [
       },
     ]);
   }),
-  http.get("/api/search/:tag", ({ request, params }) => {
-    console.log("request", request);
-    const { tag } = params;
+  http.get("/api/search", ({ request, params }) => {
+    const url = new URL(request.url);
+    const searchParams = url.searchParams;
 
-    return HttpResponse.json([
-      {
-        postId: 1,
-        user: User[0],
-        content: `검색 결과1 ${tag}`,
-        images: [{ imageId: 1, url: faker.image.urlLoremFlickr() }],
-        createdAt: "",
-        comments: [],
-        retweet: 14,
-        likes: 113,
-        watched: 123,
-      },
-      {
-        postId: 2,
-        user: User[1],
-        content: `검색 결과1 ${tag}`,
-        images: [
-          { imageId: 1, url: faker.image.urlLoremFlickr() },
-          { imageId: 2, url: faker.image.urlLoremFlickr() },
-          { imageId: 3, url: faker.image.urlLoremFlickr() },
-          { imageId: 4, url: faker.image.urlLoremFlickr() },
-        ],
-        createdAt: "",
-        comments: [],
-        retweet: 13,
-        likes: 2,
-        watched: 12,
-      },
-      {
-        postId: 3,
-        user: User[2],
-        content: `검색 결과1 ${tag}`,
-        images: [
-          { imageId: 1, url: faker.image.urlLoremFlickr() },
-          { imageId: 2, url: faker.image.urlLoremFlickr() },
-          { imageId: 3, url: faker.image.urlLoremFlickr() },
-        ],
-        createdAt: "",
-        comments: [],
-        retweet: 1300,
-        likes: 15000,
-        watched: 100034,
-      },
-      {
-        postId: 4,
-        user: User[3],
-        content: `검색 결과1 ${tag}`,
-        images: [
-          { imageId: 1, url: faker.image.urlLoremFlickr() },
-          { imageId: 2, url: faker.image.urlLoremFlickr() },
-        ],
-        createdAt: "",
-        comments: [],
-        retweet: 1,
-        likes: 78,
-        watched: 180,
-      },
-      {
-        postId: 5,
-        user: User[4],
-        content: `검색 결과1 ${tag}`,
-        images: [],
-        createdAt: "",
-        comments: [],
-        retweet: 77,
-        likes: 88,
-        watched: 188,
-      },
-    ]);
+    const q: string | null = searchParams.get("q");
+    let pf: string | null = null;
+    let f: string | null = null;
+    let lf: string | null = null;
+
+    if (searchParams.has("pf")) {
+      pf = searchParams.get("pf");
+    }
+    if (searchParams.has("f")) {
+      f = searchParams.get("f");
+    }
+    if (searchParams.has("lf")) {
+      lf = searchParams.get("lf");
+    }
+
+    if (f === "new") {
+      if (pf && lf) {
+        return HttpResponse.json([
+          {
+            postId: 3,
+            user: User[2],
+            content: `검색어 ${q}, 내가 팔로우 하는 사람들 pf : ${pf}, 내위치 주변 lf : ${lf}`,
+            images: [
+              { imageId: 1, url: faker.image.urlLoremFlickr() },
+              { imageId: 2, url: faker.image.urlLoremFlickr() },
+              { imageId: 3, url: faker.image.urlLoremFlickr() },
+            ],
+            createdAt: "",
+            comments: [],
+            retweet: 1300,
+            likes: 15000,
+            watched: 100034,
+          },
+          {
+            postId: 4,
+            user: User[3],
+            content: `검색어 ${q}, 내가 팔로우 하는 사람들 pf : ${pf}, 내위치 주변 lf : ${lf}`,
+            images: [
+              { imageId: 1, url: faker.image.urlLoremFlickr() },
+              { imageId: 2, url: faker.image.urlLoremFlickr() },
+            ],
+            createdAt: "",
+            comments: [],
+            retweet: 1,
+            likes: 78,
+            watched: 180,
+          },
+        ]);
+      } else if (pf) {
+        return HttpResponse.json([
+          {
+            postId: 3,
+            user: User[2],
+            content: `검색어 ${q}, 내가 팔로우 하는 사람들 pf : ${pf}`,
+            images: [
+              { imageId: 1, url: faker.image.urlLoremFlickr() },
+              { imageId: 2, url: faker.image.urlLoremFlickr() },
+              { imageId: 3, url: faker.image.urlLoremFlickr() },
+            ],
+            createdAt: "",
+            comments: [],
+            retweet: 1300,
+            likes: 15000,
+            watched: 100034,
+          },
+          {
+            postId: 4,
+            user: User[3],
+            content: `검색어 ${q}, 내가 팔로우 하는 사람들 pf : ${pf}`,
+            images: [
+              { imageId: 1, url: faker.image.urlLoremFlickr() },
+              { imageId: 2, url: faker.image.urlLoremFlickr() },
+            ],
+            createdAt: "",
+            comments: [],
+            retweet: 1,
+            likes: 78,
+            watched: 180,
+          },
+        ]);
+      } else if (lf) {
+        return HttpResponse.json([
+          {
+            postId: 3,
+            user: User[2],
+            content: `검색어 ${q}, 내위치 주변 lf : ${lf}`,
+            images: [
+              { imageId: 1, url: faker.image.urlLoremFlickr() },
+              { imageId: 2, url: faker.image.urlLoremFlickr() },
+              { imageId: 3, url: faker.image.urlLoremFlickr() },
+            ],
+            createdAt: "",
+            comments: [],
+            retweet: 1300,
+            likes: 15000,
+            watched: 100034,
+          },
+          {
+            postId: 4,
+            user: User[3],
+            content: `검색어 ${q}, 내위치 주변 lf : ${lf}`,
+            images: [
+              { imageId: 1, url: faker.image.urlLoremFlickr() },
+              { imageId: 2, url: faker.image.urlLoremFlickr() },
+            ],
+            createdAt: "",
+            comments: [],
+            retweet: 1,
+            likes: 78,
+            watched: 180,
+          },
+        ]);
+      } else {
+        return HttpResponse.json([
+          {
+            postId: 1,
+            user: User[0],
+            content: `검색어 :  ${q}, 최신포스트 1 f=${f} `,
+            images: [{ imageId: 1, url: faker.image.urlLoremFlickr() }],
+            createdAt: "",
+            comments: [],
+            retweet: 14,
+            likes: 113,
+            watched: 123,
+          },
+          {
+            postId: 2,
+            user: User[1],
+            content: `검색어 :  ${q}, 최신포스트 2 f=${f} `,
+            images: [
+              { imageId: 1, url: faker.image.urlLoremFlickr() },
+              { imageId: 2, url: faker.image.urlLoremFlickr() },
+              { imageId: 3, url: faker.image.urlLoremFlickr() },
+              { imageId: 4, url: faker.image.urlLoremFlickr() },
+            ],
+            createdAt: "",
+            comments: [],
+            retweet: 13,
+            likes: 2,
+            watched: 12,
+          },
+        ]);
+      }
+    } else if (f === "user") {
+      return HttpResponse.json([
+        {
+          postId: 1,
+          user: User[0],
+          content: `검색어 :  ${q}, user포스트 1 f=${f} `,
+          images: [{ imageId: 1, url: faker.image.urlLoremFlickr() }],
+          createdAt: "",
+          comments: [],
+          retweet: 14,
+          likes: 113,
+          watched: 123,
+        },
+        {
+          postId: 2,
+          user: User[1],
+          content: `검색어 :  ${q}, user포스트 2 f=${f} `,
+          images: [
+            { imageId: 1, url: faker.image.urlLoremFlickr() },
+            { imageId: 2, url: faker.image.urlLoremFlickr() },
+            { imageId: 3, url: faker.image.urlLoremFlickr() },
+            { imageId: 4, url: faker.image.urlLoremFlickr() },
+          ],
+          createdAt: "",
+          comments: [],
+          retweet: 13,
+          likes: 2,
+          watched: 12,
+        },
+      ]);
+    } else if (f === "media") {
+      return HttpResponse.json([
+        {
+          postId: 1,
+          user: User[0],
+          content: `검색어 :  ${q}, media 1 f=${f} `,
+          images: [{ imageId: 1, url: faker.image.urlLoremFlickr() }],
+          createdAt: "",
+          comments: [],
+          retweet: 14,
+          likes: 113,
+          watched: 123,
+        },
+        {
+          postId: 2,
+          user: User[1],
+          content: `검색어 :  ${q}, media 2 f=${f} `,
+          images: [
+            { imageId: 1, url: faker.image.urlLoremFlickr() },
+            { imageId: 2, url: faker.image.urlLoremFlickr() },
+            { imageId: 3, url: faker.image.urlLoremFlickr() },
+            { imageId: 4, url: faker.image.urlLoremFlickr() },
+          ],
+          createdAt: "",
+          comments: [],
+          retweet: 13,
+          likes: 2,
+          watched: 12,
+        },
+      ]);
+    } else if (f === "list") {
+      return HttpResponse.json([
+        {
+          postId: 1,
+          user: User[0],
+          content: `검색어 :  ${q}, list 1 f=${f} `,
+          images: [{ imageId: 1, url: faker.image.urlLoremFlickr() }],
+          createdAt: "",
+          comments: [],
+          retweet: 14,
+          likes: 113,
+          watched: 123,
+        },
+        {
+          postId: 2,
+          user: User[1],
+          content: `검색어 :  ${q}, list 2 f=${f} `,
+          images: [
+            { imageId: 1, url: faker.image.urlLoremFlickr() },
+            { imageId: 2, url: faker.image.urlLoremFlickr() },
+            { imageId: 3, url: faker.image.urlLoremFlickr() },
+            { imageId: 4, url: faker.image.urlLoremFlickr() },
+          ],
+          createdAt: "",
+          comments: [],
+          retweet: 13,
+          likes: 2,
+          watched: 12,
+        },
+      ]);
+    } else {
+      if (searchParams.get("src") === "trend_click") {
+        return HttpResponse.json([
+          {
+            postId: 1,
+            user: User[0],
+            content: `검색 결과1 ${q}, trends for you를 통해 검색하셨습니다.`,
+            images: [{ imageId: 1, url: faker.image.urlLoremFlickr() }],
+            createdAt: "",
+            comments: [],
+            retweet: 14,
+            likes: 113,
+            watched: 123,
+          },
+          {
+            postId: 2,
+            user: User[1],
+            content: `검색 결과1 ${q}, trends for you를 통해 검색하셨습니다.`,
+            images: [
+              { imageId: 1, url: faker.image.urlLoremFlickr() },
+              { imageId: 2, url: faker.image.urlLoremFlickr() },
+              { imageId: 3, url: faker.image.urlLoremFlickr() },
+              { imageId: 4, url: faker.image.urlLoremFlickr() },
+            ],
+            createdAt: "",
+            comments: [],
+            retweet: 13,
+            likes: 2,
+            watched: 12,
+          },
+          {
+            postId: 3,
+            user: User[2],
+            content: `검색 결과1 ${q}, trends for you를 통해 검색하셨습니다.`,
+            images: [
+              { imageId: 1, url: faker.image.urlLoremFlickr() },
+              { imageId: 2, url: faker.image.urlLoremFlickr() },
+              { imageId: 3, url: faker.image.urlLoremFlickr() },
+            ],
+            createdAt: "",
+            comments: [],
+            retweet: 1300,
+            likes: 15000,
+            watched: 100034,
+          },
+          {
+            postId: 4,
+            user: User[3],
+            content: `검색 결과1 ${q}, trends for you를 통해 검색하셨습니다.`,
+            images: [
+              { imageId: 1, url: faker.image.urlLoremFlickr() },
+              { imageId: 2, url: faker.image.urlLoremFlickr() },
+            ],
+            createdAt: "",
+            comments: [],
+            retweet: 1,
+            likes: 78,
+            watched: 180,
+          },
+          {
+            postId: 5,
+            user: User[4],
+            content: `검색 결과1 ${q}, trends for you를 통해 검색하셨습니다.`,
+            images: [],
+            createdAt: "",
+            comments: [],
+            retweet: 77,
+            likes: 88,
+            watched: 188,
+          },
+        ]);
+      } else {
+        return HttpResponse.json([
+          {
+            postId: 1,
+            user: User[0],
+            content: `검색 결과1 ${q}, 검색창로 검색하셨습니다.`,
+            images: [{ imageId: 1, url: faker.image.urlLoremFlickr() }],
+            createdAt: "",
+            comments: [],
+            retweet: 14,
+            likes: 113,
+            watched: 123,
+          },
+          {
+            postId: 2,
+            user: User[1],
+            content: `검색 결과1 ${q}, 검색창로 검색하셨습니다.`,
+            images: [
+              { imageId: 1, url: faker.image.urlLoremFlickr() },
+              { imageId: 2, url: faker.image.urlLoremFlickr() },
+              { imageId: 3, url: faker.image.urlLoremFlickr() },
+              { imageId: 4, url: faker.image.urlLoremFlickr() },
+            ],
+            createdAt: "",
+            comments: [],
+            retweet: 13,
+            likes: 2,
+            watched: 12,
+          },
+          {
+            postId: 3,
+            user: User[2],
+            content: `검색 결과1 ${q}, 검색창로 검색하셨습니다.`,
+            images: [
+              { imageId: 1, url: faker.image.urlLoremFlickr() },
+              { imageId: 2, url: faker.image.urlLoremFlickr() },
+              { imageId: 3, url: faker.image.urlLoremFlickr() },
+            ],
+            createdAt: "",
+            comments: [],
+            retweet: 1300,
+            likes: 15000,
+            watched: 100034,
+          },
+          {
+            postId: 4,
+            user: User[3],
+            content: `검색 결과1 ${q}, 검색창로 검색하셨습니다.`,
+            images: [
+              { imageId: 1, url: faker.image.urlLoremFlickr() },
+              { imageId: 2, url: faker.image.urlLoremFlickr() },
+            ],
+            createdAt: "",
+            comments: [],
+            retweet: 1,
+            likes: 78,
+            watched: 180,
+          },
+          {
+            postId: 5,
+            user: User[4],
+            content: `검색 결과1 ${q}, 검색어로 검색하셨습니다.`,
+            images: [],
+            createdAt: "",
+            comments: [],
+            retweet: 77,
+            likes: 88,
+            watched: 188,
+          },
+        ]);
+      }
+    }
   }),
   http.get("/api/users/:userId/posts", ({ request, params }): StrictResponse<any> => {
     const { userId } = params;

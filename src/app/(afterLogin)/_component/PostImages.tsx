@@ -84,7 +84,7 @@ export default function PostImages({ post }: { post: IPost }) {
 
 const ImageContainer = styled.div`
   box-sizing: border-box;
-  width: 500px;
+  width: 502px;
   height: 502px;
   position: relative;
   margin-top: 12px;

@@ -12,14 +12,10 @@ type Props = {
 };
 
 export default function SearchPostDisplay({ searchParams }: Props) {
-  //   console.log(searchParams);
-
   const { data } = useQuery<IPost[], Object, IPost[], [_1: string, _2: string, searchParams: { q: string; pf?: string; f?: string }]>({
     queryKey: ["posts", "search", searchParams],
     queryFn: getSearchResults,
   });
-  console.log("in searchbar", data);
-  //   return null;
 
   return (
     <>

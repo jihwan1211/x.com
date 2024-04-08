@@ -15,7 +15,7 @@ type Props = {
 export default async function PhotoModal({ params }: Props) {
   // id는 postId
   const { username, id, photoId } = params;
-  console.log("modal params:", params);
+
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
     queryKey: ["post", username, id],
