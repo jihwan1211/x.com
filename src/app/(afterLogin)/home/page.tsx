@@ -5,14 +5,17 @@ import HomeTab from "./_component/HomeTab";
 import HomeTabProvider from "./_component/HomeTabProvider";
 
 import PostForm from "./_component/PostForm";
-import { getRecommendPosts } from "./_lib/getRecommendPosts";
+import getRecommendPosts from "./_lib/getRecommendPosts";
 import PostDisplay from "./_component/PostDisplay";
 
 export default async function Home() {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery({
+  await queryClient.prefetchInfiniteQuery({
     queryKey: ["posts", "recommends"],
     queryFn: getRecommendPosts,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, pages) => lastPage.at(-1)?.postId,
+    pages: 1,
   });
 
   return (

@@ -1,12 +1,17 @@
 "use client";
+import { useRouter } from "next/navigation";
 import styled from "styled-components";
-import Link from "next/link";
 
 import { trend as ITrend } from "@/model/Trend";
 
 export default function Trend({ trend }: { trend: ITrend }) {
+  const router = useRouter();
+  const onClickTrend = () => {
+    localStorage.setItem("searchTabMenu", "hot");
+    router.push(`/search?q=${trend.title}&src=trend_click&vertical=trends`);
+  };
   return (
-    <TrendContainer href={`/search?q=${trend.title}&src=trend_click&vertical=trends`}>
+    <TrendContainer onClick={onClickTrend}>
       <div>
         only for X
         <div>
@@ -23,7 +28,7 @@ export default function Trend({ trend }: { trend: ITrend }) {
   );
 }
 
-const TrendContainer = styled(Link)`
+const TrendContainer = styled.div`
   box-sizing: border-box;
   padding: 12px 16px;
   text-decoration: none;
