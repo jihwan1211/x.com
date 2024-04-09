@@ -115,12 +115,14 @@ export const handlers = [
     });
   }),
   http.get("/api/postRecommends", ({ request }) => {
+    const url = new URL(request.url);
+    const cursor = Number(url.searchParams.get("cursor"));
     console.log("http request!");
     return HttpResponse.json([
       {
-        postId: 1,
+        postId: cursor + 1,
         user: User[0],
-        content: "나는 첫번째 추천 포스트입니다.",
+        content: `${cursor + 1} 나는 첫번째 추천 포스트입니다.`,
         images: [{ imageId: 1, url: faker.image.urlLoremFlickr() }],
         createdAt: "",
         comments: [],
@@ -129,7 +131,7 @@ export const handlers = [
         watched: 123,
       },
       {
-        postId: 2,
+        postId: cursor + 2,
         user: User[1],
         content: "나는 두번째 추천 포스트입니다.",
         images: [
@@ -145,7 +147,7 @@ export const handlers = [
         watched: 12,
       },
       {
-        postId: 30,
+        postId: cursor + 3,
         user: User[2],
         content: "나는 세번째 추천 포스트입니다.",
         images: [
@@ -160,7 +162,7 @@ export const handlers = [
         watched: 100034,
       },
       {
-        postId: 4,
+        postId: cursor + 4,
         user: User[3],
         content: "나는 네번째 추천 포스트입니다.",
         images: [
@@ -174,7 +176,7 @@ export const handlers = [
         watched: 180,
       },
       {
-        postId: 5,
+        postId: cursor + 5,
         user: User[4],
         content: "나는 사진을 올리지 않았지요.",
         images: [],
