@@ -1,31 +1,22 @@
-import { QueryClient, HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { Suspense } from "react";
 
 import { Container } from "./_component/styled";
 import HomeTab from "./_component/HomeTab";
 import HomeTabProvider from "./_component/HomeTabProvider";
-
 import PostForm from "./_component/PostForm";
-import getRecommendPosts from "./_lib/getRecommendPosts";
-import PostDisplay from "./_component/PostDisplay";
 
-export default async function Home() {
-  const queryClient = new QueryClient();
-  await queryClient.prefetchInfiniteQuery({
-    queryKey: ["posts", "recommends"],
-    queryFn: getRecommendPosts,
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, pages) => lastPage.at(-1)?.postId,
-    pages: 1,
-  });
+import SuspenseDecider from "./_component/SuspenseDecider";
 
+export default function Home() {
   return (
     <Container>
       <HomeTabProvider>
-        <HydrationBoundary state={dehydrate(queryClient)}>
-          <HomeTab></HomeTab>
-          <PostForm></PostForm>
-          <PostDisplay />
-        </HydrationBoundary>
+        <HomeTab></HomeTab>
+        <PostForm />
+        <Suspense fallback={<p>snkasjndfasnksandfknsadfnassakjnsk</p>}>
+          {/* @ts-expect-error Server Component */}
+          <SuspenseDecider />
+        </Suspense>
       </HomeTabProvider>
     </Container>
   );

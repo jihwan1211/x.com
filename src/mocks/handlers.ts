@@ -133,7 +133,7 @@ export const handlers = [
       {
         postId: cursor + 2,
         user: User[1],
-        content: "나는 두번째 추천 포스트입니다.",
+        content: `${cursor + 2}나는 두번째 추천 포스트입니다.`,
         images: [
           { imageId: 1, url: faker.image.urlLoremFlickr() },
           { imageId: 2, url: faker.image.urlLoremFlickr() },
@@ -149,7 +149,7 @@ export const handlers = [
       {
         postId: cursor + 3,
         user: User[2],
-        content: "나는 세번째 추천 포스트입니다.",
+        content: `${cursor + 3}나는 세번째 추천 포스트입니다.`,
         images: [
           { imageId: 1, url: faker.image.urlLoremFlickr() },
           { imageId: 2, url: faker.image.urlLoremFlickr() },
@@ -164,7 +164,7 @@ export const handlers = [
       {
         postId: cursor + 4,
         user: User[3],
-        content: "나는 네번째 추천 포스트입니다.",
+        content: `${cursor + 4}나는 네번째 추천 포스트입니다.`,
         images: [
           { imageId: 1, url: faker.image.urlLoremFlickr() },
           { imageId: 2, url: faker.image.urlLoremFlickr() },
@@ -178,7 +178,7 @@ export const handlers = [
       {
         postId: cursor + 5,
         user: User[4],
-        content: "나는 사진을 올리지 않았지요.",
+        content: ` ${cursor + 5}나는 사진을 올리지 않았지요.`,
         images: [],
         createdAt: "",
         comments: [],
