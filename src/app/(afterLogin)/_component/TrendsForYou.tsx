@@ -1,22 +1,24 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { Session } from "@auth/core/types";
-
+import { useSelectedLayoutSegment } from "next/navigation";
 import styled from "styled-components";
-
 import getTrends from "../_lib/getTrends";
-
-import { trend as ITrend } from "@/model/Trend";
-
 import Trend from "./Trend";
+import { trend as ITrend } from "@/model/Trend";
 
 type Props = {
   me: Session | null;
 };
 
 export default function TrendsForYou({ me }: Props) {
-  const { data } = useQuery({ queryKey: ["trends"], queryFn: getTrends, enabled: !!me?.user });
+  // enabled: !!me?.user <- useSuspenseQuery에는 이 옵션이 없는듯?
+  const { data } = useSuspenseQuery({ queryKey: ["trends"], queryFn: getTrends });
+
+  const segment = useSelectedLayoutSegment();
+
+  if (segment === "messages" || "explore") return null;
 
   return (
     <Container>

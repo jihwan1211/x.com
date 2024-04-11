@@ -1,9 +1,5 @@
-export default function Message() {
-  return null;
-  // <Container>
+import Message from "./page";
 
-  // <ChatRoomContainer>
-  //   <SelectChat></SelectChat>
-  // </ChatRoomContainer>
-  //{/* </Container> */}
+export default function Default() {
+  return <Message />;
 }

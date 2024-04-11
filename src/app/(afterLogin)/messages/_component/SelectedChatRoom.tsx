@@ -13,8 +13,12 @@ import Chat from "./Chat";
 dayjs.locale("ko");
 dayjs.extend(relativeTime);
 
-export default function SelectedChatRoom() {
-  faker.seed(11123);
+type Prop = {
+  params: { chatId: string };
+};
+
+export default function SelectedChatRoom({ params }: Prop) {
+  faker.seed(Number(params.chatId));
   const dummyData = {
     userId: faker.string.uuid(),
     userName: faker.internet.userName(),

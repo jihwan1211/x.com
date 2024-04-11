@@ -1,7 +1,5 @@
-"use client";
-
-import styled from "styled-components";
+import SelectChat from "../_component/SelectChat";
 
 export default function ChatPage() {
-  return <div>모달 채팅 창</div>;
+  return <SelectChat />;
 }
