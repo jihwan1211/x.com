@@ -1,14 +1,14 @@
 import { ReactNode } from "react";
 
-import { ChatRoomContainer, Container } from "./page";
-export default function MessageLayout({ children, messageList, chatSelect }: { children: ReactNode; messageList: ReactNode; chatSelect: ReactNode }) {
+import { MessageMain, ChatRoomContainer, Container } from "./style";
+
+export default function MessageLayout({ children, chatSelect }: { children: ReactNode; chatSelect: ReactNode }) {
   return (
-    <div>
+    <MessageMain>
       <Container>
-        {/* {children} */}
-        {messageList}
+        {children}
         <ChatRoomContainer>{chatSelect}</ChatRoomContainer>
       </Container>
-    </div>
+    </MessageMain>
   );
 }

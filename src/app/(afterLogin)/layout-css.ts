@@ -52,3 +52,48 @@ export const MainLogo = styled.div`
     border-radius: 50%;
   }
 `;
+
+export const RightSection = styled.main`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 600px;
+  height: 100dvh;
+
+  @media (min-width: 1024px) {
+    width: 1050px;
+  }
+`;
+
+export const RightSectionInner = styled.div`
+  height: 100%;
+  width: 600px;
+
+  display: flex;
+  justify-content: space-between;
+
+  @media (min-width: 1024px) {
+    width: 990px;
+  }
+`;
+
+export const Main = styled.div`
+  box-sizing: border-box;
+  width: 600px;
+  height: 200dvh;
+`;
+
+export const Right = styled.div`
+  display: none;
+
+  @media (min-width: 1024px) {
+    display: flex;
+    width: 350px;
+    height: 100dvh;
+    box-sizing: border-box;
+    margin-right: 10px;
+    /* position: relative; */
+
+    flex-direction: column;
+  }
+`;

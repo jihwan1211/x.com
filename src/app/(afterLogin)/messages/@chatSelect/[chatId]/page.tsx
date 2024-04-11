@@ -1,9 +1,9 @@
-"use client";
-
-import styled from "styled-components";
-
 import SelectedChatRoom from "../../_component/SelectedChatRoom";
 
-export default function ChatPage() {
-  return <SelectedChatRoom></SelectedChatRoom>;
+type Prop = {
+  params: { chatId: string };
+};
+
+export default function ChatPage({ params }: Prop) {
+  return <SelectedChatRoom params={params} />;
 }

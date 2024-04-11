@@ -1,13 +1,18 @@
 import Link from "next/link";
 import React from "react";
 import { auth } from "@/auth";
+import { Suspense } from "react";
 
 import RQProvider from "./_component/RQProvider";
 
 import Nav from "./_component/nav";
 import NavProfile from "./_component/nav-profile";
-import LayoutRightSection from "./_component/right-seciton";
-import { Container, Header, FixedHeader, MainLogo } from "./layout-css";
+import { Container, Header, FixedHeader, MainLogo, RightSection, RightSectionInner, Main, Right } from "./layout-css";
+import MainSearchBar from "./_component/MainSearchBar";
+import SearchFilter from "./search/_component/SearchFilter";
+import TrendsForYou from "./_component/TrendsForYou";
+import WhoToFollow from "./_component/WhoToFollow";
+import Loading from "./_component/LoadingUI";
 
 const AfterLoginLayout = async ({
   children,
@@ -36,7 +41,21 @@ const AfterLoginLayout = async ({
             <NavProfile me={session} />
           </FixedHeader>
         </Header>
-        <LayoutRightSection me={session}>{children}</LayoutRightSection>
+        <RightSection>
+          <RightSectionInner>
+            <Main>{children}</Main>
+            <Right>
+              <MainSearchBar />
+              <SearchFilter />
+              <Suspense fallback={<Loading />}>
+                <TrendsForYou me={session} />
+              </Suspense>
+              <Suspense fallback={<Loading />}>
+                <WhoToFollow me={session} />
+              </Suspense>
+            </Right>
+          </RightSectionInner>
+        </RightSection>
         {modal}
       </RQProvider>
     </Container>

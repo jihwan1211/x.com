@@ -3,12 +3,11 @@
 import { ReactNode } from "react";
 import { Session } from "@auth/core/types";
 import styled from "styled-components";
-import { usePathname, useSelectedLayoutSegment } from "next/navigation";
 
-import FixedSearchBar from "./SearchBar";
 import TrendsForYou from "./TrendsForYou";
 import WhoToFollow from "./WhoToFollow";
 import SearchFilter from "../search/_component/SearchFilter";
+import MainSearchBar from "./MainSearchBar";
 
 type Props = {
   children: ReactNode;
@@ -16,28 +15,19 @@ type Props = {
 };
 
 export default function LayoutRightSection({ children, me }: Props) {
-  const segment = useSelectedLayoutSegment();
-  const pathname = usePathname();
-
-  if (segment === "messages") return <MessageMain>{children}</MessageMain>;
-  else
-    return (
-      <RightSection>
-        <RightSectionInner>
-          <Main>{children}</Main>
-          <Right>
-            {pathname === "/search" || pathname === "/explore" ? null : (
-              <SearchConatiner>
-                <FixedSearchBar></FixedSearchBar>
-              </SearchConatiner>
-            )}
-            <SearchFilter />
-            {pathname === "/explore" ? null : <TrendsForYou me={me}></TrendsForYou>}
-            <WhoToFollow></WhoToFollow>
-          </Right>
-        </RightSectionInner>
-      </RightSection>
-    );
+  return (
+    <RightSection>
+      <RightSectionInner>
+        <Main>{children}</Main>
+        <Right>
+          <MainSearchBar />
+          <SearchFilter />
+          {/* suspense 사용해야 하는 곳 */}
+          <TrendsForYou me={me} />
+        </Right>
+      </RightSectionInner>
+    </RightSection>
+  );
 }
 
 const RightSection = styled.main`
@@ -83,16 +73,6 @@ const Right = styled.div`
 
     flex-direction: column;
   }
-`;
-
-const SearchConatiner = styled.div`
-  display: flex;
-
-  justify-content: start;
-  width: 350px;
-  height: 53px;
-  box-sizing: border-box;
-  margin-bottom: 20px;
 `;
 
 const MessageMain = styled.div`

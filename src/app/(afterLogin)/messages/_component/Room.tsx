@@ -20,8 +20,11 @@ type isSelectedChat = {
   $isSelected: boolean;
 };
 
-export default function Room() {
-  faker.seed(11123);
+type Prop = {
+  seed: number;
+};
+export default function Room({ seed }: Prop) {
+  faker.seed(seed);
   const dummyData = {
     userId: faker.string.uuid(),
     userName: faker.internet.userName(),
@@ -41,7 +44,7 @@ export default function Room() {
 
   const router = useRouter();
   const onClickMessage = () => {
-    router.push(`/messages/${dummyData.chatId}`);
+    router.push(`/messages/${seed}`);
   };
   return (
     <Container $isSelected={isSelected} onClickCapture={onClickMessage}>

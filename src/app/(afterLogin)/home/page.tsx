@@ -6,6 +6,7 @@ import HomeTabProvider from "./_component/HomeTabProvider";
 import PostForm from "./_component/PostForm";
 
 import SuspenseDecider from "./_component/SuspenseDecider";
+import Loading from "../_component/LoadingUi";
 
 export default function Home() {
   return (
@@ -13,7 +14,7 @@ export default function Home() {
       <HomeTabProvider>
         <HomeTab></HomeTab>
         <PostForm />
-        <Suspense fallback={<p>snkasjndfasnksandfknsadfnassakjnsk</p>}>
+        <Suspense fallback={<Loading />}>
           {/* @ts-expect-error Server Component */}
           <SuspenseDecider />
         </Suspense>
