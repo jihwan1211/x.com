@@ -1,17 +1,13 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-
+import { useSuspenseQuery } from "@tanstack/react-query";
 import styled from "styled-components";
-
+import Trend from "../../_component/Trend";
 import getTrends from "../../_lib/getTrends";
-
 import { trend as ITrend } from "@/model/Trend";
 
-import Trend from "../../_component/Trend";
-
 export default function TrendsForYou() {
-  const { data } = useQuery({ queryKey: ["trends"], queryFn: getTrends });
+  const { data } = useSuspenseQuery({ queryKey: ["trends"], queryFn: getTrends });
 
   return (
     <Container>

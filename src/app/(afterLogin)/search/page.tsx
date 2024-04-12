@@ -16,9 +16,12 @@ export default function Search({ searchParams }: Props) {
   // const q = searchParams.get("q");
 
   const queryClient = new QueryClient();
-  queryClient.prefetchQuery({
+  queryClient.prefetchInfiniteQuery({
     queryKey: ["posts", "search", searchParams],
     queryFn: getSearchResult,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage.at(-1)?.postId,
+    pages: 3,
   });
   return (
     <Container>
