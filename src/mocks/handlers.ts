@@ -263,6 +263,8 @@ export const handlers = [
   http.get("/api/search", ({ request, params }) => {
     const url = new URL(request.url);
     const searchParams = url.searchParams;
+    const cursor = Number(url.searchParams.get("cursor"));
+    console.log("http request!");
 
     const q: string | null = searchParams.get("q");
     let pf: string | null = null;
@@ -283,9 +285,9 @@ export const handlers = [
       if (pf && lf) {
         return HttpResponse.json([
           {
-            postId: 3,
+            postId: cursor + 1,
             user: User[2],
-            content: `검색어 ${q}, 내가 팔로우 하는 사람들 pf : ${pf}, 내위치 주변 lf : ${lf}`,
+            content: `${cursor + 1} 검색어 ${q}, 내가 팔로우 하는 사람들 pf : ${pf}, 내위치 주변 lf : ${lf}`,
             images: [
               { imageId: 1, url: faker.image.urlLoremFlickr() },
               { imageId: 2, url: faker.image.urlLoremFlickr() },
@@ -298,9 +300,9 @@ export const handlers = [
             watched: 100034,
           },
           {
-            postId: 4,
+            postId: cursor + 2,
             user: User[3],
-            content: `검색어 ${q}, 내가 팔로우 하는 사람들 pf : ${pf}, 내위치 주변 lf : ${lf}`,
+            content: `${cursor + 2} 검색어 ${q}, 내가 팔로우 하는 사람들 pf : ${pf}, 내위치 주변 lf : ${lf}`,
             images: [
               { imageId: 1, url: faker.image.urlLoremFlickr() },
               { imageId: 2, url: faker.image.urlLoremFlickr() },
@@ -315,9 +317,9 @@ export const handlers = [
       } else if (pf) {
         return HttpResponse.json([
           {
-            postId: 3,
+            postId: cursor + 1,
             user: User[2],
-            content: `검색어 ${q}, 내가 팔로우 하는 사람들 pf : ${pf}`,
+            content: `${cursor + 1} 검색어 ${q}, 내가 팔로우 하는 사람들 pf : ${pf}`,
             images: [
               { imageId: 1, url: faker.image.urlLoremFlickr() },
               { imageId: 2, url: faker.image.urlLoremFlickr() },
@@ -330,9 +332,9 @@ export const handlers = [
             watched: 100034,
           },
           {
-            postId: 4,
+            postId: cursor + 2,
             user: User[3],
-            content: `검색어 ${q}, 내가 팔로우 하는 사람들 pf : ${pf}`,
+            content: `${cursor + 2} 검색어 ${q}, 내가 팔로우 하는 사람들 pf : ${pf}`,
             images: [
               { imageId: 1, url: faker.image.urlLoremFlickr() },
               { imageId: 2, url: faker.image.urlLoremFlickr() },
@@ -347,9 +349,9 @@ export const handlers = [
       } else if (lf) {
         return HttpResponse.json([
           {
-            postId: 3,
+            postId: cursor + 1,
             user: User[2],
-            content: `검색어 ${q}, 내위치 주변 lf : ${lf}`,
+            content: `${cursor + 1} 검색어 ${q}, 내위치 주변 lf : ${lf}`,
             images: [
               { imageId: 1, url: faker.image.urlLoremFlickr() },
               { imageId: 2, url: faker.image.urlLoremFlickr() },
@@ -362,9 +364,9 @@ export const handlers = [
             watched: 100034,
           },
           {
-            postId: 4,
+            postId: cursor + 2,
             user: User[3],
-            content: `검색어 ${q}, 내위치 주변 lf : ${lf}`,
+            content: `${cursor + 2} 검색어 ${q}, 내위치 주변 lf : ${lf}`,
             images: [
               { imageId: 1, url: faker.image.urlLoremFlickr() },
               { imageId: 2, url: faker.image.urlLoremFlickr() },
@@ -379,9 +381,9 @@ export const handlers = [
       } else {
         return HttpResponse.json([
           {
-            postId: 1,
+            postId: cursor + 1,
             user: User[0],
-            content: `검색어 :  ${q}, 최신포스트 1 f=${f} `,
+            content: `${cursor + 1} 검색어 :  ${q}, 최신포스트 1 f=${f} `,
             images: [{ imageId: 1, url: faker.image.urlLoremFlickr() }],
             createdAt: "",
             comments: [],
@@ -390,9 +392,9 @@ export const handlers = [
             watched: 123,
           },
           {
-            postId: 2,
+            postId: cursor + 2,
             user: User[1],
-            content: `검색어 :  ${q}, 최신포스트 2 f=${f} `,
+            content: `${cursor + 2} 검색어 :  ${q}, 최신포스트 2 f=${f} `,
             images: [
               { imageId: 1, url: faker.image.urlLoremFlickr() },
               { imageId: 2, url: faker.image.urlLoremFlickr() },
@@ -410,9 +412,9 @@ export const handlers = [
     } else if (f === "user") {
       return HttpResponse.json([
         {
-          postId: 1,
+          postId: cursor + 1,
           user: User[0],
-          content: `검색어 :  ${q}, user포스트 1 f=${f} `,
+          content: `${cursor + 1} 검색어 :  ${q}, user포스트 1 f=${f} `,
           images: [{ imageId: 1, url: faker.image.urlLoremFlickr() }],
           createdAt: "",
           comments: [],
@@ -421,9 +423,9 @@ export const handlers = [
           watched: 123,
         },
         {
-          postId: 2,
+          postId: cursor + 2,
           user: User[1],
-          content: `검색어 :  ${q}, user포스트 2 f=${f} `,
+          content: `${cursor + 2} 검색어 :  ${q}, user포스트 2 f=${f} `,
           images: [
             { imageId: 1, url: faker.image.urlLoremFlickr() },
             { imageId: 2, url: faker.image.urlLoremFlickr() },
@@ -440,9 +442,9 @@ export const handlers = [
     } else if (f === "media") {
       return HttpResponse.json([
         {
-          postId: 1,
+          postId: cursor + 1,
           user: User[0],
-          content: `검색어 :  ${q}, media 1 f=${f} `,
+          content: `${cursor + 1} 검색어 :  ${q}, media 1 f=${f} `,
           images: [{ imageId: 1, url: faker.image.urlLoremFlickr() }],
           createdAt: "",
           comments: [],
@@ -451,9 +453,9 @@ export const handlers = [
           watched: 123,
         },
         {
-          postId: 2,
+          postId: cursor + 2,
           user: User[1],
-          content: `검색어 :  ${q}, media 2 f=${f} `,
+          content: `${cursor + 2} 검색어 :  ${q}, media 2 f=${f} `,
           images: [
             { imageId: 1, url: faker.image.urlLoremFlickr() },
             { imageId: 2, url: faker.image.urlLoremFlickr() },
@@ -470,9 +472,9 @@ export const handlers = [
     } else if (f === "list") {
       return HttpResponse.json([
         {
-          postId: 1,
+          postId: cursor + 1,
           user: User[0],
-          content: `검색어 :  ${q}, list 1 f=${f} `,
+          content: `${cursor + 1} 검색어 :  ${q}, list 1 f=${f} `,
           images: [{ imageId: 1, url: faker.image.urlLoremFlickr() }],
           createdAt: "",
           comments: [],
@@ -481,9 +483,9 @@ export const handlers = [
           watched: 123,
         },
         {
-          postId: 2,
+          postId: cursor + 2,
           user: User[1],
-          content: `검색어 :  ${q}, list 2 f=${f} `,
+          content: `${cursor + 2} 검색어 :  ${q}, list 2 f=${f} `,
           images: [
             { imageId: 1, url: faker.image.urlLoremFlickr() },
             { imageId: 2, url: faker.image.urlLoremFlickr() },
@@ -501,9 +503,9 @@ export const handlers = [
       if (searchParams.get("src") === "trend_click") {
         return HttpResponse.json([
           {
-            postId: 1,
+            postId: cursor + 1,
             user: User[0],
-            content: `검색 결과1 ${q}, trends for you를 통해 검색하셨습니다.`,
+            content: `${cursor + 1} 검색 결과1 ${q}, trends for you를 통해 검색하셨습니다.`,
             images: [{ imageId: 1, url: faker.image.urlLoremFlickr() }],
             createdAt: "",
             comments: [],
@@ -512,9 +514,9 @@ export const handlers = [
             watched: 123,
           },
           {
-            postId: 2,
+            postId: cursor + 2,
             user: User[1],
-            content: `검색 결과1 ${q}, trends for you를 통해 검색하셨습니다.`,
+            content: `${cursor + 2} 검색 결과1 ${q}, trends for you를 통해 검색하셨습니다.`,
             images: [
               { imageId: 1, url: faker.image.urlLoremFlickr() },
               { imageId: 2, url: faker.image.urlLoremFlickr() },
@@ -528,9 +530,9 @@ export const handlers = [
             watched: 12,
           },
           {
-            postId: 3,
+            postId: cursor + 3,
             user: User[2],
-            content: `검색 결과1 ${q}, trends for you를 통해 검색하셨습니다.`,
+            content: `${cursor + 3} 검색 결과1 ${q}, trends for you를 통해 검색하셨습니다.`,
             images: [
               { imageId: 1, url: faker.image.urlLoremFlickr() },
               { imageId: 2, url: faker.image.urlLoremFlickr() },
@@ -543,9 +545,9 @@ export const handlers = [
             watched: 100034,
           },
           {
-            postId: 4,
+            postId: cursor + 4,
             user: User[3],
-            content: `검색 결과1 ${q}, trends for you를 통해 검색하셨습니다.`,
+            content: `${cursor + 4} 검색 결과1 ${q}, trends for you를 통해 검색하셨습니다.`,
             images: [
               { imageId: 1, url: faker.image.urlLoremFlickr() },
               { imageId: 2, url: faker.image.urlLoremFlickr() },
@@ -557,9 +559,9 @@ export const handlers = [
             watched: 180,
           },
           {
-            postId: 5,
+            postId: cursor + 5,
             user: User[4],
-            content: `검색 결과1 ${q}, trends for you를 통해 검색하셨습니다.`,
+            content: `${cursor + 5} 검색 결과1 ${q}, trends for you를 통해 검색하셨습니다.`,
             images: [],
             createdAt: "",
             comments: [],
@@ -571,9 +573,9 @@ export const handlers = [
       } else {
         return HttpResponse.json([
           {
-            postId: 1,
+            postId: cursor + 1,
             user: User[0],
-            content: `검색 결과1 ${q}, 검색창로 검색하셨습니다.`,
+            content: `${cursor + 1} 검색 결과1 ${q}, 검색창로 검색하셨습니다.`,
             images: [{ imageId: 1, url: faker.image.urlLoremFlickr() }],
             createdAt: "",
             comments: [],
@@ -582,9 +584,9 @@ export const handlers = [
             watched: 123,
           },
           {
-            postId: 2,
+            postId: cursor + 2,
             user: User[1],
-            content: `검색 결과1 ${q}, 검색창로 검색하셨습니다.`,
+            content: `${cursor + 2} 검색 결과1 ${q}, 검색창로 검색하셨습니다.`,
             images: [
               { imageId: 1, url: faker.image.urlLoremFlickr() },
               { imageId: 2, url: faker.image.urlLoremFlickr() },
@@ -598,9 +600,9 @@ export const handlers = [
             watched: 12,
           },
           {
-            postId: 3,
+            postId: cursor + 3,
             user: User[2],
-            content: `검색 결과1 ${q}, 검색창로 검색하셨습니다.`,
+            content: `${cursor + 3} 검색 결과1 ${q}, 검색창로 검색하셨습니다.`,
             images: [
               { imageId: 1, url: faker.image.urlLoremFlickr() },
               { imageId: 2, url: faker.image.urlLoremFlickr() },
@@ -613,9 +615,9 @@ export const handlers = [
             watched: 100034,
           },
           {
-            postId: 4,
+            postId: cursor + 4,
             user: User[3],
-            content: `검색 결과1 ${q}, 검색창로 검색하셨습니다.`,
+            content: `${cursor + 4} 검색 결과1 ${q}, 검색창로 검색하셨습니다.`,
             images: [
               { imageId: 1, url: faker.image.urlLoremFlickr() },
               { imageId: 2, url: faker.image.urlLoremFlickr() },
@@ -627,9 +629,9 @@ export const handlers = [
             watched: 180,
           },
           {
-            postId: 5,
+            postId: cursor + 5,
             user: User[4],
-            content: `검색 결과1 ${q}, 검색어로 검색하셨습니다.`,
+            content: `${cursor + 5} 검색 결과1 ${q}, 검색어로 검색하셨습니다.`,
             images: [],
             createdAt: "",
             comments: [],

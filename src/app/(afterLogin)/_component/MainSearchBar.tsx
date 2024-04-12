@@ -6,7 +6,9 @@ import FixedSearchBar from "./SearchBar";
 
 export default function MainSearchBar() {
   const segment = useSelectedLayoutSegment();
-  if (segment === "messages" || "search" || "explore") return null;
+  console.log("segment : ", segment);
+
+  if (segment === ("messages" || "explore" || "search")) return null;
 
   return (
     <SearchConatiner>

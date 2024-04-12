@@ -18,7 +18,8 @@ export default function TrendsForYou({ me }: Props) {
 
   const segment = useSelectedLayoutSegment();
 
-  if (segment === "messages" || "explore") return null;
+  if (segment === ("messages" || "explore")) return null;
+  // if (segment === "messages" || segment === "explore") return null;
 
   return (
     <Container>

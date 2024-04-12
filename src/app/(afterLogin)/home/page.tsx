@@ -6,7 +6,7 @@ import HomeTabProvider from "./_component/HomeTabProvider";
 import PostForm from "./_component/PostForm";
 
 import SuspenseDecider from "./_component/SuspenseDecider";
-import Loading from "../_component/LoadingUi";
+import Loading from "../_component/LoadingUI";
 
 export default function Home() {
   return (
