@@ -7,7 +7,7 @@ import { useInView } from "react-intersection-observer";
 import getRecommendPosts from "../_lib/getRecommendPosts";
 
 import Post from "../../_component/Post";
-import { IPost } from "@/model/Post";
+import { Post as IPost } from "@/model/Post";
 
 export default function RecommendPosts() {
   const { isFetching, fetchNextPage, hasNextPage, data } = useInfiniteQuery<IPost[], Object, InfiniteData<IPost[]>, [_1: string, _2: string], number>({

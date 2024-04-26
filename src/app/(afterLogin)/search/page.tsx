@@ -12,7 +12,7 @@ type Props = { searchParams: { q: string; f?: string; pf?: string } };
 // 서버 컴포넌트에서 제공하는 기능.
 // client component에서는 useSearchParams등의 훅을 사용해야함.
 export default function Search({ searchParams }: Props) {
-  // console.log("searchParams!", searchParams);
+  console.log("searchParams!", searchParams);
   // const q = searchParams.get("q");
 
   const queryClient = new QueryClient();

@@ -8,7 +8,7 @@ export default function Trend({ trend }: { trend: ITrend }) {
   const router = useRouter();
   const onClickTrend = () => {
     localStorage.setItem("searchTabMenu", "hot");
-    router.push(`/search?q=${trend.title}&src=trend_click&vertical=trends`);
+    router.push(`/search?q=${encodeURIComponent(trend.title)}&src=trend_click&vertical=trends`);
   };
   return (
     <TrendContainer onClick={onClickTrend}>

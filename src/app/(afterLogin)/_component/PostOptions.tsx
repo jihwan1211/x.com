@@ -1,19 +1,176 @@
 "use client";
-
+import { useQueryClient, useMutation, InfiniteData } from "@tanstack/react-query";
 import { useState, MouseEventHandler } from "react";
+import { useSession } from "next-auth/react";
 import styled from "styled-components";
 import Link from "next/link";
-import { IPost } from "@/model/Post";
+import { Post as IPost } from "@/model/Post";
 
-export default function PostOptions({ post }: { post: IPost }) {
-  const [like, setLike] = useState(false);
+type Props = {
+  post: IPost;
+  // session 타입이 뭐지?
+};
+
+export default function PostOptions({ post }: Props) {
+  const { data: session } = useSession();
+  const calculateInitialLike = (): boolean => {
+    return !!post.Hearts.find((ele) => ele.userId === session?.user?.email);
+  };
+
+  const [like, setLike] = useState(calculateInitialLike);
   const [bookmark, setBookmark] = useState(false);
+  const queryClient = useQueryClient();
+
+  const heart = useMutation({
+    mutationFn: () => {
+      return fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${post.postId}/heart`, {
+        method: "post",
+        credentials: "include",
+      });
+    },
+    onMutate() {
+      const queryCache = queryClient.getQueryCache();
+      const postQueryCache = queryCache.findAll().find((ele) => ele.queryKey[0] === "posts");
+      if (postQueryCache) {
+        const postQueryKey = postQueryCache.queryKey;
+        const postQueryData: IPost | InfiniteData<IPost[]> | undefined = queryClient.getQueryData(postQueryKey);
+
+        if (postQueryData && "pages" in postQueryData) {
+          const targetPost = postQueryData.pages.flat().find((ele) => ele.postId === post.postId);
+          if (targetPost) {
+            const targetIndex = postQueryData.pages.findIndex((ele) => ele.includes(targetPost));
+            const targetPostIndex = postQueryData.pages[targetIndex].findIndex((ele) => ele.postId === post.postId);
+
+            const shallow = { ...postQueryData };
+            shallow.pages = [...postQueryData.pages];
+            shallow.pages[targetIndex] = [...postQueryData.pages[targetIndex]];
+            shallow.pages[targetIndex][targetPostIndex] = {
+              ...postQueryData.pages[targetIndex][targetPostIndex],
+            };
+            shallow.pages[targetIndex][targetPostIndex].Hearts.push({ userId: session?.user?.email as string });
+            shallow.pages[targetIndex][targetPostIndex]._count.Hearts += 1;
+
+            queryClient.setQueryData(postQueryKey, shallow);
+          }
+          // 특정 유저 게시글 조회의 경우는 나중에 구현
+        }
+      }
+    },
+    onError() {
+      const queryCache = queryClient.getQueryCache();
+      const postQueryCache = queryCache.findAll().find((ele) => ele.queryKey[0] === "posts");
+      if (postQueryCache) {
+        const postQueryKey = postQueryCache.queryKey;
+        const postQueryData: IPost | InfiniteData<IPost[]> | undefined = queryClient.getQueryData(postQueryKey);
+
+        if (postQueryData && "pages" in postQueryData) {
+          const targetPost = postQueryData.pages.flat().find((ele) => ele.postId === post.postId);
+          if (targetPost) {
+            const targetIndex = postQueryData.pages.findIndex((ele) => ele.includes(targetPost));
+            const targetPostIndex = postQueryData.pages[targetIndex].findIndex((ele) => ele.postId === post.postId);
+            const targetUserIndex = postQueryData.pages[targetIndex][targetPostIndex].Hearts.findIndex((ele) => ele.userId === session?.user?.email);
+
+            const shallow = { ...postQueryData };
+            shallow.pages = [...postQueryData.pages];
+            shallow.pages[targetIndex] = [...postQueryData.pages[targetIndex]];
+            shallow.pages[targetIndex][targetPostIndex] = {
+              ...postQueryData.pages[targetIndex][targetPostIndex],
+            };
+            const newArr = postQueryData.pages[targetIndex][targetPostIndex].Hearts.splice(targetUserIndex, 1);
+            shallow.pages[targetIndex][targetPostIndex].Hearts = [...newArr];
+            shallow.pages[targetIndex][targetPostIndex]._count.Hearts -= 1;
+
+            queryClient.setQueryData(postQueryKey, shallow);
+          }
+          // 특정 유저 게시글 조회의 경우는 나중에 구현
+        }
+      }
+    },
+    onSettled() {},
+  });
+
+  const unHeart = useMutation({
+    mutationFn: () => {
+      return fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${post.postId}/heart`, {
+        method: "delete",
+        credentials: "include",
+      });
+    },
+    onMutate() {
+      const queryCache = queryClient.getQueryCache();
+      const postQueryCache = queryCache.findAll().find((ele) => ele.queryKey[0] === "posts");
+      if (postQueryCache) {
+        const postQueryKey = postQueryCache.queryKey;
+        const postQueryData: IPost | InfiniteData<IPost[]> | undefined = queryClient.getQueryData(postQueryKey);
+
+        if (postQueryData && "pages" in postQueryData) {
+          const targetPost = postQueryData.pages.flat().find((ele) => ele.postId === post.postId);
+          if (targetPost) {
+            const targetIndex = postQueryData.pages.findIndex((ele) => ele.includes(targetPost));
+            const targetPostIndex = postQueryData.pages[targetIndex].findIndex((ele) => ele.postId === post.postId);
+            const targetUserIndex = postQueryData.pages[targetIndex][targetPostIndex].Hearts.findIndex((ele) => ele.userId === session?.user?.email);
+
+            const shallow = { ...postQueryData };
+            shallow.pages = [...postQueryData.pages];
+            shallow.pages[targetIndex] = [...postQueryData.pages[targetIndex]];
+            shallow.pages[targetIndex][targetPostIndex] = {
+              ...postQueryData.pages[targetIndex][targetPostIndex],
+            };
+            const newArr = postQueryData.pages[targetIndex][targetPostIndex].Hearts.splice(targetUserIndex, 1);
+            shallow.pages[targetIndex][targetPostIndex].Hearts = [...newArr];
+            shallow.pages[targetIndex][targetPostIndex]._count.Hearts -= 1;
+
+            queryClient.setQueryData(postQueryKey, shallow);
+          }
+          // 특정 유저 게시글 조회의 경우는 나중에 구현
+        }
+      }
+    },
+    onError() {
+      const queryCache = queryClient.getQueryCache();
+      const postQueryCache = queryCache.findAll().find((ele) => ele.queryKey[0] === "posts");
+      if (postQueryCache) {
+        const postQueryKey = postQueryCache.queryKey;
+        const postQueryData: IPost | InfiniteData<IPost[]> | undefined = queryClient.getQueryData(postQueryKey);
+
+        if (postQueryData && "pages" in postQueryData) {
+          const targetPost = postQueryData.pages.flat().find((ele) => ele.postId === post.postId);
+          if (targetPost) {
+            const targetIndex = postQueryData.pages.findIndex((ele) => ele.includes(targetPost));
+            const targetPostIndex = postQueryData.pages[targetIndex].findIndex((ele) => ele.postId === post.postId);
+
+            const shallow = { ...postQueryData };
+            shallow.pages = [...postQueryData.pages];
+            shallow.pages[targetIndex] = [...postQueryData.pages[targetIndex]];
+            shallow.pages[targetIndex][targetPostIndex] = {
+              ...postQueryData.pages[targetIndex][targetPostIndex],
+            };
+            shallow.pages[targetIndex][targetPostIndex].Hearts.push({ userId: session?.user?.email as string });
+            shallow.pages[targetIndex][targetPostIndex]._count.Hearts += 1;
+
+            queryClient.setQueryData(postQueryKey, shallow);
+          }
+          // 특정 유저 게시글 조회의 경우는 나중에 구현
+        }
+      }
+    },
+    onSettled() {},
+  });
 
   const onClickLikeBtn: MouseEventHandler<HTMLButtonElement> = (e) => {
-    setLike(!like);
+    e.stopPropagation();
+    if (like) {
+      unHeart.mutate();
+      setLike(false);
+    } else {
+      heart.mutate();
+      setLike(true);
+    }
   };
 
   const onClickBookmarkBtn: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
+    console.log("bookmark!");
     setBookmark(!bookmark);
   };
   return (
@@ -26,7 +183,8 @@ export default function PostOptions({ post }: { post: IPost }) {
             </g>
           </svg>
         </div>
-        <div>{post.comments.length}</div>
+        {/* <div>{post.Comments.length}</div> */}
+        <div>댓글 개수 </div>
       </CommentBtn>
       <RetweetBtn href="/">
         <div>
@@ -36,7 +194,8 @@ export default function PostOptions({ post }: { post: IPost }) {
             </g>
           </svg>
         </div>
-        <div>{post.retweet}</div>
+        {/* <div>{post._count.Reposts}</div> */}
+        <div>리포스트 개수 </div>
       </RetweetBtn>
       <LikeBtn onClick={onClickLikeBtn}>
         <div>
@@ -54,7 +213,8 @@ export default function PostOptions({ post }: { post: IPost }) {
             </svg>
           )}
         </div>
-        <div>{post.likes}</div>
+        {/* <div>{post._count.Hearts}</div> */}
+        <div>{post._count?.Hearts || ""}</div>
       </LikeBtn>
       <HitsBtn href="/">
         <div>
@@ -64,7 +224,8 @@ export default function PostOptions({ post }: { post: IPost }) {
             </g>
           </svg>
         </div>
-        <div>{post.watched}</div>
+        {/* <div>{post.watched}</div> */}
+        <div>13만</div>
       </HitsBtn>
       <EtcBtn onClick={onClickBookmarkBtn}>
         <div>

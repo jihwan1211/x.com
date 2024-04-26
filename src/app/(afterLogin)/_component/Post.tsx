@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
-import { IPost } from "@/model/Post";
+import { Post as IPost } from "@/model/Post";
 import PostImages from "./PostImages";
 
 import styled from "styled-components";
@@ -12,23 +12,26 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
 import PostOptions from "./PostOptions";
+import { MouseEventHandler } from "react";
 
 dayjs.locale("ko");
 dayjs.extend(relativeTime);
 
 export default function Post({ post }: { post: IPost }) {
   const router = useRouter();
-  const onClickArticle = () => {
-    router.push(`/${post.user.id}/status/${post.postId}`);
+  const onClickArticle: MouseEventHandler<HTMLDivElement> = (e) => {
+    e.stopPropagation();
+    router.push(`/${post.User.id}/status/${post.postId}`);
   };
 
+  // return null;
   return (
     <Container>
-      <Article onClickCapture={onClickArticle}>
+      <Article onClick={onClickArticle}>
         <Profile>
           <div>
-            <Link href={`/${post.user.id}`} style={{ textDecoration: "none" }}>
-              <Image src={post.user.image} alt="profile img" width={40} height={40}></Image>
+            <Link href={`/${post.User.id}`} style={{ textDecoration: "none" }}>
+              <Image src={post.User.image} alt="profile img" width={40} height={40}></Image>
               <div></div>
             </Link>
           </div>
@@ -36,10 +39,10 @@ export default function Post({ post }: { post: IPost }) {
 
         <Main>
           <PostWriter>
-            <Link href={`/${post.user.id}`}>
-              <div>{post.user.nickname}</div>
+            <Link href={`/${post.User.id}`}>
+              <div>{post.User.nickname}</div>
             </Link>
-            <div>@${post.user.id}</div>
+            <div>@${post.User.id}</div>
             <div>.</div>
             <div>{dayjs(post.createdAt).fromNow(true)}</div>
           </PostWriter>

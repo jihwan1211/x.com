@@ -18,6 +18,8 @@ export function ShowFormResultMessage(message: string | null | undefined) {
       return "비밀번호를 다시 입력하세요";
     case "wrong_birthday":
       return "생년월일을 다시 입력하세요";
+    case "no_image":
+      return "프로필 사진을 등록하세요";
     case "user_exists":
       return "이미 가입한 사용자입니다.";
     case "error":
@@ -49,13 +51,14 @@ export default function SignupForm() {
   const [name, setName] = useState("");
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [alter, setAlter] = useState(false);
-  const [birthday, setBirthday] = useState(0);
-  const [birthMonth, setBirthMonth] = useState(0);
-  const [birthYear, setBirthYear] = useState(0);
-  const [dayList, setDayList] = useState(days);
+
+  // const [phoneNumber, setPhoneNumber] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [alter, setAlter] = useState(false);
+  // const [birthday, setBirthday] = useState(0);
+  // const [birthMonth, setBirthMonth] = useState(0);
+  // const [birthYear, setBirthYear] = useState(0);
+  // const [dayList, setDayList] = useState(days);
 
   const onChangeName: ChangeEventHandler<HTMLInputElement> = (e) => {
     setName(e.target.value);
@@ -68,64 +71,65 @@ export default function SignupForm() {
   const onChangePassword: ChangeEventHandler<HTMLInputElement> = (e) => {
     setPassword(e.target.value);
   };
-  const onChangePhoneNumber: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setPhoneNumber(e.target.value);
-  };
+  // const onChangePhoneNumber: ChangeEventHandler<HTMLInputElement> = (e) => {
+  //   setPhoneNumber(e.target.value);
+  // };
 
-  const onChangeEmail: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setEmail(e.target.value);
-  };
+  // const onChangeEmail: ChangeEventHandler<HTMLInputElement> = (e) => {
+  //   setEmail(e.target.value);
+  // };
 
-  const onClickAlterEmailPhone: MouseEventHandler<HTMLDivElement> = (e) => {
-    setAlter(!alter);
-  };
+  // const onClickAlterEmailPhone: MouseEventHandler<HTMLDivElement> = (e) => {
+  //   setAlter(!alter);
+  // };
 
-  const onChangeMonth: ChangeEventHandler<HTMLSelectElement> = (e) => {
-    setBirthMonth(parseInt(e.target.value));
-    const month = parseInt(e.target.value);
+  // const onChangeMonth: ChangeEventHandler<HTMLSelectElement> = (e) => {
+  //   setBirthMonth(parseInt(e.target.value));
+  //   const month = parseInt(e.target.value);
 
-    if (month !== 0) {
-      let lastDay = 0;
-      if (birthYear === 0) {
-        const date = new Date();
-        lastDay = new Date(date.getFullYear(), month, 0).getDate();
-      } else {
-        lastDay = new Date(birthYear, birthMonth, 0).getDate();
-      }
-      const tempDayList = [];
-      for (let i = 1; i <= lastDay; i++) {
-        tempDayList.push(i);
-      }
-      setDayList(tempDayList);
-    } else {
-      setDayList(days);
-    }
-  };
+  //   if (month !== 0) {
+  //     let lastDay = 0;
+  //     if (birthYear === 0) {
+  //       const date = new Date();
+  //       lastDay = new Date(date.getFullYear(), month, 0).getDate();
+  //     } else {
+  //       lastDay = new Date(birthYear, birthMonth, 0).getDate();
+  //     }
+  //     const tempDayList = [];
+  //     for (let i = 1; i <= lastDay; i++) {
+  //       tempDayList.push(i);
+  //     }
+  //     setDayList(tempDayList);
+  //   } else {
+  //     setDayList(days);
+  //   }
+  // };
 
-  const onChangeDay: ChangeEventHandler<HTMLSelectElement> = (e) => {
-    setBirthday(parseInt(e.target.value));
-  };
+  // const onChangeDay: ChangeEventHandler<HTMLSelectElement> = (e) => {
+  //   setBirthday(parseInt(e.target.value));
+  // };
 
-  const onChangeYear: ChangeEventHandler<HTMLSelectElement> = (e) => {
-    setBirthYear(parseInt(e.target.value));
-    const year = parseInt(e.target.value);
-    if (year !== 0 && birthMonth !== 0) {
-      const lastDay = new Date(year, birthMonth, 0).getDate();
-      const tempDayList = [];
-      for (let i = 1; i <= lastDay; i++) {
-        tempDayList.push(i);
-      }
-      setDayList(tempDayList);
-    } else {
-      setDayList(dayList);
-    }
-  };
+  // const onChangeYear: ChangeEventHandler<HTMLSelectElement> = (e) => {
+  //   setBirthYear(parseInt(e.target.value));
+  //   const year = parseInt(e.target.value);
+  //   if (year !== 0 && birthMonth !== 0) {
+  //     const lastDay = new Date(year, birthMonth, 0).getDate();
+  //     const tempDayList = [];
+  //     for (let i = 1; i <= lastDay; i++) {
+  //       tempDayList.push(i);
+  //     }
+  //     setDayList(tempDayList);
+  //   } else {
+  //     setDayList(dayList);
+  //   }
+  // };
+
   return (
     <form action={formAction}>
       {/* <ModalBody> */}
       <InputWrapper>
         {/* <label></label> */}
-        <Input id="name" name="name" value={name} type="text" onChange={onChangeName} placeholder="이름" required></Input>
+        <Input id="nickname" name="nickname" value={name} type="text" onChange={onChangeName} placeholder="이름" required></Input>
       </InputWrapper>
       <InputWrapper>
         <Input id="id" name="id" value={id} type="text" onChange={onChangeId} placeholder="아이디" required></Input>
@@ -142,7 +146,7 @@ export default function SignupForm() {
           )}
         </InputWrapper>
         <AlterPhoneEmailContainer onClick={onClickAlterEmailPhone}>대신 {alter ? "휴대폰" : "이메일"} 사용하기</AlterPhoneEmailContainer> */}
-
+      {/*
       <div>
         <div>생년월일</div>
         <Info>이 정보는 공개적으로 표시되지 않습니다. 비즈니스, 반려동물 등 계정 주제에 상관없이 나의 연령을 확인하세요.</Info>
@@ -167,7 +171,8 @@ export default function SignupForm() {
           })}
         </BirthYearSelect>
       </SelectContainer>
-
+        */}
+      <input id="image" name="image" type="file" accept="image/*"></input>
       <NextBtn type="submit" disabled={pending}>
         다음
       </NextBtn>
