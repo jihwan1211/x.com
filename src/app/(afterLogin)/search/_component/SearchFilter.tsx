@@ -8,9 +8,10 @@ import styled from "styled-components";
 export default function SearchFilter() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const router = useRouter();
+
   if (pathname !== "/search") return null;
 
-  const router = useRouter();
   const onChangeFollowers: ChangeEventHandler<HTMLInputElement> = (e) => {
     router.replace(`/search?${searchParams.toString()}&pf=${e.target.value}`);
   };

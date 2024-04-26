@@ -5,7 +5,7 @@ import Post from "../../_component/Post";
 import { useInView } from "react-intersection-observer";
 import { Fragment, useEffect } from "react";
 
-import { IPost } from "@/model/Post";
+import { Post as IPost } from "@/model/Post";
 
 import getSearchResults from "../_lib/getSearchResults";
 

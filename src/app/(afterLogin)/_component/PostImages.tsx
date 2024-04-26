@@ -3,78 +3,78 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { IPost } from "@/model/Post";
+import { Post as IPost } from "@/model/Post";
 
 import styled from "styled-components";
 
 type BackgroundImage = {
-  $url: string;
+  $link: string;
 };
 
 export default function PostImages({ post }: { post: IPost }) {
-  if (!post.images || post.images.length === 0) return null;
-  else if (post.images.length === 1) {
+  if (!post.Images || post.Images.length === 0) return null;
+  else if (post.Images.length === 1) {
     return (
       <ImageContainer>
-        <OneImageLink href={`/${post.user.id}/status/${post.postId}/photo/${post.images[0].imageId}`}>
-          <BackgroundImage $url={post.images[0].url}></BackgroundImage>
-          <Image src={post.images[0].url} alt="게시글 이미지" width={502} height={502}></Image>
+        <OneImageLink href={`/${post.User.id}/status/${post.postId}/photo/${post.Images[0].imageId}`}>
+          <BackgroundImage $link={post.Images[0].link}></BackgroundImage>
+          <Image src={post.Images[0].link} alt="게시글 이미지" width={502} height={502}></Image>
         </OneImageLink>
       </ImageContainer>
     );
-  } else if (post.images.length === 2) {
+  } else if (post.Images.length === 2) {
     return (
       <TwoImageContainer>
-        <TwoImageLinkFirst href={`/${post.user.id}/status/${post.user.UId}/photo/${post.images[0].imageId}`}>
-          <BackgroundImage $url={post.images[0].url} />
-          <TwoImageFirst src={post.images[0].url} alt="게시글 이미지" width={200} height={200} />
+        <TwoImageLinkFirst href={`/${post.User.id}/status/${post.postId}/photo/${post.Images[0].imageId}`}>
+          <BackgroundImage $link={post.Images[0].link} />
+          <TwoImageFirst src={post.Images[0].link} alt="게시글 이미지" width={200} height={200} />
         </TwoImageLinkFirst>
-        <TwoImageLinkSecond href={`/${post.user.id}/status/${post.user.UId}/photo/${post.images[1].imageId}`}>
-          <BackgroundImage $url={post.images[1].url} />
-          <TwoImageSecond src={post.images[1].url} alt="게시글 이미지" width={200} height={200} />
+        <TwoImageLinkSecond href={`/${post.User.id}/status/${post.postId}/photo/${post.Images[1].imageId}`}>
+          <BackgroundImage $link={post.Images[1].link} />
+          <TwoImageSecond src={post.Images[1].link} alt="게시글 이미지" width={200} height={200} />
         </TwoImageLinkSecond>
       </TwoImageContainer>
     );
-  } else if (post.images.length === 3) {
+  } else if (post.Images.length === 3) {
     return (
       <ThreeImageContainer>
-        <ThreeImageLeftLink href={`/${post.user.id}/status/${post.user.UId}/photo/${post.images[0].imageId}`}>
-          <BackgroundImage $url={post.images[0].url} />
-          <ThreeImageFirst src={post.images[0].url} alt="게시글 이미지" width={200} height={200} />
+        <ThreeImageLeftLink href={`/${post.User.id}/status/${post.postId}/photo/${post.Images[0].imageId}`}>
+          <BackgroundImage $link={post.Images[0].link} />
+          <ThreeImageFirst src={post.Images[0].link} alt="게시글 이미지" width={200} height={200} />
         </ThreeImageLeftLink>
         <ThreeImageRightWrapper>
-          <ThreeImageRightTopLink href={`/${post.user.id}/status/${post.user.UId}/photo/${post.images[1].imageId}`}>
-            <BackgroundImage $url={post.images[1].url} />
-            <ThreeImageSecond src={post.images[1].url} alt="게시글 이미지" width={200} height={200} />
+          <ThreeImageRightTopLink href={`/${post.User.id}/status/${post.postId}/photo/${post.Images[1].imageId}`}>
+            <BackgroundImage $link={post.Images[1].link} />
+            <ThreeImageSecond src={post.Images[1].link} alt="게시글 이미지" width={200} height={200} />
           </ThreeImageRightTopLink>
-          <ThreeImageRightBottomLink href={`/${post.user.id}/status/${post.user.UId}/photo/${post.images[2].imageId}`}>
-            <BackgroundImage $url={post.images[2].url} />
-            <ThreeImageThird src={post.images[2].url} alt="게시글 이미지" width={200} height={200} />
+          <ThreeImageRightBottomLink href={`/${post.User.id}/status/${post.postId}/photo/${post.Images[2].imageId}`}>
+            <BackgroundImage $link={post.Images[2].link} />
+            <ThreeImageThird src={post.Images[2].link} alt="게시글 이미지" width={200} height={200} />
           </ThreeImageRightBottomLink>
         </ThreeImageRightWrapper>
       </ThreeImageContainer>
     );
-  } else if (post.images.length === 4) {
+  } else if (post.Images.length === 4) {
     return (
       <FourImageContainer>
         <FourImageLeftWrapper>
-          <FourImageLeftTopLink href={`/${post.user.id}/status/${post.user.UId}/photo/${post.images[0].imageId}`}>
-            <BackgroundImage $url={post.images[0].url} />
-            <FourImageFirst src={post.images[0].url} alt="게시글 이미지" width={200} height={200} />
+          <FourImageLeftTopLink href={`/${post.User.id}/status/${post.postId}/photo/${post.Images[0].imageId}`}>
+            <BackgroundImage $link={post.Images[0].link} />
+            <FourImageFirst src={post.Images[0].link} alt="게시글 이미지" width={200} height={200} />
           </FourImageLeftTopLink>
-          <FourImageLeftBottomLink href={`/${post.user.id}/status/${post.user.UId}/photo/${post.images[1].imageId}`}>
-            <BackgroundImage $url={post.images[1].url} />
-            <FourImageSecond src={post.images[1].url} alt="게시글 이미지" width={200} height={200} />
+          <FourImageLeftBottomLink href={`/${post.User.id}/status/${post.postId}/photo/${post.Images[1].imageId}`}>
+            <BackgroundImage $link={post.Images[1].link} />
+            <FourImageSecond src={post.Images[1].link} alt="게시글 이미지" width={200} height={200} />
           </FourImageLeftBottomLink>
         </FourImageLeftWrapper>
         <ThreeImageRightWrapper>
-          <ThreeImageRightTopLink href={`/${post.user.id}/status/${post.user.UId}/photo/${post.images[2].imageId}`}>
-            <BackgroundImage $url={post.images[2].url} />
-            <ThreeImageSecond src={post.images[2].url} alt="게시글 이미지" width={200} height={200} />
+          <ThreeImageRightTopLink href={`/${post.User.id}/status/${post.postId}/photo/${post.Images[2].imageId}`}>
+            <BackgroundImage $link={post.Images[2].link} />
+            <ThreeImageSecond src={post.Images[2].link} alt="게시글 이미지" width={200} height={200} />
           </ThreeImageRightTopLink>
-          <ThreeImageRightBottomLink href={`/${post.user.id}/status/${post.user.UId}/photo/${post.images[3].imageId}`}>
-            <BackgroundImage $url={post.images[3].url} />
-            <ThreeImageThird src={post.images[3].url} alt="게시글 이미지" width={200} height={200} />
+          <ThreeImageRightBottomLink href={`/${post.User.id}/status/${post.postId}/photo/${post.Images[3].imageId}`}>
+            <BackgroundImage $link={post.Images[3].link} />
+            <ThreeImageThird src={post.Images[3].link} alt="게시글 이미지" width={200} height={200} />
           </ThreeImageRightBottomLink>
         </ThreeImageRightWrapper>
       </FourImageContainer>
@@ -117,7 +117,7 @@ const OneImageLink = styled(Link)`
 const BackgroundImage = styled.div<BackgroundImage>`
   box-sizing: border-box;
   border-radius: 24px;
-  background-image: ${(props) => `url(${props.$url})`};
+  background-image: ${(props) => `link(${props.$link})`};
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;

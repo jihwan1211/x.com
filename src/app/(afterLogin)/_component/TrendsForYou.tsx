@@ -26,8 +26,8 @@ export default function TrendsForYou({ me }: Props) {
       <h1>{me?.user ? "Trends for you" : "트렌드를 볼 수 없습니다."}</h1>
       {me?.user ? (
         <>
-          {data?.map((ele: ITrend) => (
-            <Trend key={ele.tagId} trend={ele}></Trend>
+          {data?.map((ele: ITrend, idx: number) => (
+            <Trend key={idx} trend={ele}></Trend>
           ))}
           <ShowMore>show more</ShowMore>
         </>
