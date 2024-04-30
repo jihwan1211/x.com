@@ -6,7 +6,7 @@ import Post from "../../_component/Post";
 
 import getUserPosts from "../_lib/getUserPosts";
 
-import { Post as IPost } from "@/model/Post";
+import { IPost } from "@/model/Post";
 
 type Prop = {
   username: string;

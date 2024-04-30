@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { QueryClient, HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import { auth } from "@/auth";
 
-import getUserInfoServer from "./_lib/getUserInfoServer";
+import getUserInfo from "./_lib/getUserInfo";
 import getUserPosts from "./_lib/getUserPosts";
 
 import Nav from "./_component/Nav";
@@ -17,12 +16,11 @@ type Props = {
 
 export default async function Username({ params }: Props) {
   const { username } = params;
-  console.log("username : ", username);
-  const session = await auth();
+
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
     queryKey: ["user", username],
-    queryFn: getUserInfoServer,
+    queryFn: getUserInfo,
   });
   await queryClient.prefetchQuery({
     queryKey: ["posts", "user", username],
@@ -39,7 +37,7 @@ export default async function Username({ params }: Props) {
             <HeaderPhotoZone>
               <Link href="/home">{/* <Image src={이미지} alt="header_photo"></Image> */}</Link>
             </HeaderPhotoZone>
-            <ProfileUserData username={username} session={session} />
+            <ProfileUserData username={username} />
           </Profile>
           <UserPosts username={username} />
         </Userzone>

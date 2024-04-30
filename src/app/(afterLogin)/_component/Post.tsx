@@ -21,9 +21,7 @@ export default function Post({ post }: { post: IPost }) {
   const router = useRouter();
   const onClickArticle: MouseEventHandler<HTMLDivElement> = (e) => {
     e.stopPropagation();
-    //
-    // router.push(`/${post.User.id}/status/${post.postId}`);
-    router.push(`/${post.User.id}}`);
+    router.push(`/${post.User.id}/status/${post.postId}`);
   };
 
   // return null;
