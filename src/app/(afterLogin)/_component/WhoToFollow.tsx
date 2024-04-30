@@ -23,7 +23,7 @@ export default function WhoToFollow({ me }: Prop) {
     <Container>
       <h1>{me?.user ? "팔로우 추천" : "내가 좋아할 만한 컨텐츠"}</h1>
       {data?.map((ele: User, idx: number) => (
-        <FollowRecommends key={idx} user={ele}></FollowRecommends>
+        <FollowRecommends key={idx} user={ele} session={me}></FollowRecommends>
       ))}
       <ShowMore>Show more</ShowMore>
     </Container>

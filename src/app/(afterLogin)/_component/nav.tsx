@@ -3,7 +3,6 @@
 import { styled } from "styled-components";
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { Session } from "@auth/core/types";
 
 type Props = {

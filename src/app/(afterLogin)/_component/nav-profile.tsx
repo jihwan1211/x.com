@@ -4,15 +4,23 @@ import { MouseEventHandler } from "react";
 import styled from "styled-components";
 import { Session } from "@auth/core/types";
 import Image from "next/image";
-
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import logout from "../_lib/signout";
 
 type Props = {
   me: Session | null;
 };
 export default function NavProfile({ me }: Props) {
+  const router = useRouter();
   const handleLogout: MouseEventHandler<HTMLDivElement> = async (e) => {
-    await logout();
+    await signOut({ redirect: false }).then(() => {
+      fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/logout`, {
+        method: "post",
+        credentials: "include",
+      });
+      router.replace("/");
+    });
   };
 
   return me?.user ? (

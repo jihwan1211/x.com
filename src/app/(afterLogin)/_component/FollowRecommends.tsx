@@ -1,153 +1,26 @@
 "use client";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
-import { useSession } from "next-auth/react";
+
 import Image from "next/image";
+import { Session } from "@auth/core/types";
 import styled from "styled-components";
 import { User } from "@/model/User";
-import { MouseEventHandler } from "react";
+import Link from "next/link";
+import FollowButton from "./FollowButton";
 
 type Prop = {
   user: User;
+  session: Session | null;
 };
 
-export default function FollowRecommends({ user }: Prop) {
-  const calculateInitialFollowing = (): boolean => {
-    return !!user.Followers.find((ele) => ele.id === session?.user?.email);
-  };
-  const queryClient = useQueryClient();
-  const [isFollowing, setIsFollowing] = useState(calculateInitialFollowing);
-  const [buttonText, setButtonText] = useState("버튼");
-  const { data: session } = useSession();
-
-  const follow = useMutation({
-    mutationFn: () => {
-      return fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/${user.id}/follow`, {
-        method: "post",
-        credentials: "include",
-      });
-    },
-    onMutate() {
-      const queryData: User[] | undefined = queryClient.getQueryData(["user", "toFollow"]);
-      if (queryData) {
-        const targetDataIndex = queryData.findIndex((ele) => ele.id === user.id);
-        console.log(queryData);
-
-        if (targetDataIndex !== -1) {
-          const shallow = [...queryData];
-          shallow[targetDataIndex] = {
-            ...queryData[targetDataIndex],
-            Followers: [...queryData[targetDataIndex].Followers],
-          };
-          shallow[targetDataIndex].Followers.push({ id: session?.user?.email as string });
-          shallow[targetDataIndex]._count.Followers += 1;
-          console.log("shallow : ", shallow);
-          queryClient.setQueryData(["user", "toFollow"], shallow);
-        }
-      }
-    },
-    onError() {
-      const queryData: User[] | undefined = queryClient.getQueryData(["user", "toFollow"]);
-      if (queryData) {
-        const targetDataIndex = queryData.findIndex((ele) => ele.id === user.id);
-        console.log(queryData);
-        const meIndex = queryData[targetDataIndex].Followers.findIndex((ele) => ele.id === session?.user?.email);
-        if (targetDataIndex !== -1 && meIndex !== -1) {
-          const shallow = [...queryData];
-          shallow[targetDataIndex] = {
-            ...queryData[targetDataIndex],
-            Followers: [...queryData[targetDataIndex].Followers],
-          };
-          shallow[targetDataIndex].Followers.splice(meIndex, 1);
-          shallow[targetDataIndex]._count.Followers -= 1;
-          console.log("unfollow shallow : ", shallow);
-          queryClient.setQueryData(["user", "toFollow"], shallow);
-        }
-      }
-    },
-    onSettled() {},
-  });
-
-  const unFollow = useMutation({
-    mutationFn: () => {
-      return fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/${user.id}/follow`, {
-        method: "delete",
-        credentials: "include",
-      });
-    },
-    onMutate() {
-      const queryData: User[] | undefined = queryClient.getQueryData(["user", "toFollow"]);
-      if (queryData) {
-        const targetDataIndex = queryData.findIndex((ele) => ele.id === user.id);
-        console.log(queryData);
-        const meIndex = queryData[targetDataIndex].Followers.findIndex((ele) => ele.id === session?.user?.email);
-        if (targetDataIndex !== -1 && meIndex !== -1) {
-          const shallow = [...queryData];
-          shallow[targetDataIndex] = {
-            ...queryData[targetDataIndex],
-            Followers: [...queryData[targetDataIndex].Followers],
-          };
-          shallow[targetDataIndex].Followers.splice(meIndex, 1);
-          shallow[targetDataIndex]._count.Followers -= 1;
-          console.log("unfollow shallow : ", shallow);
-          queryClient.setQueryData(["user", "toFollow"], shallow);
-        }
-      }
-    },
-    onError() {
-      const queryData: User[] | undefined = queryClient.getQueryData(["user", "toFollow"]);
-      if (queryData) {
-        const targetDataIndex = queryData.findIndex((ele) => ele.id === user.id);
-        console.log(queryData);
-
-        if (targetDataIndex !== -1) {
-          const shallow = [...queryData];
-          shallow[targetDataIndex] = {
-            ...queryData[targetDataIndex],
-            Followers: [...queryData[targetDataIndex].Followers],
-          };
-          shallow[targetDataIndex].Followers.push({ id: session?.user?.email as string });
-          shallow[targetDataIndex]._count.Followers += 1;
-          console.log("shallow : ", shallow);
-          queryClient.setQueryData(["user", "toFollow"], shallow);
-        }
-      }
-    },
-    onSettled() {},
-  });
-
-  const onClickFollow: MouseEventHandler<HTMLButtonElement> = (e) => {
-    if (isFollowing) {
-      unFollow.mutate();
-      setIsFollowing(false);
-    } else {
-      follow.mutate();
-      setIsFollowing(true);
-    }
-  };
-
-  const handleMouseEnter = () => {
-    setButtonText("언팔로우");
-  };
-
-  const handleMouseLeave = () => {
-    setButtonText("팔로잉");
-  };
-
+export default function FollowRecommends({ user, session }: Prop) {
   return (
     <Profile>
       <Image src={user.image!} alt="profile image" width={40} height={40}></Image>
-      <div>
+      <Link href={`/${user.id}`}>
         <div>{user.nickname}</div>
         <div>{user.id}</div>
-      </div>
-      {isFollowing ? (
-        <UnFollowBtn onClick={onClickFollow} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-          {buttonText}
-        </UnFollowBtn>
-      ) : (
-        <FollowBtn onClick={onClickFollow}>팔로우</FollowBtn>
-      )}
+      </Link>
+      <FollowButton user={user} session={session} />
     </Profile>
   );
 }
@@ -173,7 +46,15 @@ const Profile = styled.div`
     border-radius: 50%;
   }
 
-  & > div:nth-child(2) {
+  a:link {
+    text-decoration: none;
+  }
+  a:visited,
+  a:active {
+    color: rgb(15, 20, 25);
+  }
+
+  & > a:nth-child(2) {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -185,35 +66,5 @@ const Profile = styled.div`
     div:nth-child(2) {
       color: rgb(83, 100, 113);
     }
-  }
-`;
-
-const Button = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 32px;
-  min-height: 32px;
-  border-radius: 9999px;
-  box-sizing: border-box;
-  font-weight: 700;
-  font-size: 15px;
-  cursor: pointer;
-  padding: 0 16px;
-`;
-
-const FollowBtn = styled(Button)`
-  background-color: rgb(15, 20, 25);
-  color: rgb(255, 255, 255);
-`;
-
-const UnFollowBtn = styled(Button)`
-  background-color: rgb(255, 255, 255);
-  color: rgb(15, 20, 25);
-  border: 1px solid rgb(207, 217, 222);
-
-  &:hover {
-    border: 1px solid rgb(253, 201, 206);
-    background-color: rgba(244, 33, 46, 0.1);
   }
 `;
