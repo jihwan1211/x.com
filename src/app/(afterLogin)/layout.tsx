@@ -2,17 +2,22 @@ import Link from "next/link";
 import React from "react";
 import { auth } from "@/auth";
 import { Suspense } from "react";
+import type { Metadata } from "next";
 
 import RQProvider from "./_component/RQProvider";
-
 import Nav from "./_component/nav";
 import NavProfile from "./_component/nav-profile";
-import { Container, Header, FixedHeader, MainLogo, RightSection, RightSectionInner, Main, Right } from "./layout-css";
 import MainSearchBar from "./_component/MainSearchBar";
 import SearchFilter from "./search/_component/SearchFilter";
 import TrendsForYou from "./_component/TrendsForYou";
 import WhoToFollow from "./_component/WhoToFollow";
 import Loading from "./_component/LoadingUI";
+import { Container, Header, FixedHeader, MainLogo, RightSection, RightSectionInner, Main, Right } from "./layout-css";
+
+export const metadata: Metadata = {
+  title: "(1) 홈 / X",
+  description: "지금 일어나는 일들을 실시간으로 확인해보세요",
+};
 
 const AfterLoginLayout = async ({
   children,

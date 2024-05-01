@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { QueryClient, HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { auth } from "@/auth";
+import type { Metadata, ResolvingMetadata } from "next";
 
 import getUserInfoServer from "./_lib/getUserInfoServer";
 import getUserPosts from "./_lib/getUserPosts";
@@ -10,10 +11,19 @@ import ProfileUserData from "./_component/ProfileUserData";
 import UserPosts from "./_component/UserPosts";
 
 import { Container, Userzone, Profile, HeaderPhotoZone } from "./page-style";
+import { User } from "@/model/User";
 
 type Props = {
   params: { username: string };
 };
+
+export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+  const user: User = await getUserInfoServer({ queryKey: ["user", params.username] });
+  return {
+    title: `${params.username} (${user?.id}) / X`,
+    description: `${params.username} (${user?.id})의 개인 프로필 페이지`,
+  };
+}
 
 export default async function Username({ params }: Props) {
   const { username } = params;
