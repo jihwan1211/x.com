@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { IPost } from "@/model/Post";
+import { Post as IPost } from "@/model/Post";
 import PostImages from "@/app/(afterLogin)/_component/PostImages";
 
 import styled from "styled-components";
@@ -21,8 +21,8 @@ export default function Post({ post }: { post: IPost }) {
       <Article>
         <Profile>
           <div>
-            <Link href={`/${post.user.id}`} style={{ textDecoration: "none" }}>
-              <Image src={post.user.image} alt="profile img" width={40} height={40}></Image>
+            <Link href={`/${post.User.id}`} style={{ textDecoration: "none" }}>
+              <Image src={post.User.image} alt="profile img" width={40} height={40}></Image>
               <div></div>
             </Link>
           </div>
@@ -30,10 +30,10 @@ export default function Post({ post }: { post: IPost }) {
 
         <Main>
           <PostWriter>
-            <Link href={`/${post.user.id}`}>
-              <div>{post.user.nickname}</div>
+            <Link href={`/${post.User.id}`}>
+              <div>{post.User.nickname}</div>
             </Link>
-            <div>@${post.user.id}</div>
+            <div>@${post.User.id}</div>
             <div>.</div>
             <div>{dayjs(post.createdAt).fromNow(true)}</div>
           </PostWriter>

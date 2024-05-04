@@ -18,7 +18,7 @@ export default async function StatusPage({ params }: Prop) {
 
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
-    queryKey: ["post", username, id],
+    queryKey: ["post", id],
     queryFn: getUserPost,
   });
   await queryClient.prefetchQuery({

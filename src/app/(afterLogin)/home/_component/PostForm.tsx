@@ -18,6 +18,7 @@ export default function PostForm({ me }: Prop) {
   const [content, setContent] = useState("");
   const [preview, setPreview] = useState<Array<{ dataUrl: string; file: File } | null>>([]);
   const queryClient = useQueryClient();
+
   const mutation = useMutation({
     mutationFn: (e: FormEvent) => {
       e.preventDefault();

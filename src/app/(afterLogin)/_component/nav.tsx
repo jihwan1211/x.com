@@ -2,6 +2,7 @@
 
 import { styled } from "styled-components";
 import Link from "next/link";
+import useModalStore from "@/store/modal";
 import { useSelectedLayoutSegment } from "next/navigation";
 import { Session } from "@auth/core/types";
 
@@ -10,6 +11,7 @@ type Props = {
 };
 export default function Nav({ me }: Props) {
   const segment = useSelectedLayoutSegment();
+  const modalStore = useModalStore();
 
   return (
     <Menus>
@@ -207,7 +209,13 @@ export default function Nav({ me }: Props) {
               {segment === "more" ? <MenuContentSelected>More</MenuContentSelected> : <MenuContent>More</MenuContent>}
             </Menu>
           </MenuLink>
-          <ComposeTweet href="/compose/tweet">
+          <ComposeTweet
+            href="/compose/tweet"
+            scroll={false}
+            onClick={() => {
+              modalStore.setModal("post");
+            }}
+          >
             <span>게시하기</span>
             <svg viewBox="0 0 24 24" aria-hidden="true" width="24px">
               <g>
