@@ -2,23 +2,25 @@
 import { useQueryClient, useMutation, InfiniteData } from "@tanstack/react-query";
 import { useState, MouseEventHandler } from "react";
 import { useSession } from "next-auth/react";
+import useModalStore from "@/store/modal";
 import styled from "styled-components";
 import Link from "next/link";
 import { Post as IPost } from "@/model/Post";
 
 type Props = {
   post: IPost;
-  // session 타입이 뭐지?
 };
 
 export default function PostOptions({ post }: Props) {
   const { data: session } = useSession();
+  const modalStore = useModalStore();
   const calculateInitialLike = (): boolean => {
-    return !!post.Hearts.find((ele) => ele.userId === session?.user?.email);
+    return !!post.Hearts?.find((ele) => ele.userId === session?.user?.email);
   };
 
   const [like, setLike] = useState(calculateInitialLike);
   const [bookmark, setBookmark] = useState(false);
+
   const queryClient = useQueryClient();
 
   const heart = useMutation({
@@ -173,9 +175,15 @@ export default function PostOptions({ post }: Props) {
     console.log("bookmark!");
     setBookmark(!bookmark);
   };
+
+  const onClickComment: MouseEventHandler<HTMLAnchorElement> = (e) => {
+    e.stopPropagation();
+    modalStore.setModal("comment");
+    modalStore.setPost(post);
+  };
   return (
     <PostOptionsContainer>
-      <CommentBtn href="/">
+      <CommentBtn onClick={onClickComment} href="/compose/tweet" scroll={false}>
         <div>
           <svg viewBox="0 0 24 24" aria-hidden="true" width="1.25em">
             <g>

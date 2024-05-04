@@ -1,7 +1,6 @@
 "use server";
 
 import { signIn } from "@/auth";
-import axios from "axios";
 import { redirect } from "next/navigation";
 
 export default async function onSubmit(prevState: any, formData: FormData) {
@@ -24,9 +23,7 @@ export default async function onSubmit(prevState: any, formData: FormData) {
   let shouldRedirect = false;
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users`, { method: "POST", credentials: "include", body: formData });
-    // const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users`, formData, {
-    //   withCredentials: true,
-    // });
+
     console.log("회원가입!", response);
 
     if (response.status === 403) return { message: "user_exists" };

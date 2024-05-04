@@ -21,9 +21,9 @@ export default function Post({ post }: { post: IPost }) {
   const router = useRouter();
   const onClickArticle: MouseEventHandler<HTMLDivElement> = (e) => {
     e.stopPropagation();
-    //
-    // router.push(`/${post.User.id}/status/${post.postId}`);
-    router.push(`/${post.User.id}}`);
+    e.preventDefault();
+
+    router.push(`/${post.User.id}/status/${post.postId}`);
   };
 
   // return null;
@@ -176,18 +176,4 @@ const PostContent = styled.div`
     font-size: 15px;
     font-weight: 400;
   }
-
-  /* & > div:nth-child(2) {
-    margin-top: 12px;
-    flex-grow: 1;
-    border: 1px solid rgb(239, 243, 244);
-    border-radius: 24px;
-    a {
-      img {
-        border-radius: 24px;
-        width: 100%;
-        height: 100%;
-      }
-    }
-  } */
 `;
