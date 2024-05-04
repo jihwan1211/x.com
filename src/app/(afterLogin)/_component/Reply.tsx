@@ -1,73 +1,55 @@
 "use client";
-import { useRouter } from "next/navigation";
+import styled from "styled-components";
+import { Post as IPost } from "@/model/Post";
+import PostOptions from "./PostOptions";
+import PostImages from "./PostImages";
 import Image from "next/image";
 import Link from "next/link";
 import { MouseEventHandler } from "react";
-import { Post as IPost } from "@/model/Post";
-import PostImages from "./PostImages";
-import styled from "styled-components";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import "dayjs/locale/ko";
-import PostOptions from "./PostOptions";
-import useGetPostReply from "../_hooks/getPostReply";
-import Reply from "./Reply";
+import { useRouter } from "next/navigation";
 
-dayjs.locale("ko");
-dayjs.extend(relativeTime);
+type Prop = {
+  post: IPost;
+};
 
-export default function Post({ post }: { post: IPost }) {
+export default function Reply({ post }: Prop) {
   const router = useRouter();
-  const comment = useGetPostReply(post);
-
   const onClickArticle: MouseEventHandler<HTMLDivElement> = (e) => {
     e.stopPropagation();
     e.preventDefault();
 
     router.push(`/${post.User.id}/status/${post.postId}`);
   };
-  // 답글 달자마자에는 위에 나와야하는데?
-  // 답글 가지고 오는 것도 내가 답글을 생성한 게시글에 대해서만.
-  if (post.Parent) return null;
-
   return (
-    <>
-      <Container>
-        <Article onClick={onClickArticle}>
-          <Profile>
-            <div>
-              <Link href={`/${post.User.id}`} style={{ textDecoration: "none" }}>
-                <Image src={post.User.image} alt="profile img" width={40} height={40}></Image>
-                <div></div>
-              </Link>
-            </div>
-            {comment && (
-              <div>
-                <div></div>
-              </div>
-            )}
-          </Profile>
+    <Container>
+      <Article onClick={onClickArticle}>
+        <Profile>
+          <div>
+            <Link href={`/${post.User.id}`} style={{ textDecoration: "none" }}>
+              <Image src={post.User.image} alt="profile img" width={40} height={40}></Image>
+              <div></div>
+            </Link>
+          </div>
+        </Profile>
 
-          <Main>
-            <PostWriter>
-              <Link href={`/${post.User.id}`}>
-                <div>{post.User.nickname}</div>
-              </Link>
-              <div>@${post.User.id}</div>
-              <div>.</div>
-              <div>{dayjs(post.createdAt).fromNow(true)}</div>
-            </PostWriter>
-            <PostContent>
-              <div>{post.content}</div>
-              <PostImages post={post}></PostImages>
-            </PostContent>
+        <Main>
+          <PostWriter>
+            <Link href={`/${post.User.id}`}>
+              <div>{post.User.nickname}</div>
+            </Link>
+            <div>@${post.User.id}</div>
+            <div>.</div>
+            {/* <div>{dayjs(post.createdAt).fromNow(true)}</div> */}
+          </PostWriter>
+          <PostContent>
+            <div>{post.content}</div>
+            <PostImages post={post}></PostImages>
+          </PostContent>
 
-            <PostOptions post={post} />
-          </Main>
-        </Article>
-      </Container>
-      {comment && <Reply post={comment} />}
-    </>
+          <PostOptions post={post} />
+        </Main>
+      </Article>
+    </Container>
   );
 }
 
@@ -95,13 +77,12 @@ const Article = styled.article`
 const Profile = styled.div`
   display: flex;
   justify-content: center;
-  flex-direction: column;
   align-items: flex-start;
 
   width: 40px;
   padding-top: 12px;
 
-  & > div:nth-child(1) {
+  & > div {
     position: relative;
     box-sizing: border-box;
     background-color: transparent;
@@ -128,23 +109,6 @@ const Profile = styled.div`
 
       width: 40px;
       height: 40px;
-    }
-  }
-
-  & > div:nth-child(2) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    margin-top: 4px;
-
-    & > div {
-      width: 2px;
-      /* flex-grow: 1; */
-      height: 100%;
-      background-color: rgb(207, 217, 222);
-      /* border: 1px solid black; */
     }
   }
 `;
