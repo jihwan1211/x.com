@@ -9,6 +9,8 @@ type Props = {
   params: { id: string; username: string };
 };
 
+// 왜 refetch해야 정상적인 데이터가 나오는 걸까?
+
 export default function UserPost({ params }: Props) {
   const { data } = useQuery<IPost, Object, IPost, [_1: string, _2: string]>({ queryKey: ["post", params.id], queryFn: getUserPost });
 

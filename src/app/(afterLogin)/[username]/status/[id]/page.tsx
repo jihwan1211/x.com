@@ -5,9 +5,9 @@ import UserPost from "./_component/UserPost";
 import PostComments from "./_component/PostComments";
 
 import { Main, Nav, Container } from "./style";
-
-import getUserPost from "./_lib/getUserPost";
-import getPostComments from "./_lib/getPostComments";
+import { Post as IPost } from "@/model/Post";
+import getUserPostServer from "./_lib/getUserPostServer";
+import getPostCommentsServer from "./_lib/getPostCommentsServer";
 
 type Prop = {
   params: { id: string; username: string };
@@ -19,12 +19,14 @@ export default async function StatusPage({ params }: Prop) {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
     queryKey: ["post", id],
-    queryFn: getUserPost,
+    queryFn: getUserPostServer,
   });
-  await queryClient.prefetchQuery({
-    queryKey: ["posts", "comments", id],
-    queryFn: getPostComments,
-  });
+  // await queryClient.prefetchInfiniteQuery({
+  //   queryKey: ["posts", "comments", id],
+  //   queryFn: getPostCommentsServer,
+  //   initialPageParam: 0,
+  //   getNextPageParam: (lastPage: IPost[]) => lastPage.at(-1)?.postId,
+  // });
   return (
     <Container>
       <HydrationBoundary state={dehydrate(queryClient)}>
