@@ -7,8 +7,6 @@ import { Post as IPost } from "@/model/Post";
 import getReplyPost from "../_lib/getReplyPost";
 
 export default function useGetPostReply(post: IPost) {
-  if (post.Parent) return undefined;
-
   const { data: session } = useSession();
   const [comment, setComment] = useState<IPost>();
   const [foo, setFoo] = useState(false);
@@ -22,10 +20,21 @@ export default function useGetPostReply(post: IPost) {
   });
 
   useEffect(() => {
-    if (!foo) {
-      const isComment = post.Comments.find((ele) => ele.userId === session?.user?.email);
+    if (!foo && post.Comments) {
+      const isComment = post.Comments?.find((ele) => ele.userId === session?.user?.email);
       if (isComment && data && "pages" in data) {
-        console.log(data);
+        // console.log(data);
+        const sessionUserReply: IPost | undefined = data.pages.flat().find((ele) => ele.User.id === session?.user?.email);
+
+        if (sessionUserReply) {
+          setFoo(true);
+          setComment(sessionUserReply);
+        }
+      }
+    } else {
+      // 댓글의 댓글이 있을 때 찾는 경우 response에 Comment가 없네 이 경우에는
+      if (post.commentCount && data && "pages" in data) {
+        // console.log(data);
         const sessionUserReply: IPost | undefined = data.pages.flat().find((ele) => ele.User.id === session?.user?.email);
 
         if (sessionUserReply) {
@@ -38,7 +47,7 @@ export default function useGetPostReply(post: IPost) {
 
   useEffect(() => {
     if (!foo && !isFetching && hasNextPage) fetchNextPage();
-  }, [isFetching, hasNextPage, fetchNextPage]);
+  }, [isFetching, hasNextPage, fetchNextPage, foo]);
 
   return comment;
 }

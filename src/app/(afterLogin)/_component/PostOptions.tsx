@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import useModalStore from "@/store/modal";
 import styled from "styled-components";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Post as IPost } from "@/model/Post";
 
 type Props = {
@@ -13,6 +14,7 @@ type Props = {
 
 export default function PostOptions({ post }: Props) {
   const { data: session } = useSession();
+  const router = useRouter();
   const modalStore = useModalStore();
   const calculateInitialLike = (): boolean => {
     return !!post.Hearts?.find((ele) => ele.userId === session?.user?.email);
@@ -20,7 +22,10 @@ export default function PostOptions({ post }: Props) {
 
   const [like, setLike] = useState(calculateInitialLike);
   const [bookmark, setBookmark] = useState(false);
-
+  const calculateInitialRetweet = (): boolean => {
+    return !!post.repostCount;
+  };
+  const [isRetweeted, setIsRetweeted] = useState(calculateInitialRetweet);
   const queryClient = useQueryClient();
 
   const heart = useMutation({
@@ -159,6 +164,132 @@ export default function PostOptions({ post }: Props) {
     onSettled() {},
   });
 
+  const retweet = useMutation({
+    mutationFn: async () => {
+      return fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${post.postId}/reposts`, {
+        method: "post",
+        credentials: "include",
+      });
+    },
+    onMutate: () => {
+      const queryCache = queryClient.getQueryCache();
+      const candidateQueryKey = queryCache.findAll().filter((ele) => ele.queryKey[0] === "posts" && ele.queryKey[1] === "recommends");
+      console.log(candidateQueryKey);
+      if (candidateQueryKey) {
+        const recommendQueryKey = candidateQueryKey[0].queryKey;
+        const recommendData: InfiniteData<IPost[]> | undefined = queryClient.getQueryData(recommendQueryKey);
+        console.log(recommendData);
+        if (recommendData && "pages" in recommendData) {
+          const index = recommendData.pages.flat().findIndex((ele) => ele.postId === post.postId);
+          const targetIndex = recommendData.pages[index].findIndex((ele) => ele.postId === post.postId);
+          const shallow = { ...recommendData };
+          shallow.pages = [...recommendData.pages];
+          shallow.pages[index] = [...recommendData.pages[index]];
+          shallow.pages[index][targetIndex] = {
+            ...recommendData.pages[index][targetIndex],
+            repostCount: recommendData.pages[index][targetIndex].repostCount + 1,
+            _count: {
+              ...recommendData.pages[index][targetIndex]._count,
+              Reposts: recommendData.pages[index][targetIndex]._count.Reposts + 1,
+            },
+          };
+          console.log(shallow);
+          queryClient.setQueryData(recommendQueryKey, shallow);
+        }
+      }
+    },
+    onError: () => {
+      const queryCache = queryClient.getQueryCache();
+      const candidateQueryKey = queryCache.findAll().filter((ele) => ele.queryKey[0] === "posts" && ele.queryKey[1] === "recommends");
+      console.log(candidateQueryKey);
+      if (candidateQueryKey) {
+        const recommendQueryKey = candidateQueryKey[0].queryKey;
+        const recommendData: InfiniteData<IPost[]> | undefined = queryClient.getQueryData(recommendQueryKey);
+        console.log(recommendData);
+        if (recommendData && "pages" in recommendData) {
+          const index = recommendData.pages.flat().findIndex((ele) => ele.postId === post.postId);
+          const targetIndex = recommendData.pages[index].findIndex((ele) => ele.postId === post.postId);
+          const shallow = { ...recommendData };
+          shallow.pages = [...recommendData.pages];
+          shallow.pages[index] = [...recommendData.pages[index]];
+          shallow.pages[index][targetIndex] = {
+            ...recommendData.pages[index][targetIndex],
+            repostCount: recommendData.pages[index][targetIndex].repostCount - 1,
+            _count: {
+              ...recommendData.pages[index][targetIndex]._count,
+              Reposts: recommendData.pages[index][targetIndex]._count.Reposts - 1,
+            },
+          };
+          console.log(shallow);
+          queryClient.setQueryData(recommendQueryKey, shallow);
+        }
+      }
+    },
+  });
+
+  const cancleRetweet = useMutation({
+    mutationFn: async () => {
+      return fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${post.postId}/reposts`, {
+        method: "delete",
+        credentials: "include",
+      });
+    },
+    onMutate: () => {
+      const queryCache = queryClient.getQueryCache();
+      const candidateQueryKey = queryCache.findAll().filter((ele) => ele.queryKey[0] === "posts" && ele.queryKey[1] === "recommends");
+      console.log(candidateQueryKey);
+      if (candidateQueryKey) {
+        const recommendQueryKey = candidateQueryKey[0].queryKey;
+        const recommendData: InfiniteData<IPost[]> | undefined = queryClient.getQueryData(recommendQueryKey);
+        console.log(recommendData);
+        if (recommendData && "pages" in recommendData) {
+          const index = recommendData.pages.flat().findIndex((ele) => ele.postId === post.postId);
+          const targetIndex = recommendData.pages[index].findIndex((ele) => ele.postId === post.postId);
+          const shallow = { ...recommendData };
+          shallow.pages = [...recommendData.pages];
+          shallow.pages[index] = [...recommendData.pages[index]];
+          shallow.pages[index][targetIndex] = {
+            ...recommendData.pages[index][targetIndex],
+            repostCount: recommendData.pages[index][targetIndex].repostCount - 1,
+            _count: {
+              ...recommendData.pages[index][targetIndex]._count,
+              Reposts: recommendData.pages[index][targetIndex]._count.Reposts - 1,
+            },
+          };
+          console.log(shallow);
+          queryClient.setQueryData(recommendQueryKey, shallow);
+        }
+      }
+    },
+    onError: () => {
+      const queryCache = queryClient.getQueryCache();
+      const candidateQueryKey = queryCache.findAll().filter((ele) => ele.queryKey[0] === "posts" && ele.queryKey[1] === "recommends");
+      console.log(candidateQueryKey);
+      if (candidateQueryKey) {
+        const recommendQueryKey = candidateQueryKey[0].queryKey;
+        const recommendData: InfiniteData<IPost[]> | undefined = queryClient.getQueryData(recommendQueryKey);
+        console.log(recommendData);
+        if (recommendData && "pages" in recommendData) {
+          const index = recommendData.pages.flat().findIndex((ele) => ele.postId === post.postId);
+          const targetIndex = recommendData.pages[index].findIndex((ele) => ele.postId === post.postId);
+          const shallow = { ...recommendData };
+          shallow.pages = [...recommendData.pages];
+          shallow.pages[index] = [...recommendData.pages[index]];
+          shallow.pages[index][targetIndex] = {
+            ...recommendData.pages[index][targetIndex],
+            repostCount: recommendData.pages[index][targetIndex].repostCount + 1,
+            _count: {
+              ...recommendData.pages[index][targetIndex]._count,
+              Reposts: recommendData.pages[index][targetIndex]._count.Reposts + 1,
+            },
+          };
+          console.log(shallow);
+          queryClient.setQueryData(recommendQueryKey, shallow);
+        }
+      }
+    },
+  });
+
   const onClickLikeBtn: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
     if (like) {
@@ -176,14 +307,25 @@ export default function PostOptions({ post }: Props) {
     setBookmark(!bookmark);
   };
 
-  const onClickComment: MouseEventHandler<HTMLAnchorElement> = (e) => {
+  const onClickComment: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
+    router.push("/compose/tweet", { scroll: false });
     modalStore.setModal("comment");
     modalStore.setPost(post);
   };
+
+  const onClickRetweet: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
+    if (isRetweeted) {
+      cancleRetweet.mutate();
+    } else {
+      console.log("hah");
+      retweet.mutate();
+    }
+  };
   return (
     <PostOptionsContainer>
-      <CommentBtn onClick={onClickComment} href="/compose/tweet" scroll={false}>
+      <CommentBtn onClick={onClickComment}>
         <div>
           <svg viewBox="0 0 24 24" aria-hidden="true" width="1.25em">
             <g>
@@ -191,10 +333,9 @@ export default function PostOptions({ post }: Props) {
             </g>
           </svg>
         </div>
-        {/* <div>{post.Comments.length}</div> */}
-        <div>댓글 개수 </div>
+        <div>{post.commentCount}</div>
       </CommentBtn>
-      <RetweetBtn href="/">
+      <RetweetBtn onClick={onClickRetweet}>
         <div>
           <svg viewBox="0 0 24 24" aria-hidden="true" width="1.25em">
             <g>
@@ -202,8 +343,7 @@ export default function PostOptions({ post }: Props) {
             </g>
           </svg>
         </div>
-        {/* <div>{post._count.Reposts}</div> */}
-        <div>리포스트 개수 </div>
+        <div>{post.repostCount}</div>
       </RetweetBtn>
       <LikeBtn onClick={onClickLikeBtn}>
         <div>
@@ -221,8 +361,7 @@ export default function PostOptions({ post }: Props) {
             </svg>
           )}
         </div>
-        {/* <div>{post._count.Hearts}</div> */}
-        <div>{post._count?.Hearts || ""}</div>
+        <div>{post.heartCount}</div>
       </LikeBtn>
       <HitsBtn href="/">
         <div>
@@ -232,7 +371,6 @@ export default function PostOptions({ post }: Props) {
             </g>
           </svg>
         </div>
-        {/* <div>{post.watched}</div> */}
         <div>13만</div>
       </HitsBtn>
       <EtcBtn onClick={onClickBookmarkBtn}>
@@ -300,7 +438,8 @@ export const PostOptionsContainer = styled.div`
   }
 `;
 
-export const CommentBtn = styled(Link)`
+export const CommentBtn = styled.button`
+  border: 0;
   color: rgba(29, 155, 240);
   flex-grow: 1;
   & > div:nth-child(1) {
@@ -319,7 +458,8 @@ export const CommentBtn = styled(Link)`
   }
 `;
 
-export const RetweetBtn = styled(Link)`
+export const RetweetBtn = styled.button`
+  border: 0;
   color: rgba(0, 186, 124);
   flex-grow: 1;
   & > div:nth-child(1) {

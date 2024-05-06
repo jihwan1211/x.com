@@ -2,13 +2,15 @@
 import { useRouter } from "next/navigation";
 import { MouseEventHandler, useEffect } from "react";
 import styled from "styled-components";
+import useModalStore from "@/store/modal";
 
 export default function CloseButton() {
   const router = useRouter();
+  const modalStore = useModalStore();
   const onClickCloseBtn: MouseEventHandler<HTMLButtonElement> = () => {
     // 뒷배경 스크롤 원상복구
     document.body.style.overflow = "auto";
-
+    modalStore.reset();
     router.back();
   };
 

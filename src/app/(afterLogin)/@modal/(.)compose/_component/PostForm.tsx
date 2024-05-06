@@ -21,6 +21,7 @@ type Prop = {
 export default function PostForm({ session }: Prop) {
   const modal = useModalStore((state) => state.modal);
   const post = useModalStore((state) => state.post);
+  const modalStore = useModalStore();
   const [input, setInput] = useState("");
   const imageRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<Array<{ dataUrl: string; file: File } | null>>([]);
@@ -74,6 +75,9 @@ export default function PostForm({ session }: Prop) {
     },
     onError: (error) => {
       alert(error);
+    },
+    onSettled: () => {
+      modalStore.reset();
     },
   });
 
