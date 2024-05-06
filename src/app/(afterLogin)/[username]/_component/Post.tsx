@@ -11,14 +11,30 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
 import PostOptions from "@/app/(afterLogin)/_component/PostOptions";
 import useGetPostReply from "@/app/(afterLogin)/_hooks/useGetPostReply";
-import Reply from "@/app/(afterLogin)/_component/Reply";
+import Comments from "@/app/(afterLogin)/_component/Comments";
+import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
+// import getReplyPost from "../_lib/getReplyPost";
 
 dayjs.locale("ko");
 dayjs.extend(relativeTime);
 
 export default function Post({ post }: { post: IPost }) {
   const router = useRouter();
-  const comment: IPost | undefined = useGetPostReply(post);
+  let comment: IPost | undefined = undefined;
+  if (!post.Parent) comment = useGetPostReply(post);
+
+  // const comment = undefined;
+
+  // const { isFetching, fetchNextPage, hasNextPage, data } = useInfiniteQuery<IPost[], Object, InfiniteData<IPost[]>, [_1: string, _2: string, _3: number], number>({
+  //   queryKey: ["posts", "reply", post.postId],
+  //   queryFn: getReplyPost,
+  //   initialPageParam: 0,
+  //   getNextPageParam: (lastPage) => lastPage.at(-1)?.postId,
+  // });
+
+  // useEffect(() => {
+  //   if (!isFetching && hasNextPage) fetchNextPage();
+  // }, [isFetching, hasNextPage, fetchNextPage]);
 
   const onClickArticle: MouseEventHandler<HTMLDivElement> = (e) => {
     e.stopPropagation();
@@ -28,10 +44,13 @@ export default function Post({ post }: { post: IPost }) {
   };
   // 답글 달자마자에는 위에 나와야하는데?
   // 답글 가지고 오는 것도 내가 답글을 생성한 게시글에 대해서만.
+  // 이 부분도 수정해야함.
+  if (post.Parent) return null;
 
   return (
     <>
       <Container>
+        {post.Original && <div>재개시욧</div>}
         <Article onClick={onClickArticle}>
           <Profile>
             <div>
@@ -65,7 +84,7 @@ export default function Post({ post }: { post: IPost }) {
           </Main>
         </Article>
       </Container>
-      {comment && <Reply post={comment} />}
+      {comment && <Comments post={comment} />}
     </>
   );
 }

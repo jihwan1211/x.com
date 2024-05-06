@@ -3,8 +3,8 @@
 import { InfiniteData, useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 import getPostComments from "../_lib/getPostComments";
 import { Post as IPost } from "@/model/Post";
-import Post from "./Post";
-// import Post from "@/app/(afterLogin)/_component/Post";
+import Comment from "./Comment";
+import Comments from "@/app/(afterLogin)/_component/Comments";
 import CommentForm from "../../../_component/CommentForm";
 import { Fragment, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
@@ -20,8 +20,9 @@ export default function PostComments({ params }: Props) {
     queryKey: ["posts", "comments", params.id],
     queryFn: getPostComments,
     initialPageParam: 0,
+    // getNextPageParam: (lastPage) => lastPage.at(0)?.postId,
     getNextPageParam: (lastPage) => lastPage.at(-1)?.postId,
-    enabled: !!postData,
+    // enabled: !!postData,
   });
 
   const { ref, inView } = useInView({
@@ -43,7 +44,7 @@ export default function PostComments({ params }: Props) {
         {data?.pages.map((page, i) => (
           <Fragment key={i}>
             {page.map((post) => (
-              <Post key={post.postId} post={post} />
+              <Comment key={post.postId} post={post} />
             ))}
           </Fragment>
         ))}
@@ -52,13 +53,4 @@ export default function PostComments({ params }: Props) {
     );
   }
   return null;
-
-  // return (
-  //   <>
-  //     <CommentForm></CommentForm>
-  //     {data?.map((ele) => (
-  //       <Post key={ele.postId} post={ele}></Post>
-  //     ))}
-  //   </>
-  // );
 }

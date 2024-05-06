@@ -12,7 +12,7 @@ type Prop = {
   post: IPost;
 };
 
-export default function Reply({ post }: Prop) {
+export default function Comments({ post }: Prop) {
   const router = useRouter();
   const onClickArticle: MouseEventHandler<HTMLDivElement> = (e) => {
     e.stopPropagation();
@@ -58,8 +58,6 @@ const Container = styled.div`
   box-sizing: border-box;
   /* height: 100dvh; */
   padding: 0 16px;
-
-  border-top: 1px solid rgb(239, 243, 244);
 
   cursor: pointer;
 

@@ -4,37 +4,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { MouseEventHandler, useEffect } from "react";
 import { Post as IPost } from "@/model/Post";
-import PostImages from "./PostImages";
+import PostImages from "@/app/(afterLogin)/_component/PostImages";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
-import PostOptions from "./PostOptions";
-import useGetPostReply from "../_hooks/useGetPostReply";
-import Comments from "./Comments";
-import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
-import getReplyPost from "../_lib/getReplyPost";
+import PostOptions from "@/app/(afterLogin)/_component/PostOptions";
+import useGetPostReply from "@/app/(afterLogin)/_hooks/useGetPostReply";
+import Reply from "@/app/(afterLogin)/_component/Comments";
 
 dayjs.locale("ko");
 dayjs.extend(relativeTime);
 
-export default function Post({ post }: { post: IPost }) {
+export default function SinglePost({ post }: { post: IPost }) {
   const router = useRouter();
-  let comment: IPost | undefined = undefined;
-  if (!post.Parent) comment = useGetPostReply(post);
-
-  // const comment = undefined;
-
-  // const { isFetching, fetchNextPage, hasNextPage, data } = useInfiniteQuery<IPost[], Object, InfiniteData<IPost[]>, [_1: string, _2: string, _3: number], number>({
-  //   queryKey: ["posts", "reply", post.postId],
-  //   queryFn: getReplyPost,
-  //   initialPageParam: 0,
-  //   getNextPageParam: (lastPage) => lastPage.at(-1)?.postId,
-  // });
-
-  // useEffect(() => {
-  //   if (!isFetching && hasNextPage) fetchNextPage();
-  // }, [isFetching, hasNextPage, fetchNextPage]);
+  const comment: IPost | undefined = useGetPostReply(post);
+  const date = dayjs(post.createdAt);
 
   const onClickArticle: MouseEventHandler<HTMLDivElement> = (e) => {
     e.stopPropagation();
@@ -44,8 +29,6 @@ export default function Post({ post }: { post: IPost }) {
   };
   // 답글 달자마자에는 위에 나와야하는데?
   // 답글 가지고 오는 것도 내가 답글을 생성한 게시글에 대해서만.
-  // 이 부분도 수정해야함.
-  if (post.Parent) return null;
 
   return (
     <>
@@ -58,11 +41,6 @@ export default function Post({ post }: { post: IPost }) {
                 <div></div>
               </Link>
             </div>
-            {comment && (
-              <ReplyLine>
-                <div></div>
-              </ReplyLine>
-            )}
           </Profile>
 
           <Main>
@@ -78,12 +56,21 @@ export default function Post({ post }: { post: IPost }) {
               <div>{post.content}</div>
               <PostImages post={post}></PostImages>
             </PostContent>
-
+            <PostInfo>
+              <span>
+                {date.format("A") === "AM" ? "오전" : "오후"}
+                &nbsp;
+                {date.hour() % 12}:{date.minute()}.
+              </span>
+              <span>
+                {date.month()}월 {date.date()}일. &nbsp;
+              </span>
+              <span>조회수</span>
+            </PostInfo>
             <PostOptions post={post} />
           </Main>
         </Article>
       </Container>
-      {comment && <Comments post={comment} />}
     </>
   );
 }
@@ -148,23 +135,6 @@ const Profile = styled.div`
   }
 `;
 
-const ReplyLine = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-  margin-top: 4px;
-
-  & > div {
-    width: 2px;
-    /* flex-grow: 1; */
-    height: 100%;
-    background-color: rgb(207, 217, 222);
-    /* border: 1px solid black; */
-  }
-`;
-
 const Main = styled.div`
   flex-grow: 1;
   box-sizing: border-box;
@@ -221,4 +191,10 @@ const PostContent = styled.div`
     font-size: 15px;
     font-weight: 400;
   }
+`;
+
+const PostInfo = styled.div`
+  margin: 16px 0;
+  color: rgb(83, 100, 113);
+  font-size: 15px;
 `;

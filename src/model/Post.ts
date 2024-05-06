@@ -38,4 +38,7 @@ export interface Post {
   };
   Original?: Post; // 재게시
   Parent?: Post; // 답글
+  commentCount: number;
+  repostCount: number;
+  heartCount: number;
 }

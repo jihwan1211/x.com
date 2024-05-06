@@ -4,25 +4,25 @@ import Image from "next/image";
 import Link from "next/link";
 import { MouseEventHandler, useEffect } from "react";
 import { Post as IPost } from "@/model/Post";
-import PostImages from "./PostImages";
+import PostImages from "@/app/(afterLogin)/_component/PostImages";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
-import PostOptions from "./PostOptions";
-import useGetPostReply from "../_hooks/useGetPostReply";
-import Comments from "./Comments";
-import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
-import getReplyPost from "../_lib/getReplyPost";
+import PostOptions from "@/app/(afterLogin)/_component/PostOptions";
+import useGetPostReply from "@/app/(afterLogin)/_hooks/useGetPostReply";
+import Comments from "@/app/(afterLogin)/_component/Comments";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
 
 dayjs.locale("ko");
 dayjs.extend(relativeTime);
 
-export default function Post({ post }: { post: IPost }) {
+export default function Comment({ post }: { post: IPost }) {
   const router = useRouter();
-  let comment: IPost | undefined = undefined;
-  if (!post.Parent) comment = useGetPostReply(post);
-
+  const queryClient = useQueryClient();
+  const comment: IPost | undefined = useGetPostReply(post);
+  // console.log(`대댓글 감지 : ${post.content}`, comment);
   // const comment = undefined;
 
   // const { isFetching, fetchNextPage, hasNextPage, data } = useInfiniteQuery<IPost[], Object, InfiniteData<IPost[]>, [_1: string, _2: string, _3: number], number>({
@@ -44,8 +44,6 @@ export default function Post({ post }: { post: IPost }) {
   };
   // 답글 달자마자에는 위에 나와야하는데?
   // 답글 가지고 오는 것도 내가 답글을 생성한 게시글에 대해서만.
-  // 이 부분도 수정해야함.
-  if (post.Parent) return null;
 
   return (
     <>
@@ -70,7 +68,7 @@ export default function Post({ post }: { post: IPost }) {
               <Link href={`/${post.User.id}`}>
                 <div>{post.User.nickname}</div>
               </Link>
-              <div>@${post.User.id}</div>
+              <div>@{post.User.id}</div>
               <div>.</div>
               <div>{dayjs(post.createdAt).fromNow(true)}</div>
             </PostWriter>

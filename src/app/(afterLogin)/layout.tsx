@@ -5,8 +5,8 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 
 import RQProvider from "./_component/RQProvider";
-import Nav from "./_component/nav";
-import NavProfile from "./_component/nav-profile";
+import Nav from "./_component/Nav";
+import NavProfile from "./_component/NavProfile";
 import MainSearchBar from "./_component/MainSearchBar";
 import SearchFilter from "./search/_component/SearchFilter";
 import TrendsForYou from "./_component/TrendsForYou";
