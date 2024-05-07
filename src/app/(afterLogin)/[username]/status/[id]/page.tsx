@@ -10,7 +10,7 @@ import getUserPostServer from "./_lib/getUserPostServer";
 import getPostCommentsServer from "./_lib/getPostCommentsServer";
 
 type Prop = {
-  params: { id: string; username: string };
+  params: { id: number; username: string };
 };
 
 export default async function StatusPage({ params }: Prop) {

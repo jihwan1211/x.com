@@ -3,7 +3,7 @@ import { QueryClient, HydrationBoundary, dehydrate } from "@tanstack/react-query
 import BackBtn from "../../../../_component/BackBtn";
 
 import { Container } from "./style";
-import getUserPost from "@/app/(afterLogin)/[username]/status/[id]/_lib/getUserPost";
+import getUserPost from "@/app/(afterLogin)/[username]/_lib/getUserSinglePost";
 import getPostComments from "@/app/(afterLogin)/[username]/status/[id]/_lib/getPostComments";
 import PhotoComments from "./_component/PhotoComments";
 import PhotoDisplay from "./_component/PhotoDisplay";

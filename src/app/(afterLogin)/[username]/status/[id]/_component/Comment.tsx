@@ -18,10 +18,14 @@ import { useParams } from "next/navigation";
 dayjs.locale("ko");
 dayjs.extend(relativeTime);
 
-export default function Comment({ post }: { post: IPost }) {
+type Prop = {
+  post: IPost;
+  comment: IPost | undefined;
+};
+export default function Comment({ post, comment }: Prop) {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const comment: IPost | undefined = useGetPostReply(post);
+  // const comment: IPost | undefined = useGetPostReply(post);
   // console.log(`대댓글 감지 : ${post.content}`, comment);
   // const comment = undefined;
 

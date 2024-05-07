@@ -8,15 +8,16 @@ import Comments from "@/app/(afterLogin)/_component/Comments";
 import CommentForm from "../../../_component/CommentForm";
 import { Fragment, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
+import SinglePostCommentsDisplayDecider from "./SinglePostCommentsDisplayDecider";
 type Props = {
-  params: { username: string; id: string };
+  params: { username: string; id: number };
 };
 
 export default function PostComments({ params }: Props) {
   const queryClient = useQueryClient();
   const postData = queryClient.getQueryData<IPost>(["post", params.id]);
 
-  const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery<IPost[], Object, InfiniteData<IPost[]>, [_1: string, _2: string, _3: string], number>({
+  const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery<IPost[], Object, InfiniteData<IPost[]>, [_1: string, _2: string, _3: number], number>({
     queryKey: ["posts", "comments", params.id],
     queryFn: getPostComments,
     initialPageParam: 0,
@@ -37,14 +38,14 @@ export default function PostComments({ params }: Props) {
   }, [inView, isFetching, hasNextPage, fetchNextPage]);
 
   if (!data) return null;
-
+  // <Comment key={post.postId} post={post} />
   if (postData) {
     return (
       <>
         {data?.pages.map((page, i) => (
           <Fragment key={i}>
             {page.map((post) => (
-              <Comment key={post.postId} post={post} />
+              <SinglePostCommentsDisplayDecider post={post} />
             ))}
           </Fragment>
         ))}

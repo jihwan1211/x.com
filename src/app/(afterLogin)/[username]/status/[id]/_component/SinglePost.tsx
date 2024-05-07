@@ -1,24 +1,21 @@
 "use client";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
-import { MouseEventHandler, useEffect } from "react";
+import { MouseEventHandler } from "react";
 import { Post as IPost } from "@/model/Post";
 import PostImages from "@/app/(afterLogin)/_component/PostImages";
+import PostOptions from "@/app/(afterLogin)/_component/PostOptions";
+import PostProfile from "@/app/(afterLogin)/_component/PostProfile";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
-import PostOptions from "@/app/(afterLogin)/_component/PostOptions";
-import useGetPostReply from "@/app/(afterLogin)/_hooks/useGetPostReply";
-import Reply from "@/app/(afterLogin)/_component/Comments";
 
 dayjs.locale("ko");
 dayjs.extend(relativeTime);
 
 export default function SinglePost({ post }: { post: IPost }) {
   const router = useRouter();
-  const comment: IPost | undefined = useGetPostReply(post);
   const date = dayjs(post.createdAt);
 
   const onClickArticle: MouseEventHandler<HTMLDivElement> = (e) => {
@@ -28,20 +25,12 @@ export default function SinglePost({ post }: { post: IPost }) {
     router.push(`/${post.User.id}/status/${post.postId}`);
   };
   // 답글 달자마자에는 위에 나와야하는데?
-  // 답글 가지고 오는 것도 내가 답글을 생성한 게시글에 대해서만.
 
   return (
     <>
       <Container>
         <Article onClick={onClickArticle}>
-          <Profile>
-            <div>
-              <Link href={`/${post.User.id}`} style={{ textDecoration: "none" }}>
-                <Image src={post.User.image} alt="profile img" width={40} height={40}></Image>
-                <div></div>
-              </Link>
-            </div>
-          </Profile>
+          <PostProfile post={post} />
 
           <Main>
             <PostWriter>
@@ -94,45 +83,6 @@ const Container = styled.div`
 const Article = styled.article`
   display: flex;
   box-sizing: border-box;
-`;
-
-const Profile = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: column;
-
-  width: 40px;
-  padding-top: 12px;
-
-  & > div:nth-child(1) {
-    position: relative;
-    box-sizing: border-box;
-    background-color: transparent;
-
-    flex-basis: 40px;
-    height: 40px;
-
-    &:hover {
-      div {
-        background-color: rgba(255, 255, 255, 0.09);
-      }
-    }
-
-    img {
-      border-radius: 50%;
-    }
-
-    div {
-      top: 0;
-      position: absolute;
-      box-sizing: border-box;
-      background-color: transparent;
-      border-radius: 50%;
-
-      width: 40px;
-      height: 40px;
-    }
-  }
 `;
 
 const Main = styled.div`

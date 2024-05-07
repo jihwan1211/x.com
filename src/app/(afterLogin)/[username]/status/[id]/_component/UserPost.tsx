@@ -1,18 +1,18 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import getUserPost from "../_lib/getUserPost";
+import getUserSinglePost from "../../../_lib/getUserSinglePost";
 import { Post as IPost } from "@/model/Post";
 import SinglePost from "./SinglePost";
 import styled from "styled-components";
 type Props = {
-  params: { id: string; username: string };
+  params: { id: number; username: string };
 };
 
 // 왜 refetch해야 정상적인 데이터가 나오는 걸까?
 
 export default function UserPost({ params }: Props) {
-  const { data } = useQuery<IPost, Object, IPost, [_1: string, _2: string]>({ queryKey: ["post", params.id], queryFn: getUserPost });
+  const { data } = useQuery<IPost, Object, IPost, [_1: string, _2: number]>({ queryKey: ["post", params.id], queryFn: getUserSinglePost });
 
   if (data === undefined) return <NoPage>이 페이지는 존재하지 않습니다.</NoPage>;
   return <SinglePost post={data} />;
