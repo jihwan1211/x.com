@@ -1,12 +1,10 @@
 "use client";
 
 import { useInfiniteQuery, InfiniteData } from "@tanstack/react-query";
-import Post from "../../_component/Post";
+import SearchPostDisplayDecider from "./SearchPostDisplayDecider";
 import { useInView } from "react-intersection-observer";
 import { Fragment, useEffect } from "react";
-
 import { Post as IPost } from "@/model/Post";
-
 import getSearchResults from "../_lib/getSearchResults";
 
 type Props = {
@@ -26,21 +24,25 @@ export default function SearchPostDisplay({ searchParams }: Props) {
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.at(-1)?.postId,
   });
+
   const { ref, inView } = useInView({
     /* Optional options */
     threshold: 0,
     delay: 100,
   });
+
   useEffect(() => {
     if (inView) !isFetching && hasNextPage && fetchNextPage();
   }, [inView, isFetching, hasNextPage, fetchNextPage]);
+
   if (!data) return null;
+
   return (
     <>
       {data.pages.map((ele: IPost[], idx: number) => (
         <Fragment key={idx}>
           {ele.map((post: IPost) => (
-            <Post key={post.postId} post={post}></Post>
+            <SearchPostDisplayDecider key={post.postId} post={post} />
           ))}
         </Fragment>
       ))}

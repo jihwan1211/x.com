@@ -177,51 +177,59 @@ export default function PostOptions({ post }: Props) {
       console.log(candidateQueryKey);
       if (candidateQueryKey) {
         const recommendQueryKey = candidateQueryKey[0].queryKey;
+        console.log("recommendQueryKey : ", recommendQueryKey);
         const recommendData: InfiniteData<IPost[]> | undefined = queryClient.getQueryData(recommendQueryKey);
         console.log(recommendData);
         if (recommendData && "pages" in recommendData) {
-          const index = recommendData.pages.flat().findIndex((ele) => ele.postId === post.postId);
-          const targetIndex = recommendData.pages[index].findIndex((ele) => ele.postId === post.postId);
-          const shallow = { ...recommendData };
-          shallow.pages = [...recommendData.pages];
-          shallow.pages[index] = [...recommendData.pages[index]];
-          shallow.pages[index][targetIndex] = {
-            ...recommendData.pages[index][targetIndex],
-            repostCount: recommendData.pages[index][targetIndex].repostCount + 1,
-            _count: {
-              ...recommendData.pages[index][targetIndex]._count,
-              Reposts: recommendData.pages[index][targetIndex]._count.Reposts + 1,
-            },
-          };
-          console.log(shallow);
-          queryClient.setQueryData(recommendQueryKey, shallow);
+          const targetPost = recommendData.pages.flat().find((ele) => ele.postId === post.postId);
+          if (targetPost) {
+            const index = recommendData.pages.findIndex((ele) => ele.includes(targetPost));
+            const targetIndex = recommendData.pages[index].findIndex((ele) => ele.postId === post.postId);
+            const shallow = { ...recommendData };
+            shallow.pages = [...recommendData.pages];
+            shallow.pages[index] = [...recommendData.pages[index]];
+            shallow.pages[index][targetIndex] = {
+              ...recommendData.pages[index][targetIndex],
+              repostCount: recommendData.pages[index][targetIndex].repostCount + 1,
+              _count: {
+                ...recommendData.pages[index][targetIndex]._count,
+                Reposts: recommendData.pages[index][targetIndex]._count.Reposts + 1,
+              },
+            };
+            console.log(shallow);
+            queryClient.setQueryData(recommendQueryKey, shallow);
+          }
         }
       }
     },
-    onError: () => {
+    onError: (err) => {
       const queryCache = queryClient.getQueryCache();
       const candidateQueryKey = queryCache.findAll().filter((ele) => ele.queryKey[0] === "posts" && ele.queryKey[1] === "recommends");
       console.log(candidateQueryKey);
       if (candidateQueryKey) {
         const recommendQueryKey = candidateQueryKey[0].queryKey;
+        console.log("recommendQueryKey : ", recommendQueryKey);
         const recommendData: InfiniteData<IPost[]> | undefined = queryClient.getQueryData(recommendQueryKey);
         console.log(recommendData);
         if (recommendData && "pages" in recommendData) {
-          const index = recommendData.pages.flat().findIndex((ele) => ele.postId === post.postId);
-          const targetIndex = recommendData.pages[index].findIndex((ele) => ele.postId === post.postId);
-          const shallow = { ...recommendData };
-          shallow.pages = [...recommendData.pages];
-          shallow.pages[index] = [...recommendData.pages[index]];
-          shallow.pages[index][targetIndex] = {
-            ...recommendData.pages[index][targetIndex],
-            repostCount: recommendData.pages[index][targetIndex].repostCount - 1,
-            _count: {
-              ...recommendData.pages[index][targetIndex]._count,
-              Reposts: recommendData.pages[index][targetIndex]._count.Reposts - 1,
-            },
-          };
-          console.log(shallow);
-          queryClient.setQueryData(recommendQueryKey, shallow);
+          const targetPost = recommendData.pages.flat().find((ele) => ele.postId === post.postId);
+          if (targetPost) {
+            const index = recommendData.pages.findIndex((ele) => ele.includes(targetPost));
+            const targetIndex = recommendData.pages[index].findIndex((ele) => ele.postId === post.postId);
+            const shallow = { ...recommendData };
+            shallow.pages = [...recommendData.pages];
+            shallow.pages[index] = [...recommendData.pages[index]];
+            shallow.pages[index][targetIndex] = {
+              ...recommendData.pages[index][targetIndex],
+              repostCount: recommendData.pages[index][targetIndex].repostCount - 1,
+              _count: {
+                ...recommendData.pages[index][targetIndex]._count,
+                Reposts: recommendData.pages[index][targetIndex]._count.Reposts - 1,
+              },
+            };
+            console.log(shallow);
+            queryClient.setQueryData(recommendQueryKey, shallow);
+          }
         }
       }
     },
@@ -240,24 +248,28 @@ export default function PostOptions({ post }: Props) {
       console.log(candidateQueryKey);
       if (candidateQueryKey) {
         const recommendQueryKey = candidateQueryKey[0].queryKey;
+        console.log("recommendQueryKey : ", recommendQueryKey);
         const recommendData: InfiniteData<IPost[]> | undefined = queryClient.getQueryData(recommendQueryKey);
         console.log(recommendData);
         if (recommendData && "pages" in recommendData) {
-          const index = recommendData.pages.flat().findIndex((ele) => ele.postId === post.postId);
-          const targetIndex = recommendData.pages[index].findIndex((ele) => ele.postId === post.postId);
-          const shallow = { ...recommendData };
-          shallow.pages = [...recommendData.pages];
-          shallow.pages[index] = [...recommendData.pages[index]];
-          shallow.pages[index][targetIndex] = {
-            ...recommendData.pages[index][targetIndex],
-            repostCount: recommendData.pages[index][targetIndex].repostCount - 1,
-            _count: {
-              ...recommendData.pages[index][targetIndex]._count,
-              Reposts: recommendData.pages[index][targetIndex]._count.Reposts - 1,
-            },
-          };
-          console.log(shallow);
-          queryClient.setQueryData(recommendQueryKey, shallow);
+          const targetPost = recommendData.pages.flat().find((ele) => ele.postId === post.postId);
+          if (targetPost) {
+            const index = recommendData.pages.findIndex((ele) => ele.includes(targetPost));
+            const targetIndex = recommendData.pages[index].findIndex((ele) => ele.postId === post.postId);
+            const shallow = { ...recommendData };
+            shallow.pages = [...recommendData.pages];
+            shallow.pages[index] = [...recommendData.pages[index]];
+            shallow.pages[index][targetIndex] = {
+              ...recommendData.pages[index][targetIndex],
+              repostCount: recommendData.pages[index][targetIndex].repostCount - 1,
+              _count: {
+                ...recommendData.pages[index][targetIndex]._count,
+                Reposts: recommendData.pages[index][targetIndex]._count.Reposts - 1,
+              },
+            };
+            console.log(shallow);
+            queryClient.setQueryData(recommendQueryKey, shallow);
+          }
         }
       }
     },
@@ -267,24 +279,28 @@ export default function PostOptions({ post }: Props) {
       console.log(candidateQueryKey);
       if (candidateQueryKey) {
         const recommendQueryKey = candidateQueryKey[0].queryKey;
+        console.log("recommendQueryKey : ", recommendQueryKey);
         const recommendData: InfiniteData<IPost[]> | undefined = queryClient.getQueryData(recommendQueryKey);
         console.log(recommendData);
         if (recommendData && "pages" in recommendData) {
-          const index = recommendData.pages.flat().findIndex((ele) => ele.postId === post.postId);
-          const targetIndex = recommendData.pages[index].findIndex((ele) => ele.postId === post.postId);
-          const shallow = { ...recommendData };
-          shallow.pages = [...recommendData.pages];
-          shallow.pages[index] = [...recommendData.pages[index]];
-          shallow.pages[index][targetIndex] = {
-            ...recommendData.pages[index][targetIndex],
-            repostCount: recommendData.pages[index][targetIndex].repostCount + 1,
-            _count: {
-              ...recommendData.pages[index][targetIndex]._count,
-              Reposts: recommendData.pages[index][targetIndex]._count.Reposts + 1,
-            },
-          };
-          console.log(shallow);
-          queryClient.setQueryData(recommendQueryKey, shallow);
+          const targetPost = recommendData.pages.flat().find((ele) => ele.postId === post.postId);
+          if (targetPost) {
+            const index = recommendData.pages.findIndex((ele) => ele.includes(targetPost));
+            const targetIndex = recommendData.pages[index].findIndex((ele) => ele.postId === post.postId);
+            const shallow = { ...recommendData };
+            shallow.pages = [...recommendData.pages];
+            shallow.pages[index] = [...recommendData.pages[index]];
+            shallow.pages[index][targetIndex] = {
+              ...recommendData.pages[index][targetIndex],
+              repostCount: recommendData.pages[index][targetIndex].repostCount + 1,
+              _count: {
+                ...recommendData.pages[index][targetIndex]._count,
+                Reposts: recommendData.pages[index][targetIndex]._count.Reposts + 1,
+              },
+            };
+            console.log(shallow);
+            queryClient.setQueryData(recommendQueryKey, shallow);
+          }
         }
       }
     },
@@ -318,9 +334,10 @@ export default function PostOptions({ post }: Props) {
     e.stopPropagation();
     if (isRetweeted) {
       cancleRetweet.mutate();
+      setIsRetweeted(false);
     } else {
-      console.log("hah");
       retweet.mutate();
+      setIsRetweeted(true);
     }
   };
   return (

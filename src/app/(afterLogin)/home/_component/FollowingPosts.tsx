@@ -7,6 +7,7 @@ import getFollowingPosts from "../_lib/getFollowingPosts";
 
 import Post from "../../_component/Post";
 import { Post as IPost } from "@/model/Post";
+import HomePostDisplayDecider from "./HomePostDisplayDecider";
 
 export default function FollowingPosts() {
   const { isFetching, fetchNextPage, hasNextPage, data } = useSuspenseInfiniteQuery<IPost[], Object, InfiniteData<IPost[]>, [_1: string, _2: string], number>({
@@ -30,8 +31,8 @@ export default function FollowingPosts() {
     <>
       {data.pages.map((ele: IPost[], idx: number) => (
         <Fragment key={idx}>
-          {ele.map((ele) => (
-            <Post key={ele.postId} post={ele}></Post>
+          {ele.map((post) => (
+            <HomePostDisplayDecider key={post.postId} post={post} />
           ))}
         </Fragment>
       ))}

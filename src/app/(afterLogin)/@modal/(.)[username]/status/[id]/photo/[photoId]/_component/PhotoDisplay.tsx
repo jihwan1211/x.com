@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import styled from "styled-components";
 import { IPost } from "@/model/Post";
-import getUserPost from "../../../../../../../[username]/status/[id]/_lib/getUserPost";
+import getUserPost from "../../../../../../../[username]/_lib/getUserSinglePost";
 import PostOptions from "./PostOptions";
 
 type Props = {

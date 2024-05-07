@@ -7,6 +7,7 @@ import getRecommendPosts from "../_lib/getRecommendPosts";
 
 import Post from "../../_component/Post";
 import { Post as IPost } from "@/model/Post";
+import HomePostDisplayDecider from "./HomePostDisplayDecider";
 
 export default function RecommendPosts() {
   const { isFetching, fetchNextPage, hasNextPage, data } = useSuspenseInfiniteQuery<IPost[], Object, InfiniteData<IPost[]>, [_1: string, _2: string], number>({
@@ -29,12 +30,15 @@ export default function RecommendPosts() {
   if (!data) return null;
 
   // 이거 에러는...? type error인데.. -> InfiniteData로 해결
+  {
+    /* <Post key={post.postId} post={post}></Post> */
+  }
   return (
     <>
       {data.pages.map((ele: IPost[], idx: number) => (
         <Fragment key={idx}>
           {ele.map((post: IPost) => (
-            <Post key={post.postId} post={post}></Post>
+            <HomePostDisplayDecider key={post.postId} post={post} />
           ))}
         </Fragment>
       ))}
