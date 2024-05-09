@@ -2,21 +2,24 @@
 import Image from "next/image";
 import { ChangeEventHandler, useState, useRef } from "react";
 import { Session } from "@auth/core/types";
-import usePostMutation from "../../_hooks/usePostMutation";
+import { useParams } from "next/navigation";
 import TextareaAutosize from "react-textarea-autosize";
 import styled from "styled-components";
-import UploadImgCarousel from "../../_component/UploadImgCarousel";
-import { readImageFiles } from "../../_lib/readImageFiles";
-
+import UploadImgCarousel from "@/app/(afterLogin)/_component/UploadImgCarousel";
+import useCommentMutation from "@/app/(afterLogin)/_hooks/useCommentMutation";
+import { readImageFiles } from "@/app/(afterLogin)/_lib/readImageFiles";
 type Prop = {
   me: Session | null;
 };
 
-export default function PostForm({ me }: Prop) {
+type FileArr = Array<{ dataUrl: string; file: File } | null>;
+
+export default function CommentForm({ me }: Prop) {
   const imageRef = useRef<HTMLInputElement>(null);
   const [content, setContent] = useState("");
-  const [preview, setPreview] = useState<Array<{ dataUrl: string; file: File } | null>>([]);
-  const postMuate = usePostMutation({ content, preview, setContent, setPreview });
+  const [preview, setPreview] = useState<FileArr>([]);
+  const params = useParams();
+  const commentMutate = useCommentMutation({ id: params.id as string, content, preview, setContent, setPreview });
 
   const onChangeContent: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     setContent(e.target.value);
@@ -30,11 +33,12 @@ export default function PostForm({ me }: Prop) {
     e.preventDefault();
     const readFiles = await readImageFiles(e.target.files, preview);
     if (readFiles) setPreview(readFiles);
+    console.log(preview.length);
   };
 
   return (
     <Container>
-      <form onSubmit={postMuate.mutate}>
+      <form onSubmit={commentMutate.mutate}>
         <Profile>
           <Image src={me?.user?.image!} alt="profile image" width={40} height={40}></Image>
         </Profile>
@@ -42,7 +46,7 @@ export default function PostForm({ me }: Prop) {
           <TextareaAutosize value={content} onChange={onChangeContent} placeholder="무슨 일이 일어나고 있나요?" />
           <UploadImgCarousel uploadedImg={preview} setPrev={setPreview} />
           <FormRightInnerBottom>
-            <button type="button" onClick={onClickImgBtn}>
+            <button type="button" onClick={onClickImgBtn} disabled={preview.length >= 4}>
               <input type="file" name="imageFiles" multiple hidden ref={imageRef} onChange={onUpload} />
               <svg viewBox="0 0 24 24" aria-hidden="true" width="1.75rem">
                 <g>
@@ -65,7 +69,7 @@ const Container = styled.div`
   width: 596px;
   min-height: 120px;
   max-height: 875px;
-
+  border-top: 1px solid rgb(239, 243, 244);
   background-color: #ffffff;
   & > form {
     box-sizing: border-box;
@@ -116,10 +120,28 @@ const UploadImgContainer = styled.div`
   margin-top: 10px;
   max-height: 300px;
   display: flex;
+  position: relative;
   & > img {
     object-fit: contain;
-    width: 100%;
-    height: 100%;
+  }
+  & > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    background-color: rgb(0, 0, 0);
+    border-radius: 9999px;
+    min-width: 32px;
+    min-height: 32px;
+    top: 3px;
+
+    right: 3px;
+
+    svg {
+      fill: rgb(255, 255, 255);
+      width: 18px;
+      height: 18px;
+    }
   }
 `;
 
@@ -139,6 +161,12 @@ const FormRightInnerBottom = styled.div`
     cursor: pointer;
     svg {
       fill: rgb(29, 155, 240);
+    }
+  }
+
+  & > button:disabled {
+    svg {
+      fill: rgba(29, 155, 240, 0.5);
     }
   }
 `;

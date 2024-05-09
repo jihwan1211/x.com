@@ -1,30 +1,18 @@
 "use client";
-
-import { InfiniteData, useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
-import getPostComments from "../_lib/getPostComments";
+import { useQueryClient } from "@tanstack/react-query";
 import { Post as IPost } from "@/model/Post";
-import Comment from "./Comment";
-import Comments from "@/app/(afterLogin)/_component/Comments";
-import CommentForm from "../../../_component/CommentForm";
 import { Fragment, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import SinglePostCommentsDisplayDecider from "./SinglePostCommentsDisplayDecider";
-type Props = {
-  params: { username: string; id: number };
-};
+import { useParams } from "next/navigation";
+import useCommentInfinityQuery from "@/app/queries/useCommentsInfinityQuery";
 
-export default function PostComments({ params }: Props) {
+export default function PostComments() {
   const queryClient = useQueryClient();
+  const params = useParams();
   const postData = queryClient.getQueryData<IPost>(["post", params.id]);
 
-  const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery<IPost[], Object, InfiniteData<IPost[]>, [_1: string, _2: string, _3: number], number>({
-    queryKey: ["posts", "comments", params.id],
-    queryFn: getPostComments,
-    initialPageParam: 0,
-    // getNextPageParam: (lastPage) => lastPage.at(0)?.postId,
-    getNextPageParam: (lastPage) => lastPage.at(-1)?.postId,
-    // enabled: !!postData,
-  });
+  const { data, fetchNextPage, hasNextPage, isFetching } = useCommentInfinityQuery(params.id as string);
 
   const { ref, inView } = useInView({
     threshold: 0,
@@ -38,7 +26,7 @@ export default function PostComments({ params }: Props) {
   }, [inView, isFetching, hasNextPage, fetchNextPage]);
 
   if (!data) return null;
-  // <Comment key={post.postId} post={post} />
+
   if (postData) {
     return (
       <>
