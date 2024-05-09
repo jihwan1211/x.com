@@ -11,7 +11,7 @@ type Prop = {
 // 2. 재게시글은 post하지 않음
 // 3. 어떤 게시글의 답글 찾는 로직도 필요 없음
 
-export default function PostDisplayDecider({ post }: Prop) {
+export default function SearchPostDisplayDecider({ post }: Prop) {
   // 1. 답글은 post하지 않음
   if (post.Parent) return null;
   // 2. 재게시글은 post하지 않음

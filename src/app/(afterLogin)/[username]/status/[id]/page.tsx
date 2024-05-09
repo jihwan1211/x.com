@@ -3,11 +3,11 @@ import { QueryClient, HydrationBoundary, dehydrate } from "@tanstack/react-query
 import BackBtn from "@/app/(afterLogin)/_component/BackBtn";
 import UserPost from "./_component/UserPost";
 import PostComments from "./_component/PostComments";
-
+import CommentForm from "./_component/CommentForm";
 import { Main, Nav, Container } from "./style";
 import { Post as IPost } from "@/model/Post";
 import getUserPostServer from "./_lib/getUserPostServer";
-import getPostCommentsServer from "./_lib/getPostCommentsServer";
+import { auth } from "@/auth";
 
 type Prop = {
   params: { id: number; username: string };
@@ -15,6 +15,7 @@ type Prop = {
 
 export default async function StatusPage({ params }: Prop) {
   const { id, username } = params;
+  const session = await auth();
 
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
@@ -38,10 +39,11 @@ export default async function StatusPage({ params }: Prop) {
         </div>
         <Main>
           <div>
-            <UserPost params={params} />
+            <UserPost />
           </div>
+          <CommentForm me={session} />
           <div>
-            <PostComments params={params} />
+            <PostComments />
           </div>
         </Main>
       </HydrationBoundary>

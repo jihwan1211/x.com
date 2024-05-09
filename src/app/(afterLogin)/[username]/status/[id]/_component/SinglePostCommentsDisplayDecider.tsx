@@ -1,6 +1,5 @@
 "use client";
 import { Post as IPost } from "@/model/Post";
-import Post from "@/app/(afterLogin)/_component/Post";
 import useGetPostReply from "@/app/(afterLogin)/_hooks/useGetPostReply";
 import Comment from "./Comment";
 
@@ -13,9 +12,6 @@ import Comment from "./Comment";
 type Prop = {
   post: IPost;
 };
-
-// 여기는 필요 없을듯?
-// css 가 달랐던거 같은데
 
 export default function SinglePostCommentsDisplayDecider({ post }: Prop) {
   const comment: IPost | undefined = useGetPostReply(post);
